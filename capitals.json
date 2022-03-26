@@ -1,0 +1,1243 @@
+[
+  {
+    "country": "Cook Islands",
+    "city": "Avarua",
+    "pop": "4,906",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Liechtenstein",
+    "city": "Vaduz",
+    "pop": "5,668",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Saint Martin",
+    "city": "Marigot",
+    "pop": "5,700",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Malta",
+    "city": "Valletta",
+    "pop": "5,735",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Tuvalu",
+    "city": "Funafuti",
+    "pop": "6,025",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Guadeloupe",
+    "city": "Basse-Terre",
+    "pop": "10,046",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Åland Islands",
+    "city": "Mariehamn",
+    "pop": "11,709",
+    "difficulty": "hard"
+  },
+  {
+    "country": "British Virgin Islands",
+    "city": "Road Town",
+    "pop": "12,603",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Faroe Islands",
+    "city": "Tórshavn",
+    "pop": "13,408",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Belize",
+    "city": "Belmopan",
+    "pop": "16,451",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Greenland",
+    "city": "Nuuk",
+    "pop": "18,128",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Virgin Islands",
+    "city": "Charlotte Amalie",
+    "pop": "18,481",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Guernsey",
+    "city": "Saint Peter Port",
+    "pop": "18,958",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Andorra",
+    "city": "Andorra la Vella",
+    "pop": "22,886",
+    "difficulty": "hard"
+  },
+  {
+    "country": "French Polynesia",
+    "city": "Papeete",
+    "pop": "25,763",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Seychelles",
+    "city": "Victoria",
+    "pop": "26,450",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Marshall Islands",
+    "city": "Majuro",
+    "pop": "27,797",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Isle of Man",
+    "city": "Douglas",
+    "pop": "27,938",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Cayman Islands",
+    "city": "George Town",
+    "pop": "28,089",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Gambia",
+    "city": "Banjul",
+    "pop": "31,301",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Jersey",
+    "city": "Saint Helier",
+    "pop": "33,500",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Grenada",
+    "city": "Saint George's",
+    "pop": "33,734",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Gibraltar",
+    "city": "Gibraltar",
+    "pop": "34,003",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Aruba",
+    "city": "Oranjestad",
+    "pop": "34,980",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Tonga",
+    "city": "Nuku‘alofa",
+    "pop": "35,184",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Monaco",
+    "city": "Monaco",
+    "pop": "37,308",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Samoa",
+    "city": "Apia",
+    "pop": "37,391",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Vanuatu",
+    "city": "Port-Vila",
+    "pop": "44,040",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Northern Mariana Islands",
+    "city": "Saipan",
+    "pop": "48,220",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Brunei",
+    "city": "Bandar Seri Begawan",
+    "pop": "50,000",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Comoros",
+    "city": "Moroni",
+    "pop": "54,000",
+    "difficulty": "hard"
+  },
+  {
+    "country": "French Guiana",
+    "city": "Cayenne",
+    "pop": "55,198",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Kiribati",
+    "city": "Tarawa",
+    "pop": "56,284",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Mayotte",
+    "city": "Mamoudzou",
+    "pop": "57,281",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Saint Lucia",
+    "city": "Castries",
+    "pop": "70,000",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Martinique",
+    "city": "Fort-de-France",
+    "pop": "82,502",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Solomon Islands",
+    "city": "Honiara",
+    "pop": "84,520",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Fiji",
+    "city": "Suva",
+    "pop": "88,271",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Eswatini",
+    "city": "Mbabane",
+    "pop": "94,874",
+    "difficulty": "hard"
+  },
+  {
+    "country": "New Caledonia",
+    "city": "Nouméa",
+    "pop": "100,237",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Barbados",
+    "city": "Bridgetown",
+    "pop": "110,000",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Bhutan",
+    "city": "Thimphu",
+    "pop": "114,551",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Cyprus",
+    "city": "Nicosia",
+    "pop": "116,392",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Luxembourg",
+    "city": "Luxembourg",
+    "pop": "119,215",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Iceland",
+    "city": "Reykjavík",
+    "pop": "124,644",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Cape Verde",
+    "city": "Praia",
+    "pop": "130,271",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Guyana",
+    "city": "Georgetown",
+    "pop": "131,395",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Switzerland",
+    "city": "Bern",
+    "pop": "133,883",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Mauritius",
+    "city": "Port Louis",
+    "pop": "146,737",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Reunion",
+    "city": "Saint-Denis",
+    "pop": "146,985",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Curacao",
+    "city": "Willemstad",
+    "pop": "150,000",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Bahrain",
+    "city": "Manama",
+    "pop": "157,474",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Montenegro",
+    "city": "Podgorica",
+    "pop": "187,085",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Equatorial Guinea",
+    "city": "Malabo",
+    "pop": "187,302",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Western Sahara",
+    "city": "El Aaiún",
+    "pop": "196,331",
+    "difficulty": "medium"
+  },
+  {
+    "country": "New Zealand",
+    "city": "Wellington",
+    "pop": "209,000",
+    "difficulty": "baby"
+  },
+  {
+    "country": "Kosovo",
+    "city": "Pristina",
+    "pop": "211,129",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Tanzania",
+    "city": "Dodoma",
+    "pop": "213,636",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Djibouti",
+    "city": "Djibouti",
+    "pop": "219,000",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Maldives",
+    "city": "Malé",
+    "pop": "221,678",
+    "difficulty": "hard"
+  },
+  {
+    "country": "East Timor",
+    "city": "Dili",
+    "pop": "222,323",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Botswana",
+    "city": "Gaborone",
+    "pop": "231,592",
+    "difficulty": "medium"
+  },
+  {
+    "country": "El Salvador",
+    "city": "San Salvador",
+    "pop": "238,244",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Suriname",
+    "city": "Paramaribo",
+    "pop": "240,924",
+    "difficulty": "hard"
+  },
+  {
+    "country": "India",
+    "city": "New Delhi",
+    "pop": "257,803",
+    "difficulty": "baby"
+  },
+  {
+    "country": "Benin",
+    "city": "Porto-Novo",
+    "pop": "264,320",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Bahamas",
+    "city": "Nassau",
+    "pop": "274,400",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Slovenia",
+    "city": "Ljubljana",
+    "pop": "279,650",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Ivory Coast",
+    "city": "Yamoussoukro",
+    "pop": "281,735",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Bolivia",
+    "city": "Sucre",
+    "pop": "300,000",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Namibia",
+    "city": "Windhoek",
+    "pop": "325,858",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Lesotho",
+    "city": "Maseru",
+    "pop": "330,760",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Puerto Rico",
+    "city": "San Juan",
+    "pop": "337,288",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Moldova",
+    "city": "Chisinau",
+    "pop": "339,079",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Costa Rica",
+    "city": "San José",
+    "pop": "347,398",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Lebanon",
+    "city": "Beirut",
+    "pop": "361,366",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Guinea-Bissau",
+    "city": "Bissau",
+    "pop": "395,954",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Papua New Guinea",
+    "city": "Port Moresby",
+    "pop": "410,954",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Australia",
+    "city": "Canberra",
+    "pop": "411,667",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Albania",
+    "city": "Tirana",
+    "pop": "418,495",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Slovakia",
+    "city": "Bratislava",
+    "pop": "427,744",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Estonia",
+    "city": "Tallinn",
+    "pop": "430,805",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Panama",
+    "city": "Panama City",
+    "pop": "481,993",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Burundi",
+    "city": "Bujumbura",
+    "pop": "497,166",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Macao",
+    "city": "Concelho de Macau",
+    "pop": "504,300",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Portugal",
+    "city": "Lisbon",
+    "pop": "505,526",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Paraguay",
+    "city": "Asunción",
+    "pop": "525,252",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Lithuania",
+    "city": "Vilnius",
+    "pop": "546,382",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Macedonia",
+    "city": "Skopje",
+    "pop": "546,824",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Ireland",
+    "city": "Dublin",
+    "pop": "553,165",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Morocco",
+    "city": "Rabat",
+    "pop": "573,895",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Jamaica",
+    "city": "Kingston",
+    "pop": "584,627",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Qatar",
+    "city": "Doha",
+    "pop": "587,055",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Denmark",
+    "city": "Copenhagen",
+    "pop": "616,098",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Oman",
+    "city": "Muscat",
+    "pop": "630,000",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Latvia",
+    "city": "Riga",
+    "pop": "632,614",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Sudan",
+    "city": "Khartoum",
+    "pop": "639,598",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Finland",
+    "city": "Helsinki",
+    "pop": "645,657",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Greece",
+    "city": "Athens",
+    "pop": "664,046",
+    "difficulty": "baby"
+  },
+  {
+    "country": "Norway",
+    "city": "Oslo",
+    "pop": "681,067",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Gabon",
+    "city": "Libreville",
+    "pop": "703,904",
+    "difficulty": "medium"
+  },
+  {
+    "country": "United States",
+    "city": "Washington, D.C.",
+    "pop": "724,342",
+    "difficulty": "baby"
+  },
+  {
+    "country": "South Africa",
+    "city": "Pretoria",
+    "pop": "741,651",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Rwanda",
+    "city": "Kigali",
+    "pop": "745,261",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Sri Lanka",
+    "city": "Colombo",
+    "pop": "752,993",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Tajikistan",
+    "city": "Dushanbe",
+    "pop": "778,500",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Laos",
+    "city": "Vientiane",
+    "pop": "783,000",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Croatia",
+    "city": "Zagreb",
+    "pop": "792,875",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Togo",
+    "city": "Lomé",
+    "pop": "837,437",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Netherlands",
+    "city": "Amsterdam",
+    "pop": "872,680",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Central African Republic",
+    "city": "Bangui",
+    "pop": "889,231",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Guatemala",
+    "city": "Guatemala City",
+    "pop": "923,392",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Burma",
+    "city": "Nay Pyi Taw",
+    "pop": "924,608",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Sweden",
+    "city": "Stockholm",
+    "pop": "935,619",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Mauritania",
+    "city": "Nouakchott",
+    "pop": "958,399",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Eritrea",
+    "city": "Asmara",
+    "pop": "963,000",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Dominican Republic",
+    "city": "Santo Domingo",
+    "pop": "965,040",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Nepal",
+    "city": "Kathmandu",
+    "pop": "975,543",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Kyrgyzstan",
+    "city": "Bishkek",
+    "pop": "976,734",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Haiti",
+    "city": "Port-au-Prince",
+    "pop": "987,310",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Malawi",
+    "city": "Lilongwe",
+    "pop": "989,318",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Liberia",
+    "city": "Monrovia",
+    "pop": "1,010,970",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Pakistan",
+    "city": "Islamabad",
+    "pop": "1,014,825",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Canada",
+    "city": "Ottawa",
+    "pop": "1,028,514",
+    "difficulty": "baby"
+  },
+  {
+    "country": "Kazakhstan",
+    "city": "Nursultan",
+    "pop": "1,029,556",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Turkmenistan",
+    "city": "Ashgabat",
+    "pop": "1,031,992",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Nicaragua",
+    "city": "Managua",
+    "pop": "1,033,622",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Sierra Leone",
+    "city": "Freetown",
+    "pop": "1,055,964",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Tunisia",
+    "city": "Tunis",
+    "pop": "1,056,247",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Armenia",
+    "city": "Yerevan",
+    "pop": "1,076,716",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Mozambique",
+    "city": "Maputo",
+    "pop": "1,088,449",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Georgia",
+    "city": "Tbilisi",
+    "pop": "1,113,800",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Libya",
+    "city": "Tripoli",
+    "pop": "1,126,000",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Senegal",
+    "city": "Dakar",
+    "pop": "1,146,053",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Honduras",
+    "city": "Tegucigalpa",
+    "pop": "1,157,509",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Belgium",
+    "city": "Brussels",
+    "pop": "1,175,173",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Bulgaria",
+    "city": "Sofia",
+    "pop": "1,241,675",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Madagascar",
+    "city": "Antananarivo",
+    "pop": "1,274,225",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Czech Republic",
+    "city": "Prague",
+    "pop": "1,301,132",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Serbia",
+    "city": "Belgrade",
+    "pop": "1,378,682",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Bosnia",
+    "city": "Sarajevo",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Uruguay",
+    "city": "Montevideo",
+    "pop": "1,383,135",
+    "difficulty": "medium"
+  },
+  {
+    "country": "United Arab Emirates",
+    "city": "Abu Dhabi",
+    "pop": "1,482,816",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Uganda",
+    "city": "Kampala",
+    "pop": "1,507,114",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Mongolia",
+    "city": "Ulaanbaatar",
+    "pop": "1,515,593",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Zambia",
+    "city": "Lusaka",
+    "pop": "1,747,152",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Hungary",
+    "city": "Budapest",
+    "pop": "1,752,286",
+    "difficulty": "baby"
+  },
+  {
+    "country": "Poland",
+    "city": "Warsaw",
+    "pop": "1,793,579",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Romania",
+    "city": "Bucharest",
+    "pop": "1,829,897",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Malaysia",
+    "city": "Kuala Lumpur",
+    "pop": "1,839,451",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Philippines",
+    "city": "Manila",
+    "pop": "1,846,513",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Austria",
+    "city": "Vienna",
+    "pop": "1,911,191",
+    "difficulty": "baby"
+  },
+  {
+    "country": "Belarus",
+    "city": "Minsk",
+    "pop": "2,009,786",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Ecuador",
+    "city": "Quito",
+    "pop": "2,011,388",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Cuba",
+    "city": "Havana",
+    "pop": "2,131,937",
+    "difficulty": "easy"
+  },
+  {
+    "country": "France",
+    "city": "Paris",
+    "pop": "2,206,488",
+    "difficulty": "baby"
+  },
+  {
+    "country": "Venezuela",
+    "city": "Caracas",
+    "pop": "2,245,744",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Cambodia",
+    "city": "Phnom Penh",
+    "pop": "2,281,951",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Azerbaijan",
+    "city": "Baku",
+    "pop": "2,293,100",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Congo",
+    "city": "Brazzaville",
+    "pop": "2,308,000",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Syria",
+    "city": "Damascus",
+    "pop": "2,354,000",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Somalia",
+    "city": "Mogadishu",
+    "pop": "2,388,000",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Burkina Faso",
+    "city": "Ouagadougou",
+    "pop": "2,453,496",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Ghana",
+    "city": "Accra",
+    "pop": "2,514,000",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Yemen",
+    "city": "Sanaa",
+    "pop": "2,545,000",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Uzbekistan",
+    "city": "Tashkent",
+    "pop": "2,571,668",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Angola",
+    "city": "Luanda",
+    "pop": "2,571,861",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Taiwan",
+    "city": "Taipei",
+    "pop": "2,646,204",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Algeria",
+    "city": "Algiers",
+    "pop": "2,712,944",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Mali",
+    "city": "Bamako",
+    "pop": "2,713,000",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Nigeria",
+    "city": "Abuja",
+    "pop": "2,750,000",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Cameroon",
+    "city": "Yaoundé",
+    "pop": "2,765,600",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Italy",
+    "city": "Rome",
+    "pop": "2,873,147",
+    "difficulty": "baby"
+  },
+  {
+    "country": "Argentina",
+    "city": "Buenos Aires",
+    "pop": "2,891,082",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Ukraine",
+    "city": "Kiev",
+    "pop": "2,893,215",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Brazil",
+    "city": "Brasília",
+    "pop": "2,912,090",
+    "difficulty": "baby"
+  },
+  {
+    "country": "Kuwait",
+    "city": "Kuwait City",
+    "pop": "2,989,000",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Zimbabwe",
+    "city": "Harare",
+    "pop": "3,120,917",
+    "difficulty": "medium"
+  },
+  {
+    "country": "North Korea",
+    "city": "Pyongyang",
+    "pop": "3,222,000",
+    "difficulty": "baby"
+  },
+  {
+    "country": "Spain",
+    "city": "Madrid",
+    "pop": "3,223,334",
+    "difficulty": "baby"
+  },
+  {
+    "country": "Ethiopia",
+    "city": "Addis Ababa",
+    "pop": "3,352,000",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Germany",
+    "city": "Berlin",
+    "pop": "3,664,088",
+    "difficulty": "baby"
+  },
+  {
+    "country": "Jordan",
+    "city": "Amman",
+    "pop": "4,302,730",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Kenya",
+    "city": "Nairobi",
+    "pop": "4,397,073",
+    "difficulty": "hard"
+  },
+  {
+    "country": "Afghanistan",
+    "city": "Kabul",
+    "pop": "4,601,789",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Vietnam",
+    "city": "Hanoi",
+    "pop": "4,678,198",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Turkey",
+    "city": "Ankara",
+    "pop": "5,663,322",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Singapore",
+    "city": "Singapore",
+    "pop": "5,685,800",
+    "difficulty": "baby"
+  },
+  {
+    "country": "Chile",
+    "city": "Santiago",
+    "pop": "6,269,384",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Hong Kong",
+    "city": "Hong Kong",
+    "pop": "7,012,738",
+    "difficulty": "baby"
+  },
+  {
+    "country": "Colombia",
+    "city": "Bogotá",
+    "pop": "7,412,566",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Saudi Arabia",
+    "city": "Riyadh",
+    "pop": "7,676,654",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Iraq",
+    "city": "Baghdad",
+    "pop": "8,126,755",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Iran",
+    "city": "Tehran",
+    "pop": "8,846,782",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Bangladesh",
+    "city": "Dhaka",
+    "pop": "8,906,035",
+    "difficulty": "easy"
+  },
+  {
+    "country": "United Kingdom",
+    "city": "London",
+    "pop": "8,961,989",
+    "difficulty": "baby"
+  },
+  {
+    "country": "Mexico",
+    "city": "Mexico City",
+    "pop": "9,209,944",
+    "difficulty": "baby"
+  },
+  {
+    "country": "Egypt",
+    "city": "Cairo",
+    "pop": "9,539,673",
+    "difficulty": "baby"
+  },
+  {
+    "country": "South Korea",
+    "city": "Seoul",
+    "pop": "9,733,509",
+    "difficulty": "baby"
+  },
+  {
+    "country": "Peru",
+    "city": "Lima",
+    "pop": "9,751,717",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Thailand",
+    "city": "Bangkok",
+    "pop": "10,539,000",
+    "difficulty": "baby"
+  },
+  {
+    "country": "Indonesia",
+    "city": "Jakarta",
+    "pop": "10,562,088",
+    "difficulty": "medium"
+  },
+  {
+    "country": "Russia",
+    "city": "Moscow",
+    "pop": "12,506,468",
+    "difficulty": "baby"
+  },
+  {
+    "country": "Japan",
+    "city": "Tokyo",
+    "pop": "13,960,236",
+    "difficulty": "baby"
+  },
+  {
+    "country": "China",
+    "city": "Beijing",
+    "pop": "21,893,095",
+    "difficulty": "baby"
+  },
+  {
+    "country": "Scotland",
+    "city": "Edinburgh",
+    "pop": "488,050",
+    "difficulty": "easy"
+  },
+  {
+    "country": "Wales",
+    "city": "Cardiff",
+    "pop": "1,097,000",
+    "difficulty": "easy"
+  }
+ ]

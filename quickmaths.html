@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quick Maths</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="common.css?v=5" rel="stylesheet">
+  <style>
+    body>.panel {
+      height: 400px;
+    }
+  </style>
+</head>
+<body>
+  <div id="menu" class="panel">
+    <h1>Quick Maths</h1>
+    <p>
+      Quickfire maths questions with multiple choice answers
+    </p>
+    <p>
+      <label for="difficulty">Difficulty: </label>
+      <select id="difficulty" autofocus>
+        <option value="easy" selected>Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+        <option value="harder">Harder</option>
+      </select>
+    </p>
+    <a class="big-red btn" id="start" href="#">Go</a>
+    <div class="options" style="margin-top: 1em">
+      <a class="btn action-leaderboard" href="#">View leaderboard</a>
+      <a class="btn" href="./">More games</a>
+    </div>
+  </div>
+  <div id="leaderboard" class="panel" style="display:none;">
+    <h1>Quickest Maths</h1>
+    <p id="leaderboard-diff">
+      (Easy difficulty)
+    </p>
+    <table id="board" width="100%">
+      <thead>
+        <th>Place</th><th>Name</th><th>Score</th>
+      </thead>
+      <tbody>
+        <td>--</td><td>-----</td><td>---</td>
+      </tbody>
+    </table>
+    <br>
+    <div class="options">
+      <a class="btn action-cancel" href="#">Back</a>
+    </div>
+  </div>
+  <div id="game" class="panel" style="display:none;">
+    <h1 id="question">Question</h1>
+    <div>
+      Current time: <span class="timer" id="timer-current">00:00.00</span>
+    </div>
+    <div>
+      Total time: <span class="timer" id="timer-total">00:00.00</span>
+    </div>
+    <br>
+    <div class="pre">
+      <div class="multichoice">
+        <a class="btn action-answer" href="#">1</a>
+        <a class="btn action-answer" href="#">2</a>
+        <a class="btn action-answer" href="#">3</a>
+        <a class="btn action-answer" href="#">4</a>
+      </div>
+      <br>
+      <div class="options">
+        <!--<a class="btn action-cancel" href="#">Menu</a>-->
+      </div>
+    </div>
+    <div class="post">
+      <h2 id="answer">Answer</h2>
+      <div class="options">
+        <!--<a class="btn action-cancel" href="#">Menu</a>-->
+        <a class="btn action-advance" href="#">Next question</a>
+      </div>
+    </div>
+    <div class="end">
+      <b>Answers: </b> <span id="correctans">0</span>/<span id="totalans">0</span>.
+      <br><b>Time penalty: </b> <span id="timepenalty">0</span>.
+      <hr><b>Your score: <span id="score">0</span>%</b>
+      <br><br>
+      <div class="options">
+        <a class="btn confirm-action action-cancel" href="#">Menu</a>
+        <a class="btn action-submit" href="#">Submit highscore</a>
+      </div>
+      <br>
+    </div>
+  </div>
+
+  <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
+  <script src="//cdn.yiays.com/jquery-color.min.js"></script>
+  <script src="common.js?v=4"></script>
+  <script>
+    const gamerules = {
+      'easy': {'min': 1, 'max': 4, 'timegoal': 10},
+      'medium': {'min': 2, 'max': 7, 'timegoal': 30},
+      'hard': {'min': 4, 'max': 12, 'timegoal': 60},
+      'harder': {'min': 12, 'max': 18, 'timegoal': 60}
+    };
+    const randomizers = [
+      (i) => i - 4,
+      (i) => i + 3,
+      (i) => i * 2,
+      (i) => i / 2,
+      (i) => i * 2 - 5,
+      (i) => i * 3 - 16,
+      (i) => (i - 1) * 2,
+      (i) => (i + 1) / 2 
+    ];
+    let difficulty, norepeat, tested;
+    let q;
+    let ans;
+    let timerCurrent, totalTime, totalRight, score;
+    let intTimer;
+
+    $().ready(() => {
+      function newquestion(newgame = false) {
+        let range = gamerules[difficulty].max - gamerules[difficulty].min;
+        let possiblequestions = (range + 1) * (range + 1);
+
+        while(true) {
+          ra = randint(gamerules[difficulty].max, gamerules[difficulty].min);
+          rb = randint(gamerules[difficulty].max, gamerules[difficulty].min);
+          q = `${ra} × ${rb}`
+
+          if(norepeat.indexOf(q) >= 0) {
+            if(norepeat.length >= possiblequestions) {
+              endgame();
+              return;
+            }
+            continue;
+          }
+          norepeat.push(q);
+          tested.push(q);
+          if(rb!=ra) // Also block repetition of the reverse of the question
+            norepeat.push(`${rb} × ${ra}`);
+          break;
+        }
+
+        ans = ra * rb;
+        let answers = [ans];
+        while(answers.length < 4) {
+          wrongans = randomizers[randint(randomizers.length - 1)](ans);
+          if(answers.indexOf(wrongans) < 0) {
+            answers.push(wrongans);
+          }
+        }
+        shuffle(answers);
+
+        $('#question').text(`What is ${q}?`);
+        for(var i in answers) {
+          $('.multichoice > .btn').eq(i).text(answers[i]);
+        }
+        timerCurrent = new Date().getTime();
+        intTimer = setInterval(timerTick, 50);
+        if(newgame === true) {
+          totalTime = 0;
+          totalRight = 0;
+        }
+
+        $('#timer-current').parent().show();
+        $('#game .post').hide();
+        $('#game .end').hide();
+        $('#game .pre').show();
+      }
+
+      function showanswer(e) {
+        if(e.target.innerText == ans) {
+          $('#answer').html(`Correct!<br><sub class="correct">${q} = ${ans}</sub>`);
+          totalRight += 1;
+        }else{
+          $('#answer').html(`Not quite!<br><sub class="incorrect">${q} = ${ans}</sub>`);
+        }
+        
+        clearInterval(intTimer);
+        timerTick();
+        totalTime += new Date().getTime() - timerCurrent;
+
+        $('#game .pre').hide();
+        $('#game .end').hide();
+        $('#game .post').show();
+      }
+
+      function endgame() {
+        $('#question').text("Challenge complete!");
+        $('#timer-current').parent().hide();
+        $('#game .pre').hide();
+        $('#game .post').hide();
+        $('#game .end').show();
+
+        let timePentalty = Math.round((totalTime / 1000) - gamerules[difficulty].timegoal);
+        $('#timepenalty').text(timePentalty);
+        $('#correctans').text(totalRight);
+        $('#totalans').text(tested.length);
+        score = (totalRight / tested.length) * 100 - timePentalty;
+        $('#score').text(Math.round(score));
+      }
+
+      function menu() {
+        $('#game,#leaderboard').hide();
+        $('#menu').show();
+        clearInterval(intTimer);
+      }
+
+      function timerTick() {
+        $('#timer-current').text(msToTime(new Date().getTime() - timerCurrent));
+        $('#timer-total').text(msToTime(new Date().getTime() - timerCurrent + totalTime));
+      }
+
+      function submithighscore() {
+        let username = prompt("Username");
+        let secret = prompt("Secret code (must be typed by the teacher)");
+
+        $.get(`https://highscore.yiays.workers.dev/?secret=${secret}&scope=quickmaths_${difficulty}&username=${username}&score=${score}`)
+        .done((data) => {alert(data)})
+        .fail(() => {alert("Something went wrong! Failed to save your highscore.")});
+      }
+
+      function showleaderboard() {
+        $('#game,#menu').hide();
+        $('#leaderboard').show();
+
+        difficulty = $('#difficulty').val();
+
+        $('#leaderboard-diff').text(`(${difficulty.charAt(0).toUpperCase()+difficulty.slice(1)} difficulty)`);
+
+        $.get(`https://highscore.yiays.workers.dev/?scope=quickmaths_${difficulty}`)
+        .done((data) => {
+          var entries = Object.keys(data).map((key) => {
+            return [key, data[key]];
+          });
+          entries.sort((a, b) => {
+            return b[1] - a[1];
+          });
+
+          $('#board>tbody').html('');
+          let i = 0;
+          entries.slice(0, 10).forEach(entry => {
+            $('#board>tbody').append(`<tr><td>${++i}</td><td>${entry[0]}</td><td>${entry[1]}%</td></tr>`);
+          });
+          if(i==0) $('#board>tbody').html('<td>--</td><td>-----</td><td>---</td>');
+        })
+        .fail(() => {alert("Failed to get the leaderboard!")});
+      }
+
+      function msToTime(duration) {
+        var milliseconds = Math.floor((duration % 1000) / 10),
+          seconds = Math.floor((duration / 1000) % 60),
+          minutes = Math.floor((duration / (1000 * 60)) % 60);
+
+        minutes = (minutes < 10) ? "0" + minutes : minutes;
+        seconds = (seconds < 10) ? "0" + seconds : seconds;
+        milliseconds = (milliseconds < 10) ? "0" + milliseconds : milliseconds;
+
+        return minutes + ":" + seconds + "." + milliseconds;
+      }
+
+      $('.confirm-action').on('click', (e) => {
+        if(confirm("This will clear your score, are you sure you want to continue?")) {
+          return;
+        }
+        e.stopPropagation();
+      });
+
+      $('.action-cancel').on('click', menu);
+
+      $('.action-advance').on('click', newquestion);
+
+      $('.action-answer').on('click', showanswer);
+
+      $('.action-submit').on('click', submithighscore);
+
+      $('.action-leaderboard').on('click', showleaderboard);
+
+      $('#start').on('click', (e) => {
+        e.preventDefault();
+
+        $('#menu,#leaderboard').hide();
+        $('#game').show();
+        difficulty = $('#difficulty').val();
+        norepeat = [];
+        tested = [];
+        
+        newquestion(true);
+
+        return false;
+      });
+    });
+  </script>
+</body>
+</html>

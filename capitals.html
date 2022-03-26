@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capital Cities</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="common.css?v=2" rel="stylesheet">
+  <style>
+    body>.panel {
+      height: 400px;
+    }
+  </style>
+</head>
+<body>
+  <div id="menu" class="panel">
+    <button class="float-right" id="modechange" title="Switch it up">🔀</button>
+    <h1>Capital Cities</h1>
+    <p>
+      Guess the capital for each country
+    </p>
+    <p>
+      <label for="difficulty">Difficulty: </label>
+      <select id="difficulty" autofocus>
+        <option value="baby">🍼 Baby</option>
+        <option value="easy" selected>Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+      </select>
+    </p>
+    <div class="loader">Loading...</div>
+    <a class="big-red btn" id="start" href="#" style="display:none;">Go</a>
+    <div class="options" style="margin-top: 1em">
+      <a class="btn" href="./">More games</a>
+    </div>
+  </div>
+  <div id="game" class="panel" style="display:none;">
+    <h1 id="question">Question</h1>
+    <div class="pre">
+      <div class="img-loader">
+        <img class="flag" src="" alt="Flag" width="300" height="210" style="opacity:0;">
+      </div>
+      <div class="options">
+        <a class="btn action-cancel" href="#">Menu</a>
+        <a class="btn action-answer" href="#">Show answer</a>
+      </div>
+    </div>
+    <div class="post">
+      <h2 id="answer">Answer</h2>
+      <div class="img-loader" style="display:none;">
+        <img class="flag" src="" alt="Flag" width="300" height="210" style="opacity:0;">
+      </div>
+      <div class="options">
+        <a class="btn action-cancel" href="#">Menu</a>
+        <a class="btn action-advance" href="#">Next question</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
+  <script src="//cdn.yiays.com/jquery-color.min.js"></script>
+  <script src="common.js?v=3"></script>
+  <script>
+    const difficulties = ['baby', 'easy', 'medium', 'hard'];
+    let capitals, isocodes, difficulty, gamedifficulties, norepeat;
+    let q = -1;
+    let mode = 0;
+
+    $().ready(() => {
+      let promises = [];
+      promises.push($.getJSON('capitals.json', (data) => {capitals = data;}));
+      promises.push($.getJSON('isocodes.json', (data) => {isocodes = data;}));
+      Promise.all(promises).then((_) => {
+        $('.loader').hide();
+        $('.big-red.btn').show();
+      });
+
+      function newquestion() {
+        while(true) {
+          q = randint(capitals.length - 1);
+
+          if(norepeat.indexOf(q) >= 0) {
+            if(norepeat.length >= capitals.length) {
+              alert("Out of countries! Select a higher difficulty for more.");
+              menu();
+              return;
+            }
+            continue;
+          }
+          norepeat.push(q);
+          if(gamedifficulties.indexOf(capitals[q].difficulty) >= 0) {
+            break;
+          }
+        }
+
+        if(mode == 0){
+          $('#question').text(`What's the capital of ${capitals[q].country}?`);
+          $('.pre .flag').css('opacity', 0);
+          if(capitals[q].country in isocodes) {
+            $('.pre .flag').attr('src', `flags/${isocodes[capitals[q].country].toLowerCase()}.svg`);
+          }else{
+            console.warn(`${capitals[q].country} missing from isocodes!`);
+          }
+          $('#answer').html(capitals[q].city + "<br><sub>Population: " + capitals[q].pop + "</sub>");
+        }
+        else if(mode == 1){
+          $('#question').text(`Which country has ${capitals[q].city} as their capital?`);
+          $('.post .flag').css('opacity', 0);
+          if(capitals[q].country in isocodes) {
+            $('.post .flag').attr('src', `flags/${isocodes[capitals[q].country].toLowerCase()}.svg`);
+          }else{
+            console.warn(`${capitals[q].country} missing from isocodes!`);
+          }
+          $('#answer').text(capitals[q].country);
+        }
+        else if(mode == 2){
+          $('#question').text('Which country has this flag?');
+          $('.pre .flag').css('opacity', 0);
+          if(capitals[q].country in isocodes) {
+            $('.pre .flag').attr('src', `flags/${isocodes[capitals[q].country].toLowerCase()}.svg`);
+          }else{
+            console.warn(`${capitals[q].country} missing from isocodes!`);
+          }
+          $('#answer').text(capitals[q].country);
+        }
+
+        $('#game .post').hide();
+        $('#game .pre').show();
+      }
+
+      function showanswer() {
+        $('#game .pre').hide();
+        $('#game .post').show();
+      }
+
+      function menu() {
+        $('#hype,#game').hide();
+        $('#menu').show();
+      }
+
+      $('#start').on('click', (e) => {
+        e.preventDefault();
+
+        $('#menu').hide();
+        $('#game').show();
+        difficulty = $('#difficulty').val();
+        gamedifficulties = difficulties.slice(0, difficulties.indexOf(difficulty) + 1);
+        norepeat = [];
+        
+        newquestion();
+
+        return false;
+      });
+
+      function on_modechange() {
+        if(mode == 0){
+          document.title = "Capital Cities";
+          $('#menu>h1').text("Capital cities");
+          $('#menu>h1 + p').text("Guess the capital for each country");
+          $('.pre>.img-loader').show();
+          $('.post>.img-loader').hide();
+        }
+        else if(mode == 1){
+          document.title = "Countries";
+          $('#menu>h1').text("Countries");
+          $('#menu>h1 + p').text("Guess the country for each capital");
+          $('.pre>.img-loader').hide();
+          $('.post>.img-loader').show();
+        }
+        else if(mode == 2){
+          document.title = "Flags";
+          $('#menu>h1').text("Flags");
+          $('#menu>h1 + p').text("Guess the country for each flag");
+          $('.pre>.img-loader').show();
+          $('.post>.img-loader').hide();
+        }else{
+          console.error(`Unknown game mode ${mode} requested!`);
+        }
+      }
+
+      if('mode' in urlParams) {
+        mode = Number(urlParams.mode);
+        on_modechange();
+      }
+
+      $('.action-cancel').on('click', menu);
+
+      $('.action-advance').on('click', newquestion);
+
+      $('.action-answer').on('click', showanswer);
+
+      $('#modechange').on('click', () => {
+        mode++;
+        if(mode > 2) mode = 0;
+
+        on_modechange()
+      });
+    });
+
+    var urlParams;
+    (window.onpopstate = function () {
+      var match,
+        pl     = /\+/g,  // Regex for replacing addition symbol with a space
+        search = /([^&=]+)=?([^&]*)/g,
+        decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+        query  = window.location.search.substring(1);
+    
+      urlParams = {};
+      while (match = search.exec(query))
+        urlParams[decode(match[1])] = decode(match[2]);
+    })();
+  </script>
+</body>
+</html>

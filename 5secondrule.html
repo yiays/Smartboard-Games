@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>5 Second Rule</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="common.css?v=2" rel="stylesheet">
+  <style>
+    .countdown {
+      font-size: 1.5em;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div id="menu" class="panel">
+    <h1>5 Second Rule</h1>
+    <p>Quickfire questions with a 5 second time limit</p>
+    <a class="big-red btn" id="start" href="#">Go</a>
+    <div class="options" style="margin-top: 1em">
+      <a class="btn" href="./">More games</a>
+    </div>
+  </div>
+  <div id="game" class="panel" style="display:none;">
+    <h1 id="question">Question</h1>
+    <span class="countdown">5</span>
+    <div class="options pre">
+      <a class="btn action-cancel" href="#">Menu</a>
+      <a class="btn action-timer" href="#">Start the timer</a>
+    </div>
+    <div class="options post">
+      <a class="btn action-cancel" href="#">Menu</a>
+      <a class="btn action-advance" href="#">Next question</a>
+    </div>
+  </div>
+
+  <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
+  <script src="//cdn.yiays.com/jquery-color.min.js"></script>
+  <script src="common.js?v=2"></script>
+  <script>
+    const questions = [
+      "toppings that shouldn't go on pizza",
+      "toppings that go on ice cream",
+      "ice cream flavours",
+      "potato chip flavours",
+      "sweet foods",
+      "salty foods",
+      "spicy foods",
+      "types of cookie",
+      "types of pizza",
+      "types of soup",
+      "types of yoghurt",
+      "types of milk",
+      "Pokemon",
+      "farm animals",
+      "zoo animals",
+      "red fruits",
+      "songs you like",
+      "songs you hate",
+      "fruits",
+      "vegetables",
+      "brands of fizzy",
+      "brands of chocolate",
+      "potato chip flavours",
+      "things made of plastic",
+      "white things",
+      "orange things",
+      "green things",
+      "purple things",
+      "blue things",
+      "things a painter would have",
+      "things a musician would have",
+      "things a magician would have",
+      "things that can fly",
+      "things that can run",
+      "things in this room",
+      "things that need electricity",
+      "things you can buy at a fish 'n chip shop",
+      "things you wear in the Winter",
+      "things you wear in the Summer",
+      "things you spread on toast",
+      "things you can only find in New Zealand",
+      "things you wear around your neck",
+      "things you would do if shipwrecked on an island",
+      "things that pirates have",
+      "things with a screen",
+      "powers vampires have",
+      "powers werewolves have",
+      "super powers",
+      "super heroes",
+      "fairy tales",
+      "sports that need a ball",
+      "things found in a pencil case",
+      "things found in a bin",
+      "things that start with A",
+      "things that start with B",
+      "things that start with C",
+      "things that start with D",
+      "things that start with E",
+      "things that start with F",
+      "things that start with G",
+      "things that start with H",
+      "things that start with I",
+      "things that start with J",
+      "things that start with K",
+      "things that start with L",
+      "things that start with M",
+      "things that start with N",
+      "things that start with O",
+      "things that start with P",
+      "things that start with Q",
+      "things that start with R",
+      "things that start with S",
+      "things that start with T",
+      "things that start with U",
+      "things that start with V",
+      "things that start with W",
+      "things that start with Y",
+      "things that start with Z",
+      "holidays",
+      "seasons",
+      "fish",
+      "reptiles",
+      "mammals",
+      "birds",
+      "insects",
+      "emotions",
+      "animals that begin with the letter A",
+      "foods that begin with the letter P",
+      "things you aren't allowed to do",
+      "things that swim",
+      "months in a year",
+      "days in a week",
+      "members of the Chinese zodiac",
+      "countries in Europe",
+      "countries in Asia",
+      "countries beginning with the letter M",
+      "countries beginning with the letter S",
+      "subjects taught at school",
+      "gemstones",
+      "Disney characters",
+      "flowers",
+      "shapes",
+      "planets",
+      "movies",
+      "sports played in teams",
+      "capital cities in the world",
+      "languages spoken in Europe",
+      "languages spoken in Asia",
+      "languages spoken in South America",
+      "famous singers",
+      "things you can't do in the dark",
+      "things you can do in the dark",
+      "things you can do alone",
+      "things you can't do alone",
+      "musical instruments",
+      "ways to cook an egg",
+      "ways to cook a potato",
+      "types of cereal",
+      "foods you can eat with a spoon",
+      "foods you can't eat with a spoon",
+      "foods you can eat with a fork",
+      "foods you can't eat with a fork",
+      "foods you can eat with chopsticks",
+      "foods you can't eat with chopsticks",
+      "foods your grandparents make",
+      "ways to make your mother mad",
+      "ways to make your father mad",
+      "ways to make your mother happy",
+      "ways to make your father happy",
+      "boy names",
+      "girl names",
+      "board games",
+      "scary small creatures",
+      "types of cake",
+      "Mario characters",
+      "things you do before going to bed",
+      "words that rhyme with 'stone'",
+      "countries beginning with the letter 's'",
+      "super heroes",
+      "things you might find at a beach",
+      "school sports",
+      "punctuation marks",
+      "french words",
+      "illnesses",
+      "things that you brush",
+      "ways to waste money",
+      "items you can recycle",
+      "green foods",
+      "words ending with 'ing'",
+      "things you can do in water",
+      "animals found in the garden",
+      "things that are deadly",
+      "words begining with 'tri'",
+      "objects that have a handle",
+      "maths symbols",
+      "video games",
+      "nocturnal creatures",
+      "sauces",
+      "ways to cook potatoes",
+      "things you take to the beach",
+      "numbers that add up to 50",
+      "words ending with 'at'",
+      "plants",
+      "books",
+      "types of meat",
+      "organs",
+      "foreign currencies",
+      "things that come in a can",
+      "jobs",
+      "dinosaurs"
+    ];
+
+    let timer = null;
+
+    $().ready(() => {
+      function newquestion() {
+        $('#question').text('Name 3 '+questions[Math.floor(Math.random() * questions.length)]);
+
+        $('#game .options.post').hide();
+        $('#game .options.pre').show();
+        $('#game .countdown').hide();
+      }
+
+      function starttimer() {
+        $('#game .options.pre').hide();
+        $('#game .countdown').show();
+        $('#game .countdown').text(5);
+        timer = setInterval(() => {
+          let val = $('#game .countdown').text();
+          if(val > 0){
+            val -= 1;
+            $('#game .countdown').text(val>0?val:'Times up!');
+          }else{
+            $('#game .options.post').show();
+            clearInterval(timer);
+          }
+        }, 1000);
+      }
+
+      $('#start').on('click', (e) => {
+        e.preventDefault();
+
+        $('#menu').hide();
+        $('#game').show();
+        
+        newquestion();
+
+        return false;
+      });
+
+      $('.action-cancel').on('click', (e) => {
+        e.preventDefault();
+        clearInterval(timer);
+
+        $('#hype,#game').hide();
+        $('#menu').show();
+
+        return false;
+      });
+
+      $('.action-advance').on('click', newquestion);
+
+      $('.action-timer').on('click', starttimer);
+    })
+  </script>
+</body>
+</html>

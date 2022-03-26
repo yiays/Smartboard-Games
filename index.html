@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Whiteboard Games</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="common.css?v=2" rel="stylesheet">
+  <style>
+    body {
+      margin-top: 6rem;
+    }
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: #242424;
+      box-shadow: rgba(0,0,0,0.25) 0 0 0.25rem 0;
+      z-index: 1000;
+    }
+    .row {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .categories {
+      display: block;
+      text-align: center;
+      padding: 0.5rem;
+    }
+    .category {
+      display: inline-block;
+      font-size: 0.9rem;
+      margin: 0.25rem;
+      min-width: fit-content;
+      width: 14vw;
+      max-width: 10em;
+    }
+    .category.active {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    .game {
+      flex-direction: column;
+      width: 300px;
+      height: 150px;
+      padding: 2em;
+      margin: 1em;
+      border-radius: 30px;
+    }
+    .trivia {
+      background-color: #863d0c;
+    }
+    .stem {
+      background-color: #1a547a;
+    }
+    .geography {
+      background-color: #1d663c;
+    }
+    .english {
+      background-color: #561f6d;
+    }
+  </style>
+</head>
+<body>
+  <nav class="categories">
+    <a href="#" class="btn category none" data-filter="none">All</a>
+    <a href="#trivia" class="btn category trivia" data-filter="trivia">Trivia</a>
+    <a href="#stem" class="btn category stem" data-filter="mathematics">STEM</a>
+    <a href="#geography" class="btn category geography" data-filter="geography">Geography</a>
+    <a href="#english" class="btn category english" data-filter="english">English</a>
+  </nav>
+  <div class="row games">
+    <a href="5secondrule.html" class="btn game trivia">
+      <h1>5 Second Rule</h1>
+      <p>Quickfire questions with a 5 second time limit</p>
+    </a>
+    <a href="capitals.html" class="btn game geography">
+      <h1>Capital Cities</h1>
+      <p>Guess the capital for each country</p>
+    </a>
+    <a href="capitals.html?mode=1" class="btn game geography">
+      <h1>Countries</h1>
+      <p>Guess the country for each capital</p>
+    </a>
+    <a href="capitals.html?mode=2" class="btn game geography">
+      <h1>Flags</h1>
+      <p>Guess the country for each flag</p>
+    </a>
+    <a href="quickmaths.html" class="btn game stem">
+      <h1>Quick Maths</h1>
+      <p>Quickfire maths questions with multiple choice answers</p>
+    </a>
+  </div>
+  
+  <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $().ready(() => {
+      $('.category').on('click', (e) => {
+        filter(e.target.dataset.filter);
+      });
+
+      function filter(id) {
+        $('.game').hide();
+        if(id == 'none'){
+          $('.game').show();
+        }else{
+          $(`.game.${id}`).show();
+        }
+        $('.category.active').removeClass('active');
+        $(`.category.${id}`).addClass('active');
+      }
+
+      filter(location.hash?location.hash.substr(1):'none');
+    });
+  </script>
+</body>
+</html>
