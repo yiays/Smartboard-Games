@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<meta>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quick Maths</title>
+  <meta name="description" content="Test your times tables by solving multiplication questions as fast as you can!">
+  <meta name="tags" content="multiplication, speed, times tables, maths, mathematics, challenge, leaderboard">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="common.css?v=5" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=5" rel="stylesheet">
   <style>
     body>.panel {
       height: 400px;
@@ -34,7 +36,7 @@
     <a class="big-red btn" id="start" href="#">Go</a>
     <div class="options" style="margin-top: 1em">
       <a class="btn action-leaderboard" href="#">View leaderboard</a>
-      <a class="btn" href="./">More games</a>
+      <a class="btn" href="/">More games</a>
     </div>
   </div>
   <div id="leaderboard" class="panel" style="display:none;">
@@ -98,7 +100,7 @@
 
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
   <script src="//cdn.yiays.com/jquery-color.min.js"></script>
-  <script src="common.js?v=4"></script>
+  <script src="/common.js?v=4"></script>
   <script>
     const gamerules = {
       'easy': {'min': 1, 'max': 4, 'timegoal': 10},
