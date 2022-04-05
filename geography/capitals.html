@@ -103,7 +103,7 @@
           $('#question').text(`What's the capital of ${capitals[q].country}?`);
           $('.pre .flag').css('opacity', 0);
           if(capitals[q].country in isocodes) {
-            $('.pre .flag').attr('src', `flags/${isocodes[capitals[q].country].toLowerCase()}.svg`);
+            $('.pre .flag').attr('src', `/flags/${isocodes[capitals[q].country].toLowerCase()}.svg`);
           }else{
             console.warn(`${capitals[q].country} missing from isocodes!`);
           }
@@ -113,7 +113,7 @@
           $('#question').text(`Which country has ${capitals[q].city} as their capital?`);
           $('.post .flag').css('opacity', 0);
           if(capitals[q].country in isocodes) {
-            $('.post .flag').attr('src', `flags/${isocodes[capitals[q].country].toLowerCase()}.svg`);
+            $('.post .flag').attr('src', `/flags/${isocodes[capitals[q].country].toLowerCase()}.svg`);
           }else{
             console.warn(`${capitals[q].country} missing from isocodes!`);
           }
@@ -123,7 +123,7 @@
           $('#question').text('Which country has this flag?');
           $('.pre .flag').css('opacity', 0);
           if(capitals[q].country in isocodes) {
-            $('.pre .flag').attr('src', `flags/${isocodes[capitals[q].country].toLowerCase()}.svg`);
+            $('.pre .flag').attr('src', `/flags/${isocodes[capitals[q].country].toLowerCase()}.svg`);
           }else{
             console.warn(`${capitals[q].country} missing from isocodes!`);
           }
