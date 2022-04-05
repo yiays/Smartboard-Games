@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="common.css?v=2" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=2" rel="stylesheet">
   <style>
     .countdown {
       font-size: 1.5em;
@@ -43,7 +43,7 @@
 
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
   <script src="//cdn.yiays.com/jquery-color.min.js"></script>
-  <script src="common.js?v=2"></script>
+  <script src="/common.js?v=2"></script>
   <script>
     const questions = [
       "toppings that shouldn't go on pizza",
@@ -217,12 +217,28 @@
       "jobs",
       "dinosaurs"
     ];
+    let question = null;
+    let norepeat = [];
 
     let timer = null;
 
     $().ready(() => {
       function newquestion() {
-        $('#question').text('Name 3 '+questions[Math.floor(Math.random() * questions.length)]);
+        clearInterval(timer);
+
+        question = Math.floor(Math.random() * questions.length);
+        while(norepeat.indexOf(question) >= 0) {
+          if(norepeat.length == questions.length) {
+            alert("Out of questions! Check back another time for more!");
+            menu();
+            return;
+          }
+          question = Math.floor(Math.random() * questions.length);
+        }
+
+        norepeat.push(question);
+
+        $('#question').text('Name 3 '+questions[question]);
 
         $('#game .options.post').hide();
         $('#game .options.pre').show();
@@ -231,6 +247,7 @@
 
       function starttimer() {
         $('#game .options.pre').hide();
+        $('#game .options.post').show();
         $('#game .countdown').show();
         $('#game .countdown').text(5);
         timer = setInterval(() => {
@@ -239,10 +256,16 @@
             val -= 1;
             $('#game .countdown').text(val>0?val:'Times up!');
           }else{
-            $('#game .options.post').show();
             clearInterval(timer);
           }
         }, 1000);
+      }
+
+      function menu() {
+        clearInterval(timer);
+
+        $('#hype,#game').hide();
+        $('#menu').show();
       }
 
       $('#start').on('click', (e) => {
@@ -256,15 +279,7 @@
         return false;
       });
 
-      $('.action-cancel').on('click', (e) => {
-        e.preventDefault();
-        clearInterval(timer);
-
-        $('#hype,#game').hide();
-        $('#menu').show();
-
-        return false;
-      });
+      $('.action-cancel').on('click', menu);
 
       $('.action-advance').on('click', newquestion);
 
