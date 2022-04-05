@@ -128,6 +128,7 @@
       function newquestion(newgame = false) {
         let range = gamerules[difficulty].max - gamerules[difficulty].min;
         let possiblequestions = (range + 1) * (range + 1);
+        let limit = Math.min(possiblequestions, 10);
 
         while(true) {
           ra = randint(gamerules[difficulty].max, gamerules[difficulty].min);
@@ -135,7 +136,7 @@
           q = `${ra} × ${rb}`
 
           if(norepeat.indexOf(q) >= 0) {
-            if(norepeat.length >= possiblequestions) {
+            if(norepeat.length >= limit) {
               endgame();
               return;
             }
