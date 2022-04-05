@@ -104,9 +104,9 @@
   <script>
     const gamerules = {
       'easy': {'min': 1, 'max': 4, 'timegoal': 10},
-      'medium': {'min': 2, 'max': 7, 'timegoal': 30},
-      'hard': {'min': 4, 'max': 12, 'timegoal': 60},
-      'harder': {'min': 12, 'max': 18, 'timegoal': 60}
+      'medium': {'min': 2, 'max': 7, 'timegoal': 12},
+      'hard': {'min': 6, 'max': 12, 'timegoal': 15},
+      'harder': {'min': 11, 'max': 15, 'timegoal': 30}
     };
     const randomizers = [
       (i) => i - 4,
@@ -128,15 +128,20 @@
       function newquestion(newgame = false) {
         let range = gamerules[difficulty].max - gamerules[difficulty].min;
         let possiblequestions = (range + 1) * (range + 1);
-        let limit = Math.min(possiblequestions, 10);
+        let limit = 10;
 
         while(true) {
           ra = randint(gamerules[difficulty].max, gamerules[difficulty].min);
           rb = randint(gamerules[difficulty].max, gamerules[difficulty].min);
           q = `${ra} × ${rb}`
 
+          if(tested.length >= limit) {
+            endgame();
+            return;
+          }
+
           if(norepeat.indexOf(q) >= 0) {
-            if(norepeat.length >= limit) {
+            if(norepeat.length >= possiblequestions) {
               endgame();
               return;
             }
