@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=2" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=4.1" rel="stylesheet">
   <style>
     body {
       margin-top: 6rem;
@@ -52,9 +52,10 @@
       flex-direction: column;
       width: 300px;
       height: 150px;
-      padding: 2em;
       margin: 1em;
-      border-radius: 30px;
+    }
+    .game sub {
+      font-style: italic;
     }
     .trivia {
       background-color: #863d0c;
@@ -74,7 +75,7 @@
   <nav class="categories">
     <a href="#" class="btn category none" data-filter="none">All</a>
     <a href="#trivia" class="btn category trivia" data-filter="trivia">Trivia</a>
-    <a href="#stem" class="btn category stem" data-filter="mathematics">STEM</a>
+    <a href="#stem" class="btn category stem" data-filter="stem">STEM</a>
     <a href="#geography" class="btn category geography" data-filter="geography">Geography</a>
     <a href="#english" class="btn category english" data-filter="english">English</a>
   </nav>
@@ -82,22 +83,32 @@
     <a href="trivia/5secondrule.html" class="btn game trivia">
       <h1>5 Second Rule</h1>
       <p>Quickfire questions with a 5 second time limit</p>
+      •
+      <sub>Now less repetitive - 5/04</sub>
     </a>
     <a href="geography/capitals.html" class="btn game geography">
       <h1>Capital Cities</h1>
       <p>Guess the capital for each country</p>
+      •
+      <sub>Flags fixed - 5/04</sub>
     </a>
     <a href="geography/capitals.html?mode=1" class="btn game geography">
       <h1>Countries</h1>
       <p>Guess the country for each capital</p>
+      •
+      <sub>Flags fixed - 5/04</sub>
     </a>
     <a href="geography/capitals.html?mode=2" class="btn game geography">
       <h1>Flags</h1>
       <p>Guess the country for each flag</p>
+      •
+      <sub>Flags fixed - 5/04</sub>
     </a>
     <a href="stem/quickmaths.html" class="btn game stem">
       <h1>Quick Maths</h1>
       <p>Quickfire maths questions with multiple choice answers</p>
+      •
+      <sub>Now even quicker - 5/04</sub>
     </a>
   </div>
   

@@ -55,6 +55,12 @@ h1 {
   cursor: default;
   pointer-events: none;
 }
+.btn h1 {
+  margin: 0;
+}
+.btn p {
+  margin-bottom: 0;
+}
 .btn:not(.big-red) {
   color: #fff;
   padding: 0.5em;
