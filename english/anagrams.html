@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anagrams</title>
+  <meta name="description" content="Spell as many words as you can using the letters of another word.">
+  <meta name="tags" content="spelling, anagrams, challenge, typing, keyboard">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=3" rel="stylesheet">
+  <style>
+    .keyboard, .keyboard > .row {
+      display: flex;
+    }
+    .keyboard {
+      flex-direction: column;
+    }
+    .keyboard > .row > .btn {
+      width: 1em;
+      height: 1em;
+      margin: 0.1em;
+    }
+  </style>
+</head>
+<body>
+  <div id="menu" class="panel">
+    <h1>Anagrams</h1>
+    <p>Spell as many words as you can with the letters of another word.</p>
+    <a class="big-red btn" id="start" href="#">Go</a>
+    <div class="options" style="margin-top: 1em">
+      <a class="btn" href="/">More games</a>
+    </div>
+  </div>
+  <div id="game" class="panel" style="display:none;">
+    <h1 id="question">Question</h1>
+    <p id="input">_</p>
+    <p>Score: <span id="score">0</span></p>
+    <div class="keyboard">
+      <div class="row">
+        <a href="#" class="btn action-type">Q</a>
+        <a href="#" class="btn action-type">W</a>
+        <a href="#" class="btn action-type">E</a>
+        <a href="#" class="btn action-type">R</a>
+        <a href="#" class="btn action-type">T</a>
+        <a href="#" class="btn action-type">Y</a>
+        <a href="#" class="btn action-type">U</a>
+        <a href="#" class="btn action-type">I</a>
+        <a href="#" class="btn action-type">O</a>
+        <a href="#" class="btn action-type">P</a>
+      </div>
+      <div class="row" style="padding-left:0.5em">
+        <a href="#" class="btn action-type">A</a>
+        <a href="#" class="btn action-type">S</a>
+        <a href="#" class="btn action-type">D</a>
+        <a href="#" class="btn action-type">F</a>
+        <a href="#" class="btn action-type">G</a>
+        <a href="#" class="btn action-type">H</a>
+        <a href="#" class="btn action-type">J</a>
+        <a href="#" class="btn action-type">K</a>
+        <a href="#" class="btn action-type">L</a>
+      </div>
+      <div class="row" style="padding-left:1.1em;">
+        <a href="#" class="btn action-type">Z</a>
+        <a href="#" class="btn action-type">X</a>
+        <a href="#" class="btn action-type">C</a>
+        <a href="#" class="btn action-type">V</a>
+        <a href="#" class="btn action-type">B</a>
+        <a href="#" class="btn action-type">N</a>
+        <a href="#" class="btn action-type">M</a>
+        <a href="#" class="btn action-untype">&#9003;</a>
+        <a href="#" class="btn action-submit">✓</a>
+      </div>
+    </div>
+    <br>
+    <div class="options">
+      <a class="btn action-finish" href="#">Done</a>
+    </div>
+  </div>
+  <div id="results" class="panel" style="display:none;">
+    <h1>Results</h1>
+    <p>
+      You managed to find <span id="finalscore">0</span> words that can be spelt with the
+      letters of <span id="word">word</span>, <attr id="anagrams">0</attr> of which
+      were anagrams!
+    </p>
+    <div class="options">
+      <a class="btn action-cancel" href="#">Menu</a>
+    </div>
+  </div>
+
+  <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
+  <script src="//cdn.yiays.com/jquery-color.min.js"></script>
+  <script src="/common.js?v=2"></script>
+  <script>
+    const words = [
+      "truest"
+    ];
+    let dictionary = [];
+
+    let word = null;
+    let keys = {};
+    let input = '';
+    let answers = [];
+
+    $().ready(() => {
+      $.get('dictionary.txt?v=3.0')
+      .done((data) => {dictionary = data.split(/\r?\n/);})
+      .fail(() => {alert("Failed to get the dictionary! Try reloading the page...")});
+
+      function newquestion() {
+        word = words[Math.floor(Math.random() * words.length)];
+
+        $('#question').text(word.toUpperCase());
+
+        reset();
+      }
+
+      function reset() {
+        keys = {
+          'Q':0,'W':0,'E':0,'R':0,'T':0,'Y':0,'U':0,'I':0,'O':0,'P':0,
+          'A':0,'S':0,'D':0,'F':0,'G':0,'H':0,'J':0,'K':0,'L':0,
+          'Z':0,'X':0,'C':0,'V':0,'B':0,'N':0,'M':0
+        }
+        for(var i=0; i<word.length; i++) {
+          var letter = word.charAt(i).toUpperCase();
+          keys[letter] += 1;
+        }
+
+        $('.action-type').each((i, el) => {
+          if(keys[$(el).text()] > 0)
+            $(el).removeClass('disabled');
+          else
+            $(el).addClass('disabled');
+        });
+
+        $('#score').text(answers.length);
+      }
+
+      function checkanswer() {
+        let check = input.toLowerCase();
+
+        if(check == word) {
+          // no
+          return;
+        }
+        if(answers.indexOf(check) >= 0) {
+          // no
+          return;
+        }
+        if(dictionary.indexOf(check) == -1) {
+          // no
+          return;
+        }
+        answers.push(check);
+        input = '';
+        $('#input').text('_');
+        newquestion();
+      }
+
+      function endgame() {
+        $('#menu,#game').hide();
+        $('#results').show();
+        
+        $('#finalscore').text(answers.length);
+        $('#word').text(word);
+        let anagrams = answers.filter((e) => {return e.length == word.length});
+        $('#anagrams').text(anagrams.length);
+        $('#anagrams').prop('title', anagrams.join('\n'));
+      }
+
+      $('#start').on('click', (e) => {
+        e.preventDefault();
+
+        $('#menu,#results').hide();
+        $('#game').show();
+        
+        newquestion();
+
+        return false;
+      });
+
+      $('.action-type').on('click', (e) => {
+        var letter = e.target.textContent.toUpperCase();
+        input += letter;
+        $('#input').text(input + '_');
+
+        keys[letter] -= 1
+        if(keys[letter] <= 0) {
+          e.target.classList.add('disabled');
+        }
+      });
+
+      $('.action-untype').on('click', (e) => {
+        if (input.length) {
+          var letter = input.charAt(input.length - 1);
+          input = input.slice(0, -1);
+          keys[letter] += 1;
+          $(`.action-type:contains('${letter}')`).removeClass('disabled');
+          $('#input').text(input + '_');
+        }
+      });
+
+      $('.action-cancel').on('click', (e) => {
+        e.preventDefault();
+
+        $('#game,#results').hide();
+        $('#menu').show();
+
+        return false;
+      });
+
+      $('.action-submit').on('click', checkanswer);
+
+      $('.action-finish').on('click', endgame);
+    })
+  </script>
+</body>
+</html>

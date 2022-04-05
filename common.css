@@ -50,6 +50,11 @@ h1 {
 .btn:hover {
   filter: brightness(1.25);
 }
+.btn.disabled {
+  opacity: 0.5;
+  cursor: default;
+  pointer-events: none;
+}
 .btn:not(.big-red) {
   color: #fff;
   padding: 0.5em;
