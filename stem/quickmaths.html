@@ -16,6 +16,9 @@
     body>.panel {
       height: 400px;
     }
+    #answers {
+      padding: 0 3em;
+    }
   </style>
 </head>
 <body>
@@ -66,7 +69,7 @@
       Total time: <span class="timer" id="timer-total">00:00.00</span>
     </div>
     <br>
-    <div class="pre">
+    <div class="play">
       <div class="multichoice">
         <a class="btn action-answer" href="#">1</a>
         <a class="btn action-answer" href="#">2</a>
@@ -78,11 +81,12 @@
         <!--<a class="btn action-cancel" href="#">Menu</a>-->
       </div>
     </div>
-    <div class="post">
-      <h2 id="answer">Answer</h2>
+    <div class="results">
+      <ol id="answers">
+        
+      </ol>
       <div class="options">
-        <!--<a class="btn action-cancel" href="#">Menu</a>-->
-        <a class="btn action-advance" href="#">Next question</a>
+        <a class="btn action-end" href="#">Score</a>
       </div>
     </div>
     <div class="end">
@@ -92,6 +96,7 @@
       <br><br>
       <div class="options">
         <a class="btn confirm-action action-cancel" href="#">Menu</a>
+        <a class="btn action-results" href="#">Results</a>
         <a class="btn action-submit" href="#">Submit highscore</a>
       </div>
       <br>
@@ -136,13 +141,13 @@
           q = `${ra} × ${rb}`
 
           if(tested.length >= limit) {
-            endgame();
+            showanswers();
             return;
           }
 
           if(norepeat.indexOf(q) >= 0) {
             if(norepeat.length >= possiblequestions) {
-              endgame();
+              showanswers();
               return;
             }
             continue;
@@ -173,36 +178,42 @@
         if(newgame === true) {
           totalTime = 0;
           totalRight = 0;
+
+          $('#answers').html('');
         }
 
         $('#timer-current').parent().show();
-        $('#game .post').hide();
+        $('#game .results').hide();
         $('#game .end').hide();
-        $('#game .pre').show();
+        $('#game .play').show();
       }
 
-      function showanswer(e) {
+      function checkanswer(e) {
         if(e.target.innerText == ans) {
-          $('#answer').html(`Correct!<br><sub class="correct">${q} = ${ans}</sub>`);
+          $('#answers').append(`<li class="correct">${q} = ${ans}</li>`);
           totalRight += 1;
         }else{
-          $('#answer').html(`Not quite!<br><sub class="incorrect">${q} = ${ans}</sub>`);
+          $('#answers').append(`<li class="incorrect">${q} = ${ans}</li>`);
         }
         
         clearInterval(intTimer);
         timerTick();
         totalTime += new Date().getTime() - timerCurrent;
 
-        $('#game .pre').hide();
-        $('#game .end').hide();
-        $('#game .post').show();
+        newquestion();
       }
 
-      function endgame() {
-        $('#question').text("Challenge complete!");
+      function showanswers(e) {
         $('#timer-current').parent().hide();
-        $('#game .pre').hide();
-        $('#game .post').hide();
+        $('#question').text("Challenge complete!");
+        $('#game .play').hide();
+        $('#game .end').hide();
+        $('#game .results').show();
+      }
+
+      function showscore() {
+        $('#game .play').hide();
+        $('#game .results').hide();
         $('#game .end').show();
 
         let timePentalty = Math.round((totalTime / 1000) - gamerules[difficulty].timegoal);
@@ -281,9 +292,11 @@
 
       $('.action-cancel').on('click', menu);
 
-      $('.action-advance').on('click', newquestion);
+      $('.action-end').on('click', showscore);
 
-      $('.action-answer').on('click', showanswer);
+      $('.action-answer').on('click', checkanswer);
+
+      $('.action-results').on('click', showanswers);
 
       $('.action-submit').on('click', submithighscore);
 
