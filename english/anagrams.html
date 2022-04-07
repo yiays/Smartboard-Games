@@ -38,7 +38,7 @@
   <div id="game" class="panel" style="display:none;">
     <h1 id="question">Question</h1>
     <p id="input">_</p>
-    <p>Score: <span id="score">0</span></p>
+    <p id="found"></p>
     <div class="keyboard">
       <div class="row">
         <a href="#" class="btn action-type">Q</a>
@@ -94,10 +94,15 @@
 
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
   <script src="//cdn.yiays.com/jquery-color.min.js"></script>
-  <script src="/common.js?v=2"></script>
+  <script src="/common.js?v=5"></script>
   <script>
     const words = [
-      "truest"
+      "truest",
+      "peach",
+      "players",
+      "study",
+      "conversation",
+      "astronomer"
     ];
     let dictionary = [];
 
@@ -107,7 +112,7 @@
     let answers = [];
 
     $().ready(() => {
-      $.get('dictionary.txt?v=3.0')
+      $.get('dictionary.txt?v=3.1')
       .done((data) => {dictionary = data.split(/\r?\n/);})
       .fail(() => {alert("Failed to get the dictionary! Try reloading the page...")});
 
@@ -137,28 +142,29 @@
             $(el).addClass('disabled');
         });
 
-        $('#score').text(answers.length);
+        $('#found').text(answers.join(', ').toUpperCase());
       }
 
       function checkanswer() {
         let check = input.toLowerCase();
+        let animparams = {distance: 5, speed: 50, times: 2}
 
         if(check == word) {
-          // no
+          $('#game').shake(animparams);
           return;
         }
         if(answers.indexOf(check) >= 0) {
-          // no
+          $('#game').shake(animparams);
           return;
         }
         if(dictionary.indexOf(check) == -1) {
-          // no
+          $('#game').shake(animparams);
           return;
         }
         answers.push(check);
         input = '';
         $('#input').text('_');
-        newquestion();
+        reset();
       }
 
       function endgame() {
@@ -166,6 +172,7 @@
         $('#results').show();
         
         $('#finalscore').text(answers.length);
+        $('#finalscore').prop('title', answers.join('\n'));
         $('#word').text(word);
         let anagrams = answers.filter((e) => {return e.length == word.length});
         $('#anagrams').text(anagrams.length);
@@ -177,6 +184,7 @@
 
         $('#menu,#results').hide();
         $('#game').show();
+        $('#found').text('&nbsp;');
         
         newquestion();
 

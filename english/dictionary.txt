@@ -1,5 +1,4 @@
 a
-aa
 aaa
 aachen
 aardvark
@@ -5104,8 +5103,6 @@ aztec
 azure
 azurite
 azurites
-b
-ba
 baa
 baba
 babas
@@ -9938,8 +9935,6 @@ byword
 bywords
 byzantine
 byzantium
-c
-ca
 cab
 cabal
 cabala
@@ -18032,7 +18027,6 @@ czechoslovakian
 czechoslovakians
 czechoslovaks
 czechs
-d
 dab
 dabbed
 dabbing
@@ -23618,7 +23612,6 @@ dysphasia
 dysprosium
 dystrophic
 dystrophy
-e
 each
 eadem
 eager
@@ -27228,8 +27221,6 @@ eyrie
 eyries
 ezekiel
 ezra
-f
-fa
 faber
 faberge
 fabian
@@ -30783,7 +30774,6 @@ fuzziness
 fuzzy
 fy
 fylingdale
-g
 gab
 gabardine
 gabardines
@@ -33459,8 +33449,6 @@ gyrostabilisers
 gyrostabilizer
 gyrostabilizers
 gyves
-h
-ha
 haas
 habakkuk
 habeas
@@ -39998,7 +39986,6 @@ ivy
 ivybridge
 ix
 izvestia
-j
 jab
 jabbed
 jabber
@@ -40805,8 +40792,6 @@ juxtaposes
 juxtaposing
 juxtaposition
 juxtapositions
-k
-ka
 kabob
 kabobs
 kabuki
@@ -41503,8 +41488,6 @@ kymographs
 kyoto
 kyth
 kyushu
-l
-la
 lab
 label
 labeled
@@ -44025,8 +44008,6 @@ lysergic
 lysine
 lysol
 lytham
-m
-ma
 maastricht
 mabel
 mablethorpe
@@ -48679,7 +48660,6 @@ mythologists
 mythology
 mythomaniac
 myths
-n
 naafi
 nab
 nabbed
@@ -50160,7 +50140,6 @@ nymphomania
 nymphomaniac
 nymphomaniacs
 nymphs
-o
 oaf
 oafish
 oafs
@@ -52384,8 +52363,6 @@ oysters
 oz
 ozone
 ozonosphere
-p
-pa
 pablo
 pabulum
 pacare
@@ -58936,7 +58913,6 @@ pythagoras
 pythagorean
 python
 pythons
-q
 qantas
 qatar
 qc
@@ -59384,8 +59360,6 @@ quotidian
 quotient
 quotients
 quoting
-r
-ra
 rabat
 rabbet
 rabbets
@@ -64276,7 +64250,6 @@ ryde
 rye
 ryedale
 ryes
-s
 saab
 saabs
 saar
@@ -73431,8 +73404,6 @@ systole
 systoles
 systolic
 szechwan
-t
-ta
 tab
 tabard
 tabards
@@ -77639,7 +77610,6 @@ tythes
 tything
 tzar
 tzars
-u
 uberrima
 ubi
 ubiquitous
@@ -80311,7 +80281,6 @@ uxoriously
 uzbek
 uzbekistan
 uzbeks
-v
 vac
 vacancies
 vacancy
@@ -81683,7 +81652,6 @@ vultures
 vulva
 vulvas
 vying
-w
 wabble
 wackier
 wackiest
@@ -83647,7 +83615,6 @@ wynn
 wyoming
 wysiwyg
 wyvern
-x
 xebec
 xebecs
 xenodochium
@@ -83694,7 +83661,6 @@ xylophone
 xylophones
 xylophonist
 xylophonists
-y
 yacht
 yachted
 yachter
@@ -83926,7 +83892,6 @@ yuppies
 yvette
 yvonne
 ywca
-z
 zabaglione
 zabagliones
 zachary
