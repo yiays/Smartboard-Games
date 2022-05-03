@@ -23,6 +23,12 @@
 </head>
 <body>
   <div id="menu" class="panel">
+    <div style="position:absolute;top:1em;right:1em;">
+      <button onclick="mode=0;on_modechange();" title="Switch to Quick Addition">+</button>
+      <button onclick="mode=1;on_modechange();" title="Switch to Quick Subtraction">–</button>
+      <button onclick="mode=2;on_modechange();" title="Switch to Quick Multiplication">×</button>
+      <button onclick="mode=3;on_modechange();" title="Switch to Quick Division">÷</button>
+    </div>
     <h1>Quick Maths</h1>
     <p>
       Quickfire maths questions with multiple choice answers
@@ -43,6 +49,12 @@
     </div>
   </div>
   <div id="leaderboard" class="panel" style="display:none;">
+    <div style="position:absolute;top:1em;right:1em;">
+      <button onclick="mode=0;on_modechange();" title="Switch to Quick Addition">+</button>
+      <button onclick="mode=1;on_modechange();" title="Switch to Quick Subtraction">–</button>
+      <button onclick="mode=2;on_modechange();" title="Switch to Quick Multiplication">×</button>
+      <button onclick="mode=3;on_modechange();" title="Switch to Quick Division">÷</button>
+    </div>
     <h1>Quickest Maths</h1>
     <p id="leaderboard-diff">
       (Easy difficulty)
@@ -123,6 +135,19 @@
       (i) => (i - 1) * 2,
       (i) => (i + 1) / 2 
     ];
+    const modesymbols = {
+      0: '+',
+      1: '–',
+      2: '×',
+      3: '÷'
+    }
+    const modeactions = {
+      0: (a, b) => a + b,
+      1: (a, b) => a - b,
+      2: (a, b) => a * b,
+      3: (a, b) => a / b
+    }
+    let mode = 2;
     let difficulty, norepeat, tested;
     let q;
     let ans;
@@ -130,159 +155,6 @@
     let intTimer;
 
     $().ready(() => {
-      function newquestion(newgame = false) {
-        let range = gamerules[difficulty].max - gamerules[difficulty].min;
-        let possiblequestions = (range + 1) * (range + 1);
-        let limit = 10;
-
-        while(true) {
-          ra = randint(gamerules[difficulty].max, gamerules[difficulty].min);
-          rb = randint(gamerules[difficulty].max, gamerules[difficulty].min);
-          q = `${ra} × ${rb}`
-
-          if(tested.length >= limit) {
-            showanswers();
-            return;
-          }
-
-          if(norepeat.indexOf(q) >= 0) {
-            if(norepeat.length >= possiblequestions) {
-              showanswers();
-              return;
-            }
-            continue;
-          }
-          norepeat.push(q);
-          tested.push(q);
-          if(rb!=ra) // Also block repetition of the reverse of the question
-            norepeat.push(`${rb} × ${ra}`);
-          break;
-        }
-
-        ans = ra * rb;
-        let answers = [ans];
-        while(answers.length < 4) {
-          wrongans = randomizers[randint(randomizers.length - 1)](ans);
-          if(answers.indexOf(wrongans) < 0) {
-            answers.push(wrongans);
-          }
-        }
-        shuffle(answers);
-
-        $('#question').text(`What is ${q}?`);
-        for(var i in answers) {
-          $('.multichoice > .btn').eq(i).text(answers[i]);
-        }
-        timerCurrent = new Date().getTime();
-        intTimer = setInterval(timerTick, 50);
-        if(newgame === true) {
-          totalTime = 0;
-          totalRight = 0;
-
-          $('#answers').html('');
-        }
-
-        $('#timer-current').parent().show();
-        $('#game .results').hide();
-        $('#game .end').hide();
-        $('#game .play').show();
-      }
-
-      function checkanswer(e) {
-        if(e.target.innerText == ans) {
-          $('#answers').append(`<li class="correct">${q} = ${ans}</li>`);
-          totalRight += 1;
-        }else{
-          $('#answers').append(`<li class="incorrect">${q} = ${ans}</li>`);
-        }
-        
-        clearInterval(intTimer);
-        timerTick();
-        totalTime += new Date().getTime() - timerCurrent;
-
-        newquestion();
-      }
-
-      function showanswers(e) {
-        $('#timer-current').parent().hide();
-        $('#question').text("Challenge complete!");
-        $('#game .play').hide();
-        $('#game .end').hide();
-        $('#game .results').show();
-      }
-
-      function showscore() {
-        $('#game .play').hide();
-        $('#game .results').hide();
-        $('#game .end').show();
-
-        let timePentalty = Math.round((totalTime / 1000) - gamerules[difficulty].timegoal);
-        $('#timepenalty').text(timePentalty);
-        $('#correctans').text(totalRight);
-        $('#totalans').text(tested.length);
-        score = (totalRight / tested.length) * 100 - timePentalty;
-        $('#score').text(Math.round(score));
-      }
-
-      function menu() {
-        $('#game,#leaderboard').hide();
-        $('#menu').show();
-        clearInterval(intTimer);
-      }
-
-      function timerTick() {
-        $('#timer-current').text(msToTime(new Date().getTime() - timerCurrent));
-        $('#timer-total').text(msToTime(new Date().getTime() - timerCurrent + totalTime));
-      }
-
-      function submithighscore() {
-        let username = prompt("Username");
-        let secret = prompt("Secret code (must be typed by the teacher)");
-
-        $.get(`https://highscore.yiays.workers.dev/?secret=${secret}&scope=quickmaths_${difficulty}&username=${username}&score=${score}`)
-        .done((data) => {alert(data)})
-        .fail(() => {alert("Something went wrong! Failed to save your highscore.")});
-      }
-
-      function showleaderboard() {
-        $('#game,#menu').hide();
-        $('#leaderboard').show();
-
-        difficulty = $('#difficulty').val();
-
-        $('#leaderboard-diff').text(`(${difficulty.charAt(0).toUpperCase()+difficulty.slice(1)} difficulty)`);
-
-        $.get(`https://highscore.yiays.workers.dev/?scope=quickmaths_${difficulty}`)
-        .done((data) => {
-          var entries = Object.keys(data).map((key) => {
-            return [key, data[key]];
-          });
-          entries.sort((a, b) => {
-            return b[1] - a[1];
-          });
-
-          $('#board>tbody').html('');
-          let i = 0;
-          entries.slice(0, 10).forEach(entry => {
-            $('#board>tbody').append(`<tr><td>${++i}</td><td>${entry[0]}</td><td>${entry[1]}%</td></tr>`);
-          });
-          if(i==0) $('#board>tbody').html('<td>--</td><td>-----</td><td>---</td>');
-        })
-        .fail(() => {alert("Failed to get the leaderboard!")});
-      }
-
-      function msToTime(duration) {
-        var milliseconds = Math.floor((duration % 1000) / 10),
-          seconds = Math.floor((duration / 1000) % 60),
-          minutes = Math.floor((duration / (1000 * 60)) % 60);
-
-        minutes = (minutes < 10) ? "0" + minutes : minutes;
-        seconds = (seconds < 10) ? "0" + seconds : seconds;
-        milliseconds = (milliseconds < 10) ? "0" + milliseconds : milliseconds;
-
-        return minutes + ":" + seconds + "." + milliseconds;
-      }
-
       $('.confirm-action').on('click', (e) => {
         if(confirm("This will clear your score, are you sure you want to continue?")) {
           return;
@@ -315,7 +187,217 @@
 
         return false;
       });
+
+      if('mode' in urlParams) {
+        mode = Number(urlParams.mode);
+      }
+      on_modechange();
     });
+
+    function newquestion(newgame = false) {
+      let range = gamerules[difficulty].max - gamerules[difficulty].min;
+      let possiblequestions = (range + 1) * (range + 1);
+      let limit = 10;
+
+      while(true) {
+        ra = randint(gamerules[difficulty].max, gamerules[difficulty].min);
+        rb = randint(gamerules[difficulty].max, gamerules[difficulty].min);
+        q = `${ra} ${modesymbols[mode]} ${rb}`
+
+        if(tested.length >= limit) {
+          showanswers();
+          return;
+        }
+
+        if(norepeat.indexOf(q) >= 0) {
+          if(norepeat.length >= possiblequestions) {
+            showanswers();
+            return;
+          }
+          continue;
+        }
+        norepeat.push(q);
+        tested.push(q);
+        if(rb!=ra) // Also block repetition of the reverse of the question
+          norepeat.push(`${rb} ${modesymbols[mode]} ${ra}`);
+        break;
+      }
+      ans = modeactions[mode](ra, rb);
+      let answers = [ans];
+      while(answers.length < 4) {
+        wrongans = randomizers[randint(randomizers.length - 1)](ans);
+        if(answers.indexOf(wrongans) < 0) {
+          answers.push(wrongans);
+        }
+      }
+      shuffle(answers);
+
+      $('#question').text(`What is ${q}?`);
+      for(var i in answers) {
+        $('.multichoice > .btn').eq(i).text(answers[i]);
+      }
+      timerCurrent = new Date().getTime();
+      intTimer = setInterval(timerTick, 50);
+      if(newgame === true) {
+        totalTime = 0;
+        totalRight = 0;
+
+        $('#answers').html('');
+      }
+
+      $('#timer-current').parent().show();
+      $('#game .results').hide();
+      $('#game .end').hide();
+      $('#game .play').show();
+    }
+
+    function checkanswer(e) {
+      if(e.target.innerText == ans) {
+        $('#answers').append(`<li class="correct">${q} = ${ans}</li>`);
+        totalRight += 1;
+      }else{
+        $('#answers').append(`<li class="incorrect">${q} = ${ans}</li>`);
+      }
+      
+      clearInterval(intTimer);
+      timerTick();
+      totalTime += new Date().getTime() - timerCurrent;
+
+      newquestion();
+    }
+
+    function showanswers(e) {
+      $('#timer-current').parent().hide();
+      $('#question').text("Challenge complete!");
+      $('#game .play').hide();
+      $('#game .end').hide();
+      $('#game .results').show();
+    }
+
+    function showscore() {
+      $('#game .play').hide();
+      $('#game .results').hide();
+      $('#game .end').show();
+
+      let timePentalty = Math.round((totalTime / 1000) - gamerules[difficulty].timegoal);
+      $('#timepenalty').text(timePentalty);
+      $('#correctans').text(totalRight);
+      $('#totalans').text(tested.length);
+      score = (totalRight / tested.length) * 100 - timePentalty;
+      $('#score').text(Math.round(score));
+    }
+
+    function menu() {
+      $('#game,#leaderboard').hide();
+      $('#menu').show();
+      clearInterval(intTimer);
+    }
+
+    function timerTick() {
+      $('#timer-current').text(msToTime(new Date().getTime() - timerCurrent));
+      $('#timer-total').text(msToTime(new Date().getTime() - timerCurrent + totalTime));
+    }
+
+    function submithighscore() {
+      let username = prompt("Username");
+      let secret = prompt("Secret code (must be typed by the teacher)");
+
+      $.get(`https://highscore.yiays.workers.dev/?secret=${secret}&scope=quickmaths_${mode}_${difficulty}&username=${username}&score=${score}`)
+      .done((data) => {alert(data)})
+      .fail(() => {alert("Something went wrong! Failed to save your highscore.")});
+    }
+
+    function showleaderboard() {
+      $('#game,#menu').hide();
+      $('#leaderboard').show();
+
+      difficulty = $('#difficulty').val();
+
+      $('#leaderboard-diff').text(`(${difficulty.charAt(0).toUpperCase()+difficulty.slice(1)} difficulty)`);
+
+      get_leaderboard(difficulty);
+    }
+
+    function get_leaderboard(difficulty) {
+      $('#board>tbody').html('<tr><td colspan=3>Loading...</td></tr>')
+      $.get(`https://highscore.yiays.workers.dev/?scope=quickmaths_${mode}_${difficulty}`)
+      .done((data) => {
+        var entries = Object.keys(data).map((key) => {
+          return [key, data[key]];
+        });
+        entries.sort((a, b) => {
+          return b[1] - a[1];
+        });
+
+        $('#board>tbody').html('');
+        let i = 0;
+        entries.slice(0, 10).forEach(entry => {
+          $('#board>tbody').append(`<tr><td>${++i}</td><td>${entry[0]}</td><td>${entry[1]}%</td></tr>`);
+        });
+        if(i==0) $('#board>tbody').html('<tr><td>--</td><td>-----</td><td>---</td></tr>');
+      })
+      .fail(() => {alert("Failed to get the leaderboard!")});
+    }
+
+    function msToTime(duration) {
+      var milliseconds = Math.floor((duration % 1000) / 10),
+        seconds = Math.floor((duration / 1000) % 60),
+        minutes = Math.floor((duration / (1000 * 60)) % 60);
+
+      minutes = (minutes < 10) ? "0" + minutes : minutes;
+      seconds = (seconds < 10) ? "0" + seconds : seconds;
+      milliseconds = (milliseconds < 10) ? "0" + milliseconds : milliseconds;
+
+      return minutes + ":" + seconds + "." + milliseconds;
+    }
+
+    function on_modechange() {
+      if(mode == 0){
+        document.title = "Quick Addition";
+        $('#menu>h1').text("Quick Addition");
+        $('#leaderboard>h1').text("Quickest Addition");
+        $('.pre>.img-loader').show();
+        $('.post>.img-loader').hide();
+      }else if(mode == 1){
+        document.title = "Quick Subtraction";
+        $('#menu>h1').text("Quick Subtraction");
+        $('#leaderboard>h1').text("Quickest Subtraction");
+        $('.pre>.img-loader').hide();
+        $('.post>.img-loader').show();
+      }else if(mode == 2){
+        document.title = "Quick Multiplication";
+        $('#menu>h1').text("Quick Multiplication");
+        $('#leaderboard>h1').text("Quickest Multiplication");
+        $('.pre>.img-loader').show();
+        $('.post>.img-loader').hide();
+      }else if(mode == 3){
+        document.title = "Quick Division";
+        $('#menu>h1').text("Quick Division");
+        $('#leaderboard>h1').text("Quickest Division");
+        $('.pre>.img-loader').hide();
+        $('.post>.img-loader').show();
+      }
+      else{
+        console.error(`Unknown game mode ${mode} requested!`);
+      }
+
+      if($('#leaderboard').is(':visible')) {
+        get_leaderboard($('#difficulty').val());
+      }
+    }
+
+    var urlParams;
+    (window.onpopstate = function () {
+      var match,
+        pl     = /\+/g,  // Regex for replacing addition symbol with a space
+        search = /([^&=]+)=?([^&]*)/g,
+        decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+        query  = window.location.search.substring(1);
+    
+      urlParams = {};
+      while (match = search.exec(query))
+        urlParams[decode(match[1])] = decode(match[2]);
+    })();
   </script>
 </body>
 </html>
