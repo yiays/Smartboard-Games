@@ -71,13 +71,13 @@
         <a href="#" class="btn action-type">B</a>
         <a href="#" class="btn action-type">N</a>
         <a href="#" class="btn action-type">M</a>
-        <a href="#" class="btn action-untype">&#9003;</a>
+        <a href="#" class="btn action-untype">&lt;&times;</a>
         <a href="#" class="btn action-submit">✓</a>
       </div>
     </div>
     <br>
     <div class="options">
-      <a class="btn action-finish" href="#">Done</a>
+      <a class="btn action-finish" href="#">Finish</a>
     </div>
   </div>
   <div id="results" class="panel" style="display:none;">
@@ -89,12 +89,31 @@
     </p>
     <div class="options">
       <a class="btn action-cancel" href="#">Menu</a>
+      <a class="btn action-leaderboard" href="#">View leaderboard</a>
+    </div>
+  </div>
+  <div id="leaderboard" class="panel" style="display:none;">
+    <h1>Solutions</h1>
+    <p id="leaderboard-word">
+      WORD
+    </p>
+    <table id="board" width="100%">
+      <thead>
+        <th>Place</th><th>Name</th><th>Score</th>
+      </thead>
+      <tbody>
+        <td>--</td><td>-----</td><td>---</td>
+      </tbody>
+    </table>
+    <br>
+    <div class="options">
+      <a class="btn action-results" href="#">Back</a>
     </div>
   </div>
 
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
   <script src="//cdn.yiays.com/jquery-color.min.js"></script>
-  <script src="/common.js?v=5"></script>
+  <script src="/common.js?v=6.2"></script>
   <script>
     const words = [
       "truest",
@@ -110,9 +129,11 @@
     let keys = {};
     let input = '';
     let answers = [];
+    
+    let animparams = {distance: 5, speed: 50, times: 2}
 
     $().ready(() => {
-      $.get('dictionary.txt?v=3.1')
+      $.get('dictionary.txt?v=3.2')
       .done((data) => {dictionary = data.split(/\r?\n/);})
       .fail(() => {alert("Failed to get the dictionary! Try reloading the page...")});
 
@@ -147,7 +168,6 @@
 
       function checkanswer() {
         let check = input.toLowerCase();
-        let animparams = {distance: 5, speed: 50, times: 2}
 
         if(check == word) {
           $('#game').shake(animparams);
@@ -177,14 +197,27 @@
         let anagrams = answers.filter((e) => {return e.length == word.length});
         $('#anagrams').text(anagrams.length);
         $('#anagrams').prop('title', anagrams.join('\n'));
+
+        submit_highscore(`anagrams_${word}`, `[${anagrams.length},${answers.length}]`, null, 1235);
+      }
+
+      function showleaderboard() {
+        $('#results').hide();
+        $('#leaderboard').show();
+
+        $('#leaderboard-word').text(`(${word.toUpperCase()})`);
+
+        get_leaderboard(`anagrams_${word}`, (value) => {
+          return `${value[0]} Anagram(s), ${value[1]} Word(s)`;
+        });
       }
 
       $('#start').on('click', (e) => {
         e.preventDefault();
 
-        $('#menu,#results').hide();
+        $('#menu,#results,#leaderboard').hide();
         $('#game').show();
-        $('#found').text('&nbsp;');
+        answers = [];
         
         newquestion();
 
@@ -209,6 +242,8 @@
           keys[letter] += 1;
           $(`.action-type:contains('${letter}')`).removeClass('disabled');
           $('#input').text(input + '_');
+        } else {
+          $('#game').shake(animparams);
         }
       });
 
@@ -221,7 +256,16 @@
         return false;
       });
 
+      $('.action-results').on('click', (e) => {
+        e.preventDefault();
+
+        $('#leaderboard').hide();
+        $('#results').show();
+      })
+
       $('.action-submit').on('click', checkanswer);
+
+      $('.action-leaderboard').on('click', showleaderboard);
 
       $('.action-finish').on('click', endgame);
     })

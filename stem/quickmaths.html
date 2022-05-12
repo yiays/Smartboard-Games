@@ -118,7 +118,7 @@
 
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
   <script src="//cdn.yiays.com/jquery-color.min.js"></script>
-  <script src="/common.js?v=4"></script>
+  <script src="/common.js?v=6"></script>
   <script>
     const gamerules = {
       'easy': {'min': 1, 'max': 4, 'timegoal': 10},
@@ -171,7 +171,7 @@
 
       $('.action-results').on('click', showanswers);
 
-      $('.action-submit').on('click', submithighscore);
+      $('.action-submit').on('click', () => { submit_highscore(`quickmaths_${mode}_${difficulty}`, score) });
 
       $('.action-leaderboard').on('click', showleaderboard);
 
@@ -299,15 +299,6 @@
       $('#timer-total').text(msToTime(new Date().getTime() - timerCurrent + totalTime));
     }
 
-    function submithighscore() {
-      let username = prompt("Username");
-      let secret = prompt("Secret code (must be typed by the teacher)");
-
-      $.get(`https://highscore.yiays.workers.dev/?secret=${secret}&scope=quickmaths_${mode}_${difficulty}&username=${username}&score=${score}`)
-      .done((data) => {alert(data)})
-      .fail(() => {alert("Something went wrong! Failed to save your highscore.")});
-    }
-
     function showleaderboard() {
       $('#game,#menu').hide();
       $('#leaderboard').show();
@@ -316,28 +307,7 @@
 
       $('#leaderboard-diff').text(`(${difficulty.charAt(0).toUpperCase()+difficulty.slice(1)} difficulty)`);
 
-      get_leaderboard(difficulty);
-    }
-
-    function get_leaderboard(difficulty) {
-      $('#board>tbody').html('<tr><td colspan=3>Loading...</td></tr>')
-      $.get(`https://highscore.yiays.workers.dev/?scope=quickmaths_${mode}_${difficulty}`)
-      .done((data) => {
-        var entries = Object.keys(data).map((key) => {
-          return [key, data[key]];
-        });
-        entries.sort((a, b) => {
-          return b[1] - a[1];
-        });
-
-        $('#board>tbody').html('');
-        let i = 0;
-        entries.slice(0, 10).forEach(entry => {
-          $('#board>tbody').append(`<tr><td>${++i}</td><td>${entry[0]}</td><td>${entry[1]}%</td></tr>`);
-        });
-        if(i==0) $('#board>tbody').html('<tr><td>--</td><td>-----</td><td>---</td></tr>');
-      })
-      .fail(() => {alert("Failed to get the leaderboard!")});
+      get_leaderboard(`quickmaths_${mode}_${difficulty}`);
     }
 
     function msToTime(duration) {
@@ -383,7 +353,7 @@
       }
 
       if($('#leaderboard').is(':visible')) {
-        get_leaderboard($('#difficulty').val());
+        get_leaderboard(`quickmaths_${mode}_`+$('#difficulty').val());
       }
     }
 
