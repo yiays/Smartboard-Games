@@ -11,13 +11,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=5" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=5.4" rel="stylesheet">
   <style>
     body>.panel {
       height: 400px;
     }
     #answers {
-      padding: 0 3em;
+      display: inline-block;
+      text-align: left;
     }
   </style>
 </head>
@@ -29,7 +30,7 @@
       <button onclick="mode=2;on_modechange();" title="Switch to Quick Multiplication">×</button>
       <button onclick="mode=3;on_modechange();" title="Switch to Quick Division">÷</button>
     </div>
-    <h1>Quick Maths</h1>
+    <h1><u class="squiggle">Quick Maths</u></h1>
     <p>
       Quickfire maths questions with multiple choice answers
     </p>
@@ -94,9 +95,9 @@
       </div>
     </div>
     <div class="results">
-      <ol id="answers">
+      <ul id="answers">
         
-      </ol>
+      </ul>
       <div class="options">
         <a class="btn action-end" href="#">Score</a>
       </div>
@@ -253,10 +254,10 @@
 
     function checkanswer(e) {
       if(e.target.innerText == ans) {
-        $('#answers').append(`<li class="correct">${q} = ${ans}</li>`);
+        $('#answers').append(`<li>${q} = <span class="correct">${ans}</span></li>`);
         totalRight += 1;
       }else{
-        $('#answers').append(`<li class="incorrect">${q} = ${ans}</li>`);
+        $('#answers').append(`<li>${q} = <u class="incorrect squiggle">${e.target.innerText}</u> <span class="correct">${ans}</span></li>`);
       }
       
       clearInterval(intTimer);
