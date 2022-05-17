@@ -34,6 +34,10 @@ u.squiggle:after {
   left: -2px;
   display: block;
 }
+.countdown {
+  font-size: 1.5em;
+  margin-bottom: 1rem;
+}
 .panel {
   display: flex;
   position: relative;

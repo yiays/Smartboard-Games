@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Story Shuffle</title>
+  <meta name="description" content="Interpret a set of 3 random images to inspire your next fiction.">
+  <meta name="tags" content="creative writing, inspiration, prompt, creative, fiction, book">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=6" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.yiays.com/yiaycons/yiaycons.css">
+  <style>
+    .carousel {
+      display: grid;
+      position: relative;
+      grid-template-columns: 1fr 1fr 1fr;
+      width: 100%;
+      height: 10rem;
+      background: #ddd;
+      align-items: center;
+      border-radius: 1em;
+      padding: 1em;
+      margin-bottom: 1em;
+    }
+    .carousel.fullscreen {
+      position: fixed;
+      width: auto;
+      left: 2em;
+      right: 2em;
+      height: 30em;
+      margin: auto 0;
+      z-index: 100;
+      box-shadow: rgba(0, 0, 0, 0.5) 0.25em 0.25em 0.5em;
+    }
+    .carousel > .fullscreen {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background: none;
+      border: none;
+      font-size: 1.5em;
+    }
+    .carousel > div {
+      text-align: center;
+    }
+    .carousel img {
+      max-width: 100%;
+      max-height: 10em;
+    }
+    .carousel.fullscreen img {
+      max-height: 30em;
+    }
+  </style>
+</head>
+<body>
+  <div id="menu" class="panel">
+    <h1>Story Shuffle</h1>
+    <p>Interpret a set of 3 random images to inspire your next fiction.</p>
+    <div class="loader">Loading...</div>
+    <a class="big-red btn" id="start" href="#" style="display:none;">Go</a>
+    <div class="options" style="margin-top: 1em">
+      <a class="btn" href="/">More "games"</a>
+    </div>
+  </div>
+  <div id="game" class="panel" style="display:none;">
+    <h1>Story Shuffle</h1>
+    <span class="countdown">3</span>
+    <div class="carousel" style="display:none;">
+      <button class="fullscreen icon-enlarge"></button>
+      <div>
+        <img id="img1" src alt>
+      </div>
+      <div>
+        <img id="img2" src alt>
+      </div>
+      <div>
+        <img id="img3" src alt>
+      </div>
+    </div>
+    <div class="options">
+      <a class="btn action-cancel" href="#">Menu</a>
+      <a class="btn action-advance" href="#">Shuffle again</a>
+    </div>
+  </div>
+
+  <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
+  <script src="//cdn.yiays.com/jquery-color.min.js"></script>
+  <script src="/common.js?v=2"></script>
+  <script>
+    let storyimgs = [];
+    let norepeat = [];
+    
+    let timer = null;
+
+    $().ready(() => {
+      $.getJSON('storyimgs.json', (data) => {storyimgs = data}).then(() => {
+        $('.loader').hide();
+        $('.big-red.btn').show();
+      });
+
+      function newprompt() {
+        clearInterval(timer);
+        starttimer();
+
+        var image = 0;
+        for(var i = 1; i < 4; i++) {
+          prompt = Math.floor(Math.random() * storyimgs.length);
+          while(norepeat.indexOf(image) >= 0) {
+            if(norepeat.length == storyimgs.length) {
+              alert("Out of images! Check back another time for more.");
+              menu();
+              return;
+            }
+            image = Math.floor(Math.random() * storyimgs.length);
+          }
+
+          norepeat.push(image);
+          $('#img'+i)
+          .attr('src', storyimgs[image])
+          .attr('alt', storyimgs[image].split('/').reverse()[0].split('.')[0])
+        }
+      }
+
+      function altformat(src) {
+        // Converts camelCase file name to readible alt text
+        str = src
+        .split('/').reverse()[0]
+        .split('.')[0]
+        .replace(/([A-Z])/g, " $1");
+        return str.charAt(0).toUpperCase() + str.slice(1);
+      }
+
+      function starttimer() {
+        $('#game .carousel').hide();
+        $('#game .countdown').show();
+        $('#game .countdown').text(3);
+        timer = setInterval(() => {
+          let val = $('#game .countdown').text();
+          if(val > 1){
+            val -= 1;
+            $('#game .countdown').text(val);
+          }else{
+            clearInterval(timer);
+            $('#game .countdown').hide();
+            $('#game .carousel').show();
+          }
+        }, 1000);
+      }
+
+      function menu() {
+        clearInterval(timer);
+
+        $('#hype,#game').hide();
+        $('#menu').show();
+      }
+
+      $('#start').on('click', (e) => {
+        e.preventDefault();
+
+        $('#menu').hide();
+        $('#game').show();
+        
+        newprompt();
+
+        return false;
+      });
+
+      $('.action-cancel').on('click', menu);
+
+      $('.action-advance').on('click', newprompt);
+
+      $('.action-timer').on('click', starttimer);
+
+      $('button.fullscreen').on('click', (e) => {
+        var btn = $(e.target);
+        if(btn.hasClass('icon-enlarge')) {
+          btn.removeClass('icon-enlarge').addClass('icon-shrink');
+          btn.parent().addClass('fullscreen');
+        }else{
+          btn.removeClass('icon-shrink').addClass('icon-enlarge');
+          btn.parent().removeClass('fullscreen');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
