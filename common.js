@@ -48,7 +48,9 @@ function shuffle(array) {
 
 function submit_highscore(scope, score, username=null, secret=null, silent=false) {
   if(username==null) username = prompt("Username");
+  if(!username) return;
   if(secret==null) secret = prompt("Secret code (must be typed by the teacher)");
+  if(!secret) return;
 
   $.get(`https://highscore.yiays.workers.dev/?secret=${secret}&scope=${scope}&username=${username}&score=${score}`)
   .done((data) => { if(!silent) alert(data); })
