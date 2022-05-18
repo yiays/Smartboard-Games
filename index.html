@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Smartboard Games</title>
-  <meta name="description" content="A collection of simple educational games designed to run on smartboards and tablets.">
+  <meta name="description" content="A collection of simple educational games designed to run on smartboards, tablets, and phones.">
   <meta name="tags" content="educational, games, smartboard, whiteboard, classroom, student, interactive">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,24 +15,37 @@
   <link rel="stylesheet" href="https://cdn.yiays.com/yiaycons/yiaycons.css">
   <style>
     body {
-      margin: 6rem 3rem;
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      width: 100%;
     }
     a {
       color: white!important;
     }
+    .hero {
+      background: #242424;
+      padding: 1em;
+      z-index: 100;
+    }
     nav, footer {
-      position: fixed;
-      left: 0;
-      right: 0;
       background: #242424;
       box-shadow: rgba(0,0,0,0.25) 0 0 0.25rem 0;
-      z-index: 1000;
     }
     nav {
+      position: sticky;
       top: 0;
+      z-index: 99;
+    }
+    main {
+      display: flex;
+      flex-grow: 1;
+      align-items: center;
+      justify-content: center;
     }
     footer {
-      bottom: 0;
       display: flex;
       padding: 0.75em;
       align-items: center;
@@ -47,6 +60,10 @@
       flex-wrap: wrap;
       justify-content: center;
     }
+    .games {
+      margin: 1rem;
+      max-width: 120rem;
+    }
     .categories {
       display: block;
       text-align: center;
@@ -57,7 +74,7 @@
       font-size: 0.9rem;
       margin: 0.25rem;
       min-width: fit-content;
-      width: 14vw;
+      width: 12vw;
       max-width: 10em;
     }
     .category.active {
@@ -94,6 +111,12 @@
   </style>
 </head>
 <body>
+  <div class="hero">
+    <h1>Smartboard Games</h1>
+    <p>
+      A collection of simple educational games (and some tools), designed to be compatible with smartboards, tablets, and phones.
+    </p>
+  </div>
   <nav class="categories">
     <a href="#" class="btn category none" data-filter="none">All</a>
     <a href="#trivia" class="btn category trivia" data-filter="trivia">Trivia</a>
@@ -101,70 +124,72 @@
     <a href="#geography" class="btn category geography" data-filter="geography">Geography</a>
     <a href="#english" class="btn category english" data-filter="english">English</a>
   </nav>
-  <div class="row games">
-    <a href="trivia/5secondrule.html" class="btn game trivia">
-      <h1>5 Second Rule</h1>
-      <span class="icon icon-cog"></span>
-      <p>Quickfire questions with a 5 second time limit</p>
-      •
-      <sub>Now less repetitive - 5/04</sub>
-    </a>
-    <a href="geography/capitals.html" class="btn game geography">
-      <h1>Capital Cities</h1>
-      <p>Guess the capital for each country</p>
-      •
-      <sub>Flags fixed - 5/04</sub>
-    </a>
-    <a href="geography/capitals.html?mode=1" class="btn game geography">
-      <h1>Countries</h1>
-      <p>Guess the country for each capital</p>
-      •
-      <sub>Flags fixed - 5/04</sub>
-    </a>
-    <a href="geography/capitals.html?mode=2" class="btn game geography">
-      <h1>Flags</h1>
-      <p>Guess the country for each flag</p>
-      •
-      <sub>Flags fixed - 5/04</sub>
-    </a>
-    <a href="stem/quickmaths.html?mode=0" class="btn game stem">
-      <h1>Quick Addition</h1>
-      <p>Quickfire maths questions with multiple choice answers</p>
-      •
-      <sub>Added squigglies - 12/05</sub>
-    </a>
-    <a href="stem/quickmaths.html?mode=1" class="btn game stem">
-      <h1>Quick Subtraction</h1>
-      <p>Quickfire maths questions with multiple choice answers</p>
-      •
-      <sub>Added squigglies - 12/05</sub>
-    </a>
-    <a href="stem/quickmaths.html?mode=2" class="btn game stem">
-      <h1>Quick Multiplication</h1>
-      <p>Quickfire maths questions with multiple choice answers</p>
-      •
-      <sub>Added squigglies - 12/05</sub>
-    </a>
-    <a href="stem/quickmaths.html?mode=3" class="btn game stem">
-      <h1>Quick Division</h1>
-      <p>Quickfire maths questions with multiple choice answers</p>
-      •
-      <sub>Added squigglies - 12/05</sub>
-    </a>
-    <a href="english/anagrams.html" class="btn game english">
-      <h1>Anagrams</h1>
-      <p>Spell as many words as you can with the letters of another word</p>
-      •
-      <sub>Added highscores - 13/05</sub>
-    </a>
-    <a href="english/storyshuffle.html" class="btn game english">
-      <h1>Story Shuffle</h1>
-      <span class="icon icon-cog"></span>
-      <p>Interpret a set of 3 random images to inspire your next fiction</p>
-      •
-      <sub>Added on 17/05</sub>
-    </a>
-  </div>
+  <main>
+    <div class="row games">
+      <a href="trivia/5secondrule.html" class="btn game trivia">
+        <h1>5 Second Rule</h1>
+        <span class="icon icon-cog"></span>
+        <p>Quickfire questions with a 5 second time limit</p>
+        •
+        <sub>Now less repetitive - 5/04</sub>
+      </a>
+      <a href="geography/capitals.html" class="btn game geography">
+        <h1>Capital Cities</h1>
+        <p>Guess the capital for each country</p>
+        •
+        <sub>Flags fixed - 5/04</sub>
+      </a>
+      <a href="geography/capitals.html?mode=1" class="btn game geography">
+        <h1>Countries</h1>
+        <p>Guess the country for each capital</p>
+        •
+        <sub>Flags fixed - 5/04</sub>
+      </a>
+      <a href="geography/capitals.html?mode=2" class="btn game geography">
+        <h1>Flags</h1>
+        <p>Guess the country for each flag</p>
+        •
+        <sub>Flags fixed - 5/04</sub>
+      </a>
+      <a href="stem/quickmaths.html?mode=0" class="btn game stem">
+        <h1>Quick Addition</h1>
+        <p>Quickfire maths questions with multiple choice answers</p>
+        •
+        <sub>Added squigglies - 12/05</sub>
+      </a>
+      <a href="stem/quickmaths.html?mode=1" class="btn game stem">
+        <h1>Quick Subtraction</h1>
+        <p>Quickfire maths questions with multiple choice answers</p>
+        •
+        <sub>Added squigglies - 12/05</sub>
+      </a>
+      <a href="stem/quickmaths.html?mode=2" class="btn game stem">
+        <h1>Quick Multiplication</h1>
+        <p>Quickfire maths questions with multiple choice answers</p>
+        •
+        <sub>Added squigglies - 12/05</sub>
+      </a>
+      <a href="stem/quickmaths.html?mode=3" class="btn game stem">
+        <h1>Quick Division</h1>
+        <p>Quickfire maths questions with multiple choice answers</p>
+        •
+        <sub>Added squigglies - 12/05</sub>
+      </a>
+      <a href="english/anagrams.html" class="btn game english">
+        <h1>Anagrams</h1>
+        <p>Spell as many words as you can with the letters of another word</p>
+        •
+        <sub>Added highscores - 13/05</sub>
+      </a>
+      <a href="english/storyshuffle.html" class="btn game english">
+        <h1>Story Shuffle</h1>
+        <span class="icon icon-cog"></span>
+        <p>Interpret a set of 3 random images to inspire your next fiction</p>
+        •
+        <sub>Added on 17/05</sub>
+      </a>
+    </div>
+  </main>
 
   <footer>
     <span>
