@@ -1,7 +1,7 @@
 <?php
-// Optimize any images added to storyshuffle
+// Optimize any images added to the stock image collection
 
-$dir = 'storyshuffle/';
+$dir = '../stockimgs/';
 $files = scandir($dir);
 
 foreach($files as $filename) {

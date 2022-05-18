@@ -97,7 +97,7 @@
     let timer = null;
 
     $().ready(() => {
-      $.getJSON('storyimgs.json', (data) => {storyimgs = data}).then(() => {
+      $.getJSON('storyimgs.json?v=1.1', (data) => {storyimgs = data}).then(() => {
         $('.loader').hide();
         $('.big-red.btn').show();
       });
