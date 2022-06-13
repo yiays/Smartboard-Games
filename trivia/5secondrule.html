@@ -11,10 +11,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=6" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=6.1" rel="stylesheet">
 </head>
 <body>
   <div id="menu" class="panel">
+    <div class="panel-controls">
+      <input type="checkbox" id="autotimer">
+      <label for="autotimer">Automatically start the timer</label>
+    </div>
+
     <h1>5 Second Rule</h1>
     <p>Quickfire questions with a 5 second time limit</p>
     <a class="big-red btn" id="start" href="#">Go</a>
@@ -36,6 +41,7 @@
   </div>
 
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
+  <!-- <script src="/jquery-3.6.0.min.js"></script> -->
   <script src="//cdn.yiays.com/jquery-color.min.js"></script>
   <script src="/common.js?v=2"></script>
   <script>
@@ -237,22 +243,27 @@
         $('#game .options.post').hide();
         $('#game .options.pre').show();
         $('#game .countdown').hide();
+
+        if($('#autotimer').get(0).checked) starttimer(true);
       }
 
-      function starttimer() {
+      function starttimer(delay=false) {
         $('#game .options.pre').hide();
         $('#game .options.post').show();
         $('#game .countdown').show();
         $('#game .countdown').text(5);
-        timer = setInterval(() => {
-          let val = $('#game .countdown').text();
-          if(val > 0){
-            val -= 1;
-            $('#game .countdown').text(val>0?val:'Times up!');
-          }else{
-            clearInterval(timer);
-          }
-        }, 1000);
+
+        setTimeout(() => {
+          timer = setInterval(() => {
+            let val = $('#game .countdown').text();
+            if(val > 0){
+              val -= 1;
+              $('#game .countdown').text(val>0?val:'Times up!');
+            }else{
+              clearInterval(timer);
+            }
+          }, 1000);
+        }, delay?500:0);
       }
 
       function menu() {
@@ -277,7 +288,7 @@
 
       $('.action-advance').on('click', newquestion);
 
-      $('.action-timer').on('click', starttimer);
+      $('.action-timer').on('click', () => {starttimer()});
     })
   </script>
 </body>

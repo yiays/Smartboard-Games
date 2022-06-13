@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Magic Squares</title>
+  <meta name="description" content="Solve randomly generated magic square maths puzzles">
+  <meta name="tags" content="addition, subtraction, maths, mathematics, challenge">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=6.2" rel="stylesheet">
+  <style>
+    body>.panel {
+      height: 400px;
+    }
+    #magicsquare {
+      border-collapse: collapse;
+    }
+    #magicsquare td {
+      width: 3em;
+      height: 3em;
+      border: 3px solid white;
+    }
+    #magicsquare input[type=number] {
+      -moz-appearance: textfield;
+      font-size: 1.2em;
+      width: 2rem;
+      height: 2rem;
+      text-align: center;
+    }
+    #magicsquare input[type=number]::-webkit-outer-spin-button, #magicsquare input[type=number]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="menu" class="panel">
+    <h1>Magic Squares</h1>
+    <p>
+      Solve randomly generated magic square maths puzzles
+    </p>
+    <p>
+      <label for="difficulty">Difficulty: </label>
+      <select id="difficulty" autofocus>
+        <option value="easy" selected>Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+        <option value="harder">Harder</option>
+      </select>
+    </p>
+    <a class="big-red btn action-start" href="#">Go</a>
+    <div class="options" style="margin-top: 1em">
+      <a class="btn" href="/">More games</a>
+    </div>
+  </div>
+  <div id="game" class="panel" style="display:none;">
+    <h1>Magic Squares</h1>
+    <p>The sum is <span id="sum">0</span></p>
+    <table id="magicsquare"></table>
+    <br>
+    <form class="play">
+      <br>
+      <div class="options">
+        <a class="btn action-cancel not-confirm-action" href="#">Menu</a>
+        <input type="submit" class="btn" value="Check answers">
+      </div>
+    </form>
+    <div class="results">
+      <br>
+      <div class="options">
+        <a class="btn action-cancel" href="#">Menu</a>
+        <a class="btn action-new" href="#">Generate another</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
+  <!-- <script src="/jquery-3.6.0.min.js"></script> -->
+  <script src="//cdn.yiays.com/jquery-color.min.js"></script>
+  <script src="/common.js?v=6.3"></script>
+  <script>
+    const gamerules = {
+      'easy': {'min': 1, 'max': 2, 'size': 3},
+      'medium': {'min': 1, 'max': 4, 'size': 3},
+      'hard': {'min': 1, 'max': 8, 'size': 4},
+      'harder': {'min': 1, 'max': 16, 'size': 5}
+    };
+    let mode = 2;
+    let difficulty;
+    let sum, grid, problemgrid, gridsize;
+
+    $().ready(() => {
+      $('.confirm-action').on('click', (e) => {
+        if(confirm("This will erase your progress, are you sure you want to continue?")) {
+          return;
+        }
+        e.stopPropagation();
+      });
+
+      $('.action-cancel').on('click', menu);
+
+      $('.play').on('submit', checkanswer);
+
+      $('.action-new').on('click', newquestion);
+
+      $('.action-start').on('click', (e) => {
+        e.preventDefault();
+
+        $('#menu').hide();
+        $('#game').show();
+        difficulty = $('#difficulty').val();
+        
+        newquestion();
+
+        return false;
+      });
+    });
+
+    function newquestion() {
+      iterator = randint(gamerules[difficulty].max, gamerules[difficulty].min);
+      var start = randint(gamerules[difficulty].max*2, gamerules[difficulty].min);
+      gridsize = gamerules[difficulty].size;
+
+      generate_grid(iterator, start);
+
+      generate_problemgrid(0.2);
+
+      sum = calculate_sum(iterator, start);
+
+      $('#sum').text(sum);
+
+      render_grid(problemgrid);
+
+      $('#game .results').hide();
+      $('#game .play').show();
+    }
+
+    function generate_grid(iterator, start=1) {
+      grid = [];
+      for(x=0; x<gridsize; x++) {
+        grid[x] = [];
+        for(y=0; y<gridsize; y++) {
+          grid[x][y] = null;
+        }
+      }
+
+      var x = 1, y = 0, val = start;
+      var ox, oy;
+      
+      if(gridsize%2 == 1 && gridsize >= 3) {
+        // odd size formula
+        for(var i=0; i<gridsize**2; i++) {
+          grid[x][y] = val;
+          val += iterator;
+          ox = x++;
+          oy = y--;
+          if(y < 0) y = gridsize - 1;
+          if(x >= gridsize) x = 0;
+          if(grid[x][y] != null) {
+            x = ox;
+            y = oy + 1;
+            if(y >= gridsize) {
+              y = 0;
+              //if(grid[x][y] != null) return;
+            }
+          }
+        }
+      }else if(gridsize == 4) {
+        // size 4 formula
+        unused = [];
+        for(y=0; y<gridsize; y++) {
+          for(x=0; x<gridsize; x++) {
+            if(x!=y && x!=gridsize-y-1)
+              grid[x][y] = val;
+            else
+              unused.push(val);
+            val += iterator;
+          }
+        }
+        for(y=0; y<gridsize; y++) {
+          for(x=0; x<gridsize; x++) {
+            if(grid[x][y] == null)
+              grid[x][y] = unused.pop();
+          }
+        }
+      }else{
+        alert("Generating a magic square of this size is either impossible or unsupported!");
+        menu();
+      }
+    }
+
+    function generate_problemgrid(ratio) {
+      problemgrid = JSON.parse(JSON.stringify(grid));
+
+      var nulled = 0, rx, ry, nc;
+
+      while ((nulled/(gridsize**2)) < ratio) {
+        rx = randint(gridsize-1, 0);
+        ry = randint(gridsize-1, 0);
+
+        if(problemgrid[rx][ry] != null) {
+          // Test row
+          nc = 0;
+          for(var tx=0; tx<gridsize; tx++)
+            if(problemgrid[tx][ry] == null) nc++;
+            if(nc > 1) continue;
+
+          // Test col
+          nc = 0;
+          for(var ty=0; ty<gridsize; ty++)
+            if(problemgrid[rx][ty] == null) nc++;
+            if(nc > 1) continue;
+
+          // Test diagonal
+          nc = 0;
+          if(rx==ry) {
+            for(var txy=0; txy<gridsize; txy++)
+              if(problemgrid[txy][txy] == null) nc++;
+              if(nc > 1) continue;
+          }
+          if(rx==gridsize-ry-1) {
+            for(var txy=0; txy<gridsize; txy++)
+              if(problemgrid[txy][gridsize-txy-1] == null) nc++;
+              if(nc > 1) continue;
+          }
+
+          // Null out the row
+          problemgrid[rx][ry] = null;
+          nulled++;
+        }
+      }
+    }
+
+    function calculate_sum(iterator, start=1) {
+      return (gridsize/2) * (2*start + (gridsize**2 - 1) * iterator);
+    }
+
+    function render_grid(grid) {
+      let newhtml = '';
+      for(let y=0; y<gridsize; y++) {
+        newhtml += `<tr>`;
+        for(let x=0; x<gridsize; x++) {
+          if(grid[x][y] == null)
+            newhtml += `<td data-coords="${x},${y}"><input type="number" min=1 max=200 required></td>`;
+          else
+            newhtml += `<td data-coords="${x},${y}"><span>${grid[x][y]}</span></td>`;
+        }
+        newhtml += `</tr>`;
+      }
+      $('#magicsquare').html(newhtml);
+    }
+
+    function checkanswer(e) {
+      e.preventDefault();
+
+      correct = [];
+      incorrect = [];
+      
+      $('#magicsquare input').each((i,el) => {
+        let ans = parseInt(el.value);
+        let [x,y] = el.parentElement.dataset.coords.split(',');
+        if(ans == grid[x][y])
+          correct.push([x,y]);
+        else
+          incorrect.push([x,y]);
+      });
+
+      render_grid(grid);
+      correct.forEach(([x,y]) => {
+        $(`#magicsquare td[data-coords="${x},${y}"]`).addClass('correct');
+      });
+      incorrect.forEach(([x,y]) => {
+        $(`#magicsquare td[data-coords="${x},${y}"]`).addClass('incorrect');
+        $(`#magicsquare td[data-coords="${x},${y}"]>span`).addClass('squiggle');
+      });
+
+      $('#game .play').hide();
+      $('#game .results').show();
+    }
+
+    function menu() {
+      $('#game').hide();
+      $('#menu').show();
+    }
+  </script>
+</body>
+</html>

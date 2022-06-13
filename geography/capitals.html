@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=2" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=6.1" rel="stylesheet">
   <style>
     body>.panel {
       height: 400px;
@@ -20,7 +20,12 @@
 </head>
 <body>
   <div id="menu" class="panel">
-    <button class="float-right" id="modechange" title="Switch it up">🔀</button>
+    <div class="panel-controls">
+      <button onclick="mode=0;on_modechange();" title="Switch to Capital Cities">🏙️</button>
+      <button onclick="mode=1;on_modechange();" title="Switch to Countries">🌍</button>
+      <button onclick="mode=2;on_modechange();" title="Switch to Flags">🏳️</button>
+    </div>
+
     <h1>Capital Cities</h1>
     <p>
       Guess the capital for each country
@@ -64,6 +69,7 @@
   </div>
 
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
+  <!-- <script src="/jquery-3.6.0.min.js"></script> -->
   <script src="//cdn.yiays.com/jquery-color.min.js"></script>
   <script src="/common.js?v=3"></script>
   <script>
@@ -158,32 +164,6 @@
         return false;
       });
 
-      function on_modechange() {
-        if(mode == 0){
-          document.title = "Capital Cities";
-          $('#menu>h1').text("Capital cities");
-          $('#menu>h1 + p').text("Guess the capital for each country");
-          $('.pre>.img-loader').show();
-          $('.post>.img-loader').hide();
-        }
-        else if(mode == 1){
-          document.title = "Countries";
-          $('#menu>h1').text("Countries");
-          $('#menu>h1 + p').text("Guess the country for each capital");
-          $('.pre>.img-loader').hide();
-          $('.post>.img-loader').show();
-        }
-        else if(mode == 2){
-          document.title = "Flags";
-          $('#menu>h1').text("Flags");
-          $('#menu>h1 + p').text("Guess the country for each flag");
-          $('.pre>.img-loader').show();
-          $('.post>.img-loader').hide();
-        }else{
-          console.error(`Unknown game mode ${mode} requested!`);
-        }
-      }
-
       if('mode' in urlParams) {
         mode = Number(urlParams.mode);
         on_modechange();
@@ -194,14 +174,33 @@
       $('.action-advance').on('click', newquestion);
 
       $('.action-answer').on('click', showanswer);
-
-      $('#modechange').on('click', () => {
-        mode++;
-        if(mode > 2) mode = 0;
-
-        on_modechange()
-      });
     });
+
+    function on_modechange() {
+      if(mode == 0){
+        document.title = "Capital Cities";
+        $('#menu>h1').text("Capital cities");
+        $('#menu>h1 + p').text("Guess the capital for each country");
+        $('.pre>.img-loader').show();
+        $('.post>.img-loader').hide();
+      }
+      else if(mode == 1){
+        document.title = "Countries";
+        $('#menu>h1').text("Countries");
+        $('#menu>h1 + p').text("Guess the country for each capital");
+        $('.pre>.img-loader').hide();
+        $('.post>.img-loader').show();
+      }
+      else if(mode == 2){
+        document.title = "Flags";
+        $('#menu>h1').text("Flags");
+        $('#menu>h1 + p').text("Guess the country for each flag");
+        $('.pre>.img-loader').show();
+        $('.post>.img-loader').hide();
+      }else{
+        console.error(`Unknown game mode ${mode} requested!`);
+      }
+    }
 
     var urlParams;
     (window.onpopstate = function () {
