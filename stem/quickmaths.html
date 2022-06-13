@@ -6,12 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quick Maths</title>
   <meta name="description" content="Test your times tables by solving multiplication questions as fast as you can!">
-  <meta name="tags" content="multiplication, speed, times tables, maths, mathematics, challenge, leaderboard">
+  <meta name="tags" content="addition, subtraction, multiplication, division, speed, times tables, maths, mathematics, challenge, leaderboard">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=5.4" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=6.1" rel="stylesheet">
   <style>
     body>.panel {
       height: 400px;
@@ -24,13 +24,14 @@
 </head>
 <body>
   <div id="menu" class="panel">
-    <div style="position:absolute;top:1em;right:1em;">
+    <div class="panel-controls">
       <button onclick="mode=0;on_modechange();" title="Switch to Quick Addition">+</button>
       <button onclick="mode=1;on_modechange();" title="Switch to Quick Subtraction">–</button>
       <button onclick="mode=2;on_modechange();" title="Switch to Quick Multiplication">×</button>
       <button onclick="mode=3;on_modechange();" title="Switch to Quick Division">÷</button>
     </div>
-    <h1><u class="squiggle">Quick Maths</u></h1>
+
+    <h1><u>Quick Maths</u></h1>
     <p>
       Quickfire maths questions with multiple choice answers
     </p>
@@ -50,7 +51,7 @@
     </div>
   </div>
   <div id="leaderboard" class="panel" style="display:none;">
-    <div style="position:absolute;top:1em;right:1em;">
+    <div class="panel-controls">
       <button onclick="mode=0;on_modechange();" title="Switch to Quick Addition">+</button>
       <button onclick="mode=1;on_modechange();" title="Switch to Quick Subtraction">–</button>
       <button onclick="mode=2;on_modechange();" title="Switch to Quick Multiplication">×</button>
@@ -117,6 +118,7 @@
   </div>
 
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
+  <!-- <script src="/jquery-3.6.0.min.js"></script> -->
   <script src="//cdn.yiays.com/jquery-color.min.js"></script>
   <script src="/common.js?v=6.3"></script>
   <script>
