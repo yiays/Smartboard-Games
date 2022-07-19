@@ -64,8 +64,8 @@ function get_leaderboard(scope, result_converter=null) {
     var entries = Object.keys(data).map((key) => {
       return [key, result_converter? result_converter(data[key]): data[key]+'%'];
     });
-    entries = entries.sort((a, b) => {
-      return b[1] - a[1];
+    entries.sort((a, b) => {
+      return parseInt(b[1]) - parseInt(a[1]);
     });
 
     $('#board>tbody').html('');
