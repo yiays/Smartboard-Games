@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=6.1" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=7" rel="stylesheet">
   <style>
     body>.panel {
       height: 400px;
@@ -23,14 +23,13 @@
   </style>
 </head>
 <body>
+  <div class="panel-controls" id="modeswitch">
+    <button onclick="mode=0;on_modechange();" title="Switch to Quick Addition">+</button>
+    <button onclick="mode=1;on_modechange();" title="Switch to Quick Subtraction">–</button>
+    <button onclick="mode=2;on_modechange();" title="Switch to Quick Multiplication">×</button>
+    <button onclick="mode=3;on_modechange();" title="Switch to Quick Division">÷</button>
+  </div>
   <div id="menu" class="panel">
-    <div class="panel-controls">
-      <button onclick="mode=0;on_modechange();" title="Switch to Quick Addition">+</button>
-      <button onclick="mode=1;on_modechange();" title="Switch to Quick Subtraction">–</button>
-      <button onclick="mode=2;on_modechange();" title="Switch to Quick Multiplication">×</button>
-      <button onclick="mode=3;on_modechange();" title="Switch to Quick Division">÷</button>
-    </div>
-
     <h1><u>Quick Maths</u></h1>
     <p>
       Quickfire maths questions with multiple choice answers
@@ -51,12 +50,6 @@
     </div>
   </div>
   <div id="leaderboard" class="panel" style="display:none;">
-    <div class="panel-controls">
-      <button onclick="mode=0;on_modechange();" title="Switch to Quick Addition">+</button>
-      <button onclick="mode=1;on_modechange();" title="Switch to Quick Subtraction">–</button>
-      <button onclick="mode=2;on_modechange();" title="Switch to Quick Multiplication">×</button>
-      <button onclick="mode=3;on_modechange();" title="Switch to Quick Division">÷</button>
-    </div>
     <h1>Quickest Maths</h1>
     <p id="leaderboard-diff">
       (Easy difficulty)
@@ -91,8 +84,8 @@
         <a class="btn action-answer" href="#">4</a>
       </div>
       <br>
-      <div class="options">
-        <!--<a class="btn action-cancel" href="#">Menu</a>-->
+      <div class="options" style="position:relative;top:3.7rem;">
+        <a class="btn action-cancel" href="#">Menu</a>
       </div>
     </div>
     <div class="results">
@@ -105,8 +98,7 @@
     </div>
     <div class="end">
       <b>Answers: </b> <span id="correctans">0</span>/<span id="totalans">0</span>.
-      <br><b>Time penalty: </b> <span id="timepenalty">0</span>.
-      <hr><b>Your score: <span id="score">0</span>%</b>
+      <hr><b>Your score: <span id="score">0 in 0 seconds</span></b>
       <br><br>
       <div class="options">
         <a class="btn confirm-action action-cancel" href="#">Menu</a>
@@ -120,13 +112,13 @@
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
   <!-- <script src="/jquery-3.6.0.min.js"></script> -->
   <script src="//cdn.yiays.com/jquery-color.min.js"></script>
-  <script src="/common.js?v=7.1"></script>
+  <script src="/common.js?v=8"></script>
   <script>
     const gamerules = {
-      'easy': {'min': 1, 'max': 4, 'timegoal': 10},
-      'medium': {'min': 2, 'max': 7, 'timegoal': 12},
-      'hard': {'min': 6, 'max': 12, 'timegoal': 15},
-      'harder': {'min': 11, 'max': 15, 'timegoal': 30}
+      'easy': {'min': 1, 'max': 4},
+      'medium': {'min': 2, 'max': 7},
+      'hard': {'min': 6, 'max': 12},
+      'harder': {'min': 11, 'max': 15}
     };
     const randomizers = [
       (i) => i - 4,
@@ -154,17 +146,10 @@
     let difficulty, norepeat, tested;
     let q;
     let ans;
-    let timerCurrent, totalTime, totalRight, score;
+    let timerCurrent, totalTime, totalRight, slowDown, score;
     let intTimer;
 
     $().ready(() => {
-      $('.confirm-action').on('click', (e) => {
-        if(confirm("This will clear your score, are you sure you want to continue?")) {
-          return;
-        }
-        e.stopPropagation();
-      });
-
       $('.action-cancel').on('click', menu);
 
       $('.action-end').on('click', showscore);
@@ -173,23 +158,13 @@
 
       $('.action-results').on('click', showanswers);
 
-      $('.action-submit').on('click', () => { submit_highscore(`quickmaths_${mode}_${difficulty}`, score) });
+      $('.action-submit').on('click', () => {
+        submit_highscore(`quickmaths_${mode}_${difficulty}`, score)
+      });
 
       $('.action-leaderboard').on('click', showleaderboard);
 
-      $('#start').on('click', (e) => {
-        e.preventDefault();
-
-        $('#menu,#leaderboard').hide();
-        $('#game').show();
-        difficulty = $('#difficulty').val();
-        norepeat = [];
-        tested = [];
-        
-        newquestion(true);
-
-        return false;
-      });
+      $('#start').on('click', newgame);
 
       if('mode' in urlParams) {
         mode = Number(urlParams.mode);
@@ -197,7 +172,21 @@
       on_modechange();
     });
 
-    function newquestion(newgame = false) {
+    function newgame() {
+      $('#menu,#leaderboard,#modeswitch').hide();
+      $('#game').show();
+      difficulty = $('#difficulty').val();
+      norepeat = [];
+      tested = [];
+      totalTime = 0;
+      totalRight = 0;
+      slowDown = 0;
+      $('#answers').html('');
+      
+      newquestion();
+    }
+
+    function newquestion() {
       let range = gamerules[difficulty].max - gamerules[difficulty].min;
       let possiblequestions = (range + 1) * (range + 1);
       let limit = 10;
@@ -236,17 +225,15 @@
       shuffle(answers);
 
       $('#question').text(`What is ${q}?`);
+      // Slowdown mechanic hints at when an answer was wrong and encourages the user to think about the next one
       for(var i in answers) {
-        $('.multichoice > .btn').eq(i).text(answers[i]);
+        $('.multichoice > .btn').eq(i).text(answers[i]).addClass('disabled');
       }
+      setTimeout(() => {
+        for(var i in answers) $('.multichoice > .btn').eq(i).removeClass('disabled');
+      }, 250 * Math.min(slowDown, 3));
       timerCurrent = new Date().getTime();
       intTimer = setInterval(timerTick, 50);
-      if(newgame === true) {
-        totalTime = 0;
-        totalRight = 0;
-
-        $('#answers').html('');
-      }
 
       $('#timer-current').parent().show();
       $('#game .results').hide();
@@ -255,11 +242,15 @@
     }
 
     function checkanswer(e) {
+      if(e.target.classList.contains('disabled')) return;
+
       if(e.target.innerText == ans) {
         $('#answers').append(`<li>${q} = <span class="correct">${ans}</span></li>`);
         totalRight += 1;
+        if(slowDown > 0) slowDown--;
       }else{
         $('#answers').append(`<li>${q} = <u class="incorrect squiggle">${e.target.innerText}</u> <span class="correct">${ans}</span></li>`);
+        slowDown += 1;
       }
       
       clearInterval(intTimer);
@@ -282,17 +273,16 @@
       $('#game .results').hide();
       $('#game .end').show();
 
-      let timePentalty = Math.round((totalTime / 1000) - gamerules[difficulty].timegoal);
-      $('#timepenalty').text(timePentalty);
       $('#correctans').text(totalRight);
       $('#totalans').text(tested.length);
-      score = (totalRight / tested.length) * 100 - timePentalty;
-      $('#score').text(Math.round(score));
+      let seconds = (totalTime / 1000) % 60;
+      score = totalRight / seconds;
+      $('#score').text(`${Math.round(score * 100) / 100} correct answers per second`);
     }
 
     function menu() {
       $('#game,#leaderboard').hide();
-      $('#menu').show();
+      $('#menu,#modeswitch').show();
       clearInterval(intTimer);
     }
 
@@ -303,13 +293,15 @@
 
     function showleaderboard() {
       $('#game,#menu').hide();
-      $('#leaderboard').show();
+      $('#leaderboard,#modeswitch').show();
 
       difficulty = $('#difficulty').val();
 
       $('#leaderboard-diff').text(`(${difficulty.charAt(0).toUpperCase()+difficulty.slice(1)} difficulty)`);
 
-      get_leaderboard(`quickmaths_${mode}_${difficulty}`);
+      get_leaderboard(`quickmaths_${mode}_${difficulty}`,
+                      result_converter=(v) => `${Math.round(v*100)/100}p/s`,
+                      sorter=(a,b) => parseFloat(a) - parseFloat(b));
     }
 
     function msToTime(duration) {
@@ -355,7 +347,7 @@
       }
 
       if($('#leaderboard').is(':visible')) {
-        get_leaderboard(`quickmaths_${mode}_`+$('#difficulty').val());
+        showleaderboard();
       }
     }
 

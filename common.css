@@ -75,6 +75,7 @@ h1 {
   opacity: 0.5;
   cursor: default;
   pointer-events: none;
+  box-shadow: none;
 }
 .btn h1 {
   margin: 0;

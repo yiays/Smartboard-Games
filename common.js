@@ -14,6 +14,13 @@ $().ready(() => {
   $('.img-loader>img').on('load', (e)=>{
     $(e.target).animate({'opacity':1});
   });
+  
+  $('.confirm-action').on('click', (e) => {
+    if(confirm("This will erase your progress, are you sure you want to continue?")) {
+      return;
+    }
+    e.stopImmediatePropagation();
+  });
 
   $('#start,.action-advance').on('click', ()=>{
     $('html').animate({backgroundColor: bgs[Math.floor(Math.random() * bgs.length)]});
@@ -48,25 +55,24 @@ function shuffle(array) {
 
 function submit_highscore(scope, score, username=null, secret=null, silent=false) {
   if(username==null) username = prompt("Username");
-  if(!username) return;
+  if(!username) return false;
   if(secret==null) secret = prompt("Secret code (must be typed by the teacher)");
-  if(!secret) return;
+  if(!secret) return false;
 
-  $.get(`https://highscore.yiays.workers.dev/?secret=${secret}&scope=${scope}&username=${username}&score=${score}`)
-  .done((data) => { if(!silent) alert(data); })
-  .fail(() => {alert("Something went wrong! Failed to save your highscore.")});
+  $.get(`https://highscore.yiays.com/?secret=${secret}&scope=${scope}&username=${username}&score=${score}`)
+  .done((data) => { if(!silent) alert(data); showleaderboard(); })
+  .fail((error) => { alert(error.responseText? error.responseText : "Something went wrong! Failed to save your highscore.")});
+  return true;
 }
 
-function get_leaderboard(scope, result_converter=null) {
+function get_leaderboard(scope, result_converter=null, sorter=null) {
   $('#board>tbody').html('<tr><td colspan=3>Loading...</td></tr>')
-  $.get(`https://highscore.yiays.workers.dev/?scope=${scope}`)
+  $.get(`https://highscore.yiays.com/?scope=${scope}`)
   .done((data) => {
     var entries = Object.keys(data).map((key) => {
-      return [key, result_converter? result_converter(data[key]): data[key]+'%'];
+      return [key, result_converter? result_converter(data[key]): `${data[key]}%`];
     });
-    entries.sort((a, b) => {
-      return parseInt(b[1]) - parseInt(a[1]);
-    });
+    entries.sort(sorter? sorter : (a, b) => parseInt(b[1]) - parseInt(a[1]));
 
     $('#board>tbody').html('');
     let i = 0;
