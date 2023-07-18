@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=6.2" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=7" rel="stylesheet">
   <style>
     body>.panel {
       height: 400px;
@@ -81,7 +81,7 @@
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
   <!-- <script src="/jquery-3.6.0.min.js"></script> -->
   <script src="//cdn.yiays.com/jquery-color.min.js"></script>
-  <script src="/common.js?v=6.3"></script>
+  <script src="/common.js?v=8"></script>
   <script>
     const gamerules = {
       'easy': {'min': 1, 'max': 2, 'size': 3},
@@ -94,13 +94,6 @@
     let sum, grid, problemgrid, gridsize;
 
     $().ready(() => {
-      $('.confirm-action').on('click', (e) => {
-        if(confirm("This will erase your progress, are you sure you want to continue?")) {
-          return;
-        }
-        e.stopPropagation();
-      });
-
       $('.action-cancel').on('click', menu);
 
       $('.play').on('submit', checkanswer);
