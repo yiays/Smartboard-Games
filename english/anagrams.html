@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=3" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=7" rel="stylesheet">
   <style>
     .keyboard, .keyboard > .row {
       display: flex;
@@ -27,11 +27,15 @@
   </style>
 </head>
 <body>
+  <select name="word" id="modeswitch" class="panel-controls">
+    <option selected value="">Select a word</option>
+  </select>
   <div id="menu" class="panel">
     <h1>Anagrams</h1>
     <p>Spell as many words as you can with the letters of another word.</p>
-    <a class="big-red btn" id="start" href="#">Go</a>
+    <a class="big-red btn disabled" id="start" href="#">Go</a>
     <div class="options" style="margin-top: 1em">
+      <a class="btn action-leaderboard disabled" href="#">View leaderboard</a>
       <a class="btn" href="/">More games</a>
     </div>
   </div>
@@ -77,6 +81,7 @@
     </div>
     <br>
     <div class="options">
+      <a class="btn confirm-action action-cancel" href="#">Menu</a>
       <a class="btn action-finish" href="#">Finish</a>
     </div>
   </div>
@@ -93,7 +98,7 @@
     </div>
   </div>
   <div id="leaderboard" class="panel" style="display:none;">
-    <h1>Solutions</h1>
+    <h1>Leaderboard</h1>
     <p id="leaderboard-word">
       WORD
     </p>
@@ -107,14 +112,14 @@
     </table>
     <br>
     <div class="options">
-      <a class="btn action-results" href="#">Back</a>
+      <a class="btn confirm-action action-cancel" href="#">Back</a>
     </div>
   </div>
 
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
   <!-- <script src="/jquery-3.6.0.min.js"></script> -->
   <script src="//cdn.yiays.com/jquery-color.min.js"></script>
-  <script src="/common.js?v=7.1"></script>
+  <script src="/common.js?v=8"></script>
   <script>
     const words = [
       "truest",
@@ -126,137 +131,46 @@
       "incredible"
     ];
     let dictionary = [];
-
-    let word = null;
-    let keys = {};
-    let input = '';
-    let answers = [];
-    
-    let animparams = {distance: 5, speed: 50, times: 2}
+    let word, keys, input, answers;
+    const animparams = {distance: 5, speed: 50, times: 2}
 
     $().ready(() => {
       $.get('dictionary.txt?v=3.2')
       .done((data) => {dictionary = data.split(/\r?\n/);})
       .fail(() => {alert("Failed to get the dictionary! Try reloading the page...")});
 
-      function newquestion() {
-        word = words[Math.floor(Math.random() * words.length)];
-
-        $('#question').text(word.toUpperCase());
-
-        reset();
-      }
-
-      function reset() {
-        keys = {
-          'Q':0,'W':0,'E':0,'R':0,'T':0,'Y':0,'U':0,'I':0,'O':0,'P':0,
-          'A':0,'S':0,'D':0,'F':0,'G':0,'H':0,'J':0,'K':0,'L':0,
-          'Z':0,'X':0,'C':0,'V':0,'B':0,'N':0,'M':0
-        }
-        for(var i=0; i<word.length; i++) {
-          var letter = word.charAt(i).toUpperCase();
-          keys[letter] += 1;
-        }
-
-        $('.action-type').each((i, el) => {
-          if(keys[$(el).text()] > 0)
-            $(el).removeClass('disabled');
-          else
-            $(el).addClass('disabled');
-        });
-
-        $('#found').text(answers.join(', ').toUpperCase());
-      }
-
-      function checkanswer() {
-        let check = input.toLowerCase();
-
-        if(check == word) {
-          $('#game').shake(animparams);
-          return;
-        }
-        if(answers.indexOf(check) >= 0) {
-          $('#game').shake(animparams);
-          return;
-        }
-        if(dictionary.indexOf(check) == -1) {
-          $('#game').shake(animparams);
-          return;
-        }
-        answers.push(check);
-        input = '';
-        $('#input').text('_');
-        reset();
-      }
-
-      function endgame() {
-        $('#menu,#game').hide();
-        $('#results').show();
-        
-        $('#finalscore').text(answers.length);
-        $('#finalscore').prop('title', answers.join('\n'));
-        $('#word').text(word);
-        let anagrams = answers.filter((e) => {return e.length == word.length});
-        $('#anagrams').text(anagrams.length);
-        $('#anagrams').prop('title', anagrams.join('\n'));
-
-        submit_highscore(`anagrams_${word}`, `[${anagrams.length},${answers.length}]`, null, 1235);
-      }
-
-      function showleaderboard() {
-        $('#results').hide();
-        $('#leaderboard').show();
-
-        $('#leaderboard-word').text(`(${word.toUpperCase()})`);
-
-        get_leaderboard(`anagrams_${word}`, (value) => {
-          return `${value[0]} Anagram(s), ${value[1]} Word(s)`;
-        });
-      }
-
-      $('#start').on('click', (e) => {
-        e.preventDefault();
-
-        $('#menu,#results,#leaderboard').hide();
-        $('#game').show();
-        answers = [];
-        
-        newquestion();
-
-        return false;
+      words.forEach((w) => {
+        $('#modeswitch').append(`<option value="${w}">${w.toUpperCase()}</option>`);
       });
+
+      $('#modeswitch').on('change', on_modechange);
+
+      $('#start').on('click', newgame);
 
       $('.action-type').on('click', (e) => {
         var letter = e.target.textContent.toUpperCase();
-        input += letter;
-        $('#input').text(input + '_');
+        type(letter);
+      });
 
-        keys[letter] -= 1
-        if(keys[letter] <= 0) {
-          e.target.classList.add('disabled');
+      $('.action-untype').on('click', untype);
+
+      $(document).on('keydown', (e) => {
+        if($('#game').is(':hidden') || e.ctrlKey || e.altKey || e.metaKey) return;
+        if(e.key.length === 1 && e.key.match(/[A-Za-z]/i)) {
+          e.stopImmediatePropagation();
+          type(e.key.toUpperCase());
+        }
+        else if(e.key == 'Backspace') {
+          e.stopImmediatePropagation();
+          untype();
+        }
+        else if(e.key == 'Enter') {
+          e.stopImmediatePropagation();
+          checkanswer();
         }
       });
 
-      $('.action-untype').on('click', (e) => {
-        if (input.length) {
-          var letter = input.charAt(input.length - 1);
-          input = input.slice(0, -1);
-          keys[letter] += 1;
-          $(`.action-type:contains('${letter}')`).removeClass('disabled');
-          $('#input').text(input + '_');
-        } else {
-          $('#game').shake(animparams);
-        }
-      });
-
-      $('.action-cancel').on('click', (e) => {
-        e.preventDefault();
-
-        $('#game,#results').hide();
-        $('#menu').show();
-
-        return false;
-      });
+      $('.action-cancel').on('click', menu);
 
       $('.action-results').on('click', (e) => {
         e.preventDefault();
@@ -270,7 +184,129 @@
       $('.action-leaderboard').on('click', showleaderboard);
 
       $('.action-finish').on('click', endgame);
-    })
+    });
+
+    function on_modechange() {
+      word = this.value;
+      if(word.length) {
+        $('#start,.action-leaderboard').removeClass('disabled');
+        if($('#leaderboard').is(':visible')) showleaderboard();
+      }
+      else {
+        $('#start,.action-leaderboard').addClass('disabled');
+        if($('#leaderboard').is(':visible')) menu();
+      }
+    }
+
+    function menu() {
+      $('#game,#results,#leaderboard').hide();
+      $('#menu,#modeswitch').show();
+    }
+
+    function newgame() {
+      if(word) {
+        $('#menu,#results,#leaderboard,#modeswitch').hide();
+        input = '';
+        $('#input').text('_');
+        $('#game').show();
+        answers = [];
+        $('#question').text(word.toUpperCase());
+        resetkeys();
+      }
+    }
+
+    function resetkeys() {
+      keys = {
+        'Q':0,'W':0,'E':0,'R':0,'T':0,'Y':0,'U':0,'I':0,'O':0,'P':0,
+        'A':0,'S':0,'D':0,'F':0,'G':0,'H':0,'J':0,'K':0,'L':0,
+        'Z':0,'X':0,'C':0,'V':0,'B':0,'N':0,'M':0
+      }
+      for(var i=0; i<word.length; i++) {
+        var letter = word.charAt(i).toUpperCase();
+        keys[letter] += 1;
+      }
+
+      $('.action-type').each((i, el) => {
+        if(keys[$(el).text()] > 0)
+          $(el).removeClass('disabled');
+        else
+          $(el).addClass('disabled');
+      });
+
+      $('#found').text(answers.join(', ').toUpperCase());
+    }
+
+    function checkanswer() {
+      let check = input.toLowerCase();
+
+      if(check == word) {
+        $('#game').shake(animparams);
+        return;
+      }
+      if(answers.indexOf(check) >= 0) {
+        $('#game').shake(animparams);
+        return;
+      }
+      if(dictionary.indexOf(check) == -1) {
+        $('#game').shake(animparams);
+        return;
+      }
+      answers.push(check);
+      input = '';
+      $('#input').text('_');
+      resetkeys();
+    }
+
+    function endgame() {
+      if(!confirm("After finishing, you can't enter any more words. Continue?")) return;
+
+      $('#menu,#game').hide();
+      $('#results').show();
+      
+      $('#finalscore').text(answers.length);
+      $('#finalscore').prop('title', answers.join('\n'));
+      $('#word').text(word);
+      let anagrams = answers.filter((e) => {return e.length == word.length});
+      $('#anagrams').text(anagrams.length);
+      $('#anagrams').prop('title', anagrams.join('\n'));
+
+      submit_highscore(`anagrams_${word}`, `[${anagrams.length},${answers.length}]`, null, 1235);
+    }
+
+    function showleaderboard() {
+      $('#results,#menu,#game').hide();
+      $('#leaderboard,#modeswitch').show();
+
+      $('#leaderboard-word').text(`(${word.toUpperCase()})`);
+
+      get_leaderboard(`anagrams_${word}`,
+                      result_converter=(value) => `${value[0]} Anagram(s), ${value[1]} Word(s)`);
+    }
+
+    function type(letter) {
+      if(keys[letter] > 0) {
+        input += letter;
+        $('#input').text(input + '_');
+
+        keys[letter] -= 1
+        if(keys[letter] <= 0) {
+          $(`.action-type:contains('${letter}')`).addClass('disabled');
+        }
+      }else{
+        $('#game').shake(animparams);
+      }
+    }
+    function untype() {
+      if (input.length) {
+        var letter = input.charAt(input.length - 1);
+        input = input.slice(0, -1);
+        keys[letter] += 1;
+        $(`.action-type:contains('${letter}')`).removeClass('disabled');
+        $('#input').text(input + '_');
+      } else {
+        $('#game').shake(animparams);
+      }
+    }
   </script>
 </body>
 </html>
