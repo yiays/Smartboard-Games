@@ -13,16 +13,65 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/common.css?v=7" rel="stylesheet">
   <style>
-    .keyboard, .keyboard > .row {
+    body {
+      display: flex;
+      width: 100%;
+      height: auto;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      box-sizing: border-box;
+      margin-top: 2rem;
+      overflow: auto;
+    }
+    body.keyboard {
+      margin-bottom: calc(clamp(2.4rem, calc((100vw - 1rem) / 3), 14rem));
+    }
+    #found {
+      max-height: 8rem;
+      overflow-y: auto;
+    }
+    #keyboard {
+      display: none;
+      position: fixed;
+      top: 100vh;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      font-size: clamp(0.8rem, calc((100vw - 1rem) / 21), 2rem);
+      background: rgba(0, 0, 0, 0.3);
+      border: grey 1px solid;
+      flex-direction: column;
+      align-items: center;
+    }
+    body.keyboard #keyboard {
+      top: unset;
+    }
+    #keyboard, #keyboard > .row {
       display: flex;
     }
-    .keyboard {
-      flex-direction: column;
+    #keyboard > .action-toggle-keyboard {
+      position: absolute;
+      top: -2.5rem;
+      right: 1rem;
+      font-size: 1rem;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
     }
-    .keyboard > .row > .btn {
+    #keyboard > .row > .btn {
+      position: relative;
       width: 1em;
       height: 1em;
       margin: 0.1em;
+    }
+    #keyboard > .row > .btn::after {
+      content: attr(data-count);
+      display: inline-block;
+      position: absolute;
+      font-size: 0.5em;
+      top: 0.3em;
+      right: 0.3em;
+      color: grey;
     }
   </style>
 </head>
@@ -43,42 +92,6 @@
     <h1 id="question">Question</h1>
     <p id="input">_</p>
     <p id="found"></p>
-    <div class="keyboard">
-      <div class="row">
-        <a href="#" class="btn action-type">Q</a>
-        <a href="#" class="btn action-type">W</a>
-        <a href="#" class="btn action-type">E</a>
-        <a href="#" class="btn action-type">R</a>
-        <a href="#" class="btn action-type">T</a>
-        <a href="#" class="btn action-type">Y</a>
-        <a href="#" class="btn action-type">U</a>
-        <a href="#" class="btn action-type">I</a>
-        <a href="#" class="btn action-type">O</a>
-        <a href="#" class="btn action-type">P</a>
-      </div>
-      <div class="row" style="padding-left:0.5em">
-        <a href="#" class="btn action-type">A</a>
-        <a href="#" class="btn action-type">S</a>
-        <a href="#" class="btn action-type">D</a>
-        <a href="#" class="btn action-type">F</a>
-        <a href="#" class="btn action-type">G</a>
-        <a href="#" class="btn action-type">H</a>
-        <a href="#" class="btn action-type">J</a>
-        <a href="#" class="btn action-type">K</a>
-        <a href="#" class="btn action-type">L</a>
-      </div>
-      <div class="row" style="padding-left:1.1em;">
-        <a href="#" class="btn action-type">Z</a>
-        <a href="#" class="btn action-type">X</a>
-        <a href="#" class="btn action-type">C</a>
-        <a href="#" class="btn action-type">V</a>
-        <a href="#" class="btn action-type">B</a>
-        <a href="#" class="btn action-type">N</a>
-        <a href="#" class="btn action-type">M</a>
-        <a href="#" class="btn action-untype">&lt;&times;</a>
-        <a href="#" class="btn action-submit">✓</a>
-      </div>
-    </div>
     <br>
     <div class="options">
       <a class="btn confirm-action action-cancel" href="#">Menu</a>
@@ -112,14 +125,51 @@
     </table>
     <br>
     <div class="options">
-      <a class="btn confirm-action action-cancel" href="#">Back</a>
+      <a class="btn action-cancel" href="#">Back</a>
+    </div>
+  </div>
+  <div id="keyboard" style="display:none;">
+    <a href="#" class="btn action-toggle-keyboard">⌨️</a>
+    <div class="row">
+      <a href="#" class="btn action-type" data-count="0">Q</a>
+      <a href="#" class="btn action-type" data-count="0">W</a>
+      <a href="#" class="btn action-type" data-count="0">E</a>
+      <a href="#" class="btn action-type" data-count="0">R</a>
+      <a href="#" class="btn action-type" data-count="0">T</a>
+      <a href="#" class="btn action-type" data-count="0">Y</a>
+      <a href="#" class="btn action-type" data-count="0">U</a>
+      <a href="#" class="btn action-type" data-count="0">I</a>
+      <a href="#" class="btn action-type" data-count="0">O</a>
+      <a href="#" class="btn action-type" data-count="0">P</a>
+    </div>
+    <div class="row">
+      <a href="#" class="btn action-type" data-count="0">A</a>
+      <a href="#" class="btn action-type" data-count="0">S</a>
+      <a href="#" class="btn action-type" data-count="0">D</a>
+      <a href="#" class="btn action-type" data-count="0">F</a>
+      <a href="#" class="btn action-type" data-count="0">G</a>
+      <a href="#" class="btn action-type" data-count="0">H</a>
+      <a href="#" class="btn action-type" data-count="0">J</a>
+      <a href="#" class="btn action-type" data-count="0">K</a>
+      <a href="#" class="btn action-type" data-count="0">L</a>
+    </div>
+    <div class="row" style="padding-left:0.6em;">
+      <a href="#" class="btn action-type" data-count="0">Z</a>
+      <a href="#" class="btn action-type" data-count="0">X</a>
+      <a href="#" class="btn action-type" data-count="0">C</a>
+      <a href="#" class="btn action-type" data-count="0">V</a>
+      <a href="#" class="btn action-type" data-count="0">B</a>
+      <a href="#" class="btn action-type" data-count="0">N</a>
+      <a href="#" class="btn action-type" data-count="0">M</a>
+      <a href="#" class="btn action-untype">&lt;&times;</a>
+      <a href="#" class="btn action-submit">✓</a>
     </div>
   </div>
 
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
   <!-- <script src="/jquery-3.6.0.min.js"></script> -->
   <script src="//cdn.yiays.com/jquery-color.min.js"></script>
-  <script src="/common.js?v=8"></script>
+  <script src="/common.js?v=8.2"></script>
   <script>
     const words = [
       "truest",
@@ -128,14 +178,24 @@
       "study",
       "conversation",
       "astronomer",
-      "incredible"
+      "incredible",
+      "unidentifiably",
+      "triangulated",
+      "mountaineers",
+      "computerised",
+      "disagreement",
+      "replications",
+      "resistance",
+      "creative",
+      "parental",
+      "statement"
     ];
     let dictionary = [];
     let word, keys, input, answers;
     const animparams = {distance: 5, speed: 50, times: 2}
 
     $().ready(() => {
-      $.get('dictionary.txt?v=3.2')
+      $.get('dictionary.txt?v=3.3')
       .done((data) => {dictionary = data.split(/\r?\n/);})
       .fail(() => {alert("Failed to get the dictionary! Try reloading the page...")});
 
@@ -146,6 +206,8 @@
       $('#modeswitch').on('change', on_modechange);
 
       $('#start').on('click', newgame);
+
+      $('.action-toggle-keyboard').on('click', toggle_keyboard);
 
       $('.action-type').on('click', (e) => {
         var letter = e.target.textContent.toUpperCase();
@@ -199,8 +261,9 @@
     }
 
     function menu() {
-      $('#game,#results,#leaderboard').hide();
+      $('#game,#results,#leaderboard,#keyboard').hide();
       $('#menu,#modeswitch').show();
+      $('body').removeClass('keyboard');
     }
 
     function newgame() {
@@ -208,7 +271,8 @@
         $('#menu,#results,#leaderboard,#modeswitch').hide();
         input = '';
         $('#input').text('_');
-        $('#game').show();
+        $('#game,#keyboard').show();
+        $('body').addClass('keyboard');
         answers = [];
         $('#question').text(word.toUpperCase());
         resetkeys();
@@ -227,13 +291,16 @@
       }
 
       $('.action-type').each((i, el) => {
+        $(el).attr('data-count', keys[$(el).text()]);
         if(keys[$(el).text()] > 0)
           $(el).removeClass('disabled');
         else
           $(el).addClass('disabled');
       });
 
-      $('#found').text(answers.join(', ').toUpperCase());
+      $('#found').text(answers.join(', ').toUpperCase())
+      .animate({scrollTop: $('#found')[0].scrollHeight}, 300);
+
     }
 
     function checkanswer() {
@@ -260,8 +327,9 @@
     function endgame() {
       if(!confirm("After finishing, you can't enter any more words. Continue?")) return;
 
-      $('#menu,#game').hide();
+      $('#menu,#game,#keyboard').hide();
       $('#results').show();
+      $('body').removeClass('keyboard');
       
       $('#finalscore').text(answers.length);
       $('#finalscore').prop('title', answers.join('\n'));
@@ -274,21 +342,28 @@
     }
 
     function showleaderboard() {
-      $('#results,#menu,#game').hide();
+      $('#results,#menu,#game,#keyboard').hide();
       $('#leaderboard,#modeswitch').show();
+      $('body').removeClass('keyboard');
 
       $('#leaderboard-word').text(`(${word.toUpperCase()})`);
 
       get_leaderboard(`anagrams_${word}`,
-                      result_converter=(value) => `${value[0]} Anagram(s), ${value[1]} Word(s)`);
+                      result_converter=(value) => `${value[0]} Anagram(s), ${value[1]} Word(s)`,
+                      sorter=(a,b) => (a[2][0]===b[2][0])?b[2][1]-a[2][1]:b[2][0]-a[2][0]);
     }
 
+    function toggle_keyboard() {
+      if(document.body.classList.contains('keyboard')) document.body.classList.remove('keyboard');
+      else document.body.classList.add('keyboard');
+    }
     function type(letter) {
       if(keys[letter] > 0) {
         input += letter;
         $('#input').text(input + '_');
 
         keys[letter] -= 1
+        $(`.action-type:contains('${letter}')`).attr('data-count', keys[letter]);
         if(keys[letter] <= 0) {
           $(`.action-type:contains('${letter}')`).addClass('disabled');
         }
@@ -301,6 +376,7 @@
         var letter = input.charAt(input.length - 1);
         input = input.slice(0, -1);
         keys[letter] += 1;
+        $(`.action-type:contains('${letter}')`).attr('data-count', keys[letter]);
         $(`.action-type:contains('${letter}')`).removeClass('disabled');
         $('#input').text(input + '_');
       } else {

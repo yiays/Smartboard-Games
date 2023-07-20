@@ -73849,6 +73849,7 @@ tartly
 tartness
 tarts
 tarzan
+taser
 tashkent
 task
 tasked
@@ -75856,6 +75857,7 @@ tortures
 torturing
 torturous
 torturously
+torus
 tory
 tosca
 tosco
@@ -77190,6 +77192,7 @@ tugboats
 tugged
 tugging
 tugs
+tui
 tuition
 tularaemia
 tularemia
