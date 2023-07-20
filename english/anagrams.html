@@ -13,6 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/common.css?v=7" rel="stylesheet">
   <style>
+    /* TODO: standardise some of these new features */
     body {
       display: flex;
       width: 100%;
@@ -195,7 +196,7 @@
     const animparams = {distance: 5, speed: 50, times: 2}
 
     $().ready(() => {
-      $.get('dictionary.txt?v=3.3')
+      $.get('dictionary.txt?v=4')
       .done((data) => {dictionary = data.split(/\r?\n/);})
       .fail(() => {alert("Failed to get the dictionary! Try reloading the page...")});
 
