@@ -112,13 +112,13 @@
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
   <!-- <script src="/jquery-3.6.0.min.js"></script> -->
   <script src="//cdn.yiays.com/jquery-color.min.js"></script>
-  <script src="/common.js?v=8"></script>
+  <script src="/common.js?v=8.2"></script>
   <script>
     const gamerules = {
       'easy': {'min': 1, 'max': 4},
       'medium': {'min': 2, 'max': 7},
-      'hard': {'min': 6, 'max': 12},
-      'harder': {'min': 11, 'max': 15}
+      'hard': {'min': 5, 'max': 12},
+      'harder': {'min': 5, 'max': 15}
     };
     const randomizers = [
       (i) => i - 4,
@@ -159,7 +159,7 @@
       $('.action-results').on('click', showanswers);
 
       $('.action-submit').on('click', () => {
-        submit_highscore(`quickmaths_${mode}_${difficulty}`, score)
+        submit_highscore(`quickmaths_${mode}_${difficulty}`, score, null, 1235);
       });
 
       $('.action-leaderboard').on('click', showleaderboard);
@@ -301,7 +301,7 @@
 
       get_leaderboard(`quickmaths_${mode}_${difficulty}`,
                       result_converter=(v) => `${Math.round(v*100)/100}p/s`,
-                      sorter=(a,b) => parseFloat(a) - parseFloat(b));
+                      sorter=(a,b) => b[2] - a[2]);
     }
 
     function msToTime(duration) {

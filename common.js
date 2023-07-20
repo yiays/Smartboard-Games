@@ -65,21 +65,24 @@ function submit_highscore(scope, score, username=null, secret=null, silent=false
   return true;
 }
 
-function get_leaderboard(scope, result_converter=null, sorter=null) {
+function get_leaderboard(scope,
+                         result_converter=(score) => `${score}%`,
+                         sorter=(a, b) => parseInt(b[1]) - parseInt(a[1])) {
   $('#board>tbody').html('<tr><td colspan=3>Loading...</td></tr>')
   $.get(`https://highscore.yiays.com/?scope=${scope}`)
   .done((data) => {
+    // Sort data using either a provided sorting algorithm, or the default
     var entries = Object.keys(data).map((key) => {
-      return [key, result_converter? result_converter(data[key]): `${data[key]}%`];
+      return [key, result_converter(data[key]), data[key]];
     });
-    entries.sort(sorter? sorter : (a, b) => parseInt(b[1]) - parseInt(a[1]));
+    entries.sort(sorter);
 
     $('#board>tbody').html('');
     let i = 0;
     entries.slice(0, 10).forEach(entry => {
       $('#board>tbody').append(`<tr><td>${++i}</td><td>${entry[0]}</td><td>${entry[1]}</td></tr>`);
     });
-    if(i==0) $('#board>tbody').html('<tr><td>--</td><td>-----</td><td>---</td></tr>');
+    if(i==0) $('#board>tbody').html('<tr><td colspan=3>No highscores yet, be the first!</td></tr>');
   })
   .fail(() => {alert("Failed to get the leaderboard!")});
 }
