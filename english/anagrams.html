@@ -11,59 +11,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=7" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=8.4" rel="stylesheet">
   <style>
-    /* TODO: standardise some of these new features */
     body {
-      display: flex;
-      width: 100%;
-      height: auto;
-      justify-content: center;
-      align-items: center;
-      margin: 0;
-      box-sizing: border-box;
       margin-top: 2rem;
-      overflow: auto;
-    }
-    body.keyboard {
-      margin-bottom: calc(clamp(2.4rem, calc((100vw - 1rem) / 3), 14rem));
     }
     #found {
       max-height: 8rem;
       overflow-y: auto;
-    }
-    #keyboard {
-      display: none;
-      position: fixed;
-      top: 100vh;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      font-size: clamp(0.8rem, calc((100vw - 1rem) / 21), 2rem);
-      background: rgba(0, 0, 0, 0.3);
-      border: grey 1px solid;
-      flex-direction: column;
-      align-items: center;
-    }
-    body.keyboard #keyboard {
-      top: unset;
-    }
-    #keyboard, #keyboard > .row {
-      display: flex;
-    }
-    #keyboard > .action-toggle-keyboard {
-      position: absolute;
-      top: -2.5rem;
-      right: 1rem;
-      font-size: 1rem;
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
-    }
-    #keyboard > .row > .btn {
-      position: relative;
-      width: 1em;
-      height: 1em;
-      margin: 0.1em;
     }
     #keyboard > .row > .btn::after {
       content: attr(data-count);
@@ -170,7 +125,7 @@
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
   <!-- <script src="/jquery-3.6.0.min.js"></script> -->
   <script src="//cdn.yiays.com/jquery-color.min.js"></script>
-  <script src="/common.js?v=8.2"></script>
+  <script src="/common.js?v=9"></script>
   <script>
     const words = [
       "truest",
@@ -196,7 +151,7 @@
     const animparams = {distance: 5, speed: 50, times: 2}
 
     $().ready(() => {
-      $.get('dictionary.txt?v=4')
+      $.get('dictionary.txt?v=4.1')
       .done((data) => {dictionary = data.split(/\r?\n/);})
       .fail(() => {alert("Failed to get the dictionary! Try reloading the page...")});
 
@@ -210,28 +165,12 @@
 
       $('.action-toggle-keyboard').on('click', toggle_keyboard);
 
-      $('.action-type').on('click', (e) => {
-        var letter = e.target.textContent.toUpperCase();
-        type(letter);
-      });
-
+      $('.action-type').on(
+        'click',
+        (e) => type(e.target.textContent.toUpperCase())
+      );
       $('.action-untype').on('click', untype);
-
-      $(document).on('keydown', (e) => {
-        if($('#game').is(':hidden') || e.ctrlKey || e.altKey || e.metaKey) return;
-        if(e.key.length === 1 && e.key.match(/[A-Za-z]/i)) {
-          e.stopImmediatePropagation();
-          type(e.key.toUpperCase());
-        }
-        else if(e.key == 'Backspace') {
-          e.stopImmediatePropagation();
-          untype();
-        }
-        else if(e.key == 'Enter') {
-          e.stopImmediatePropagation();
-          checkanswer();
-        }
-      });
+      init_keyboard_capture();
 
       $('.action-cancel').on('click', menu);
 
@@ -354,10 +293,6 @@
                       sorter=(a,b) => (a[2][0]===b[2][0])?b[2][1]-a[2][1]:b[2][0]-a[2][0]);
     }
 
-    function toggle_keyboard() {
-      if(document.body.classList.contains('keyboard')) document.body.classList.remove('keyboard');
-      else document.body.classList.add('keyboard');
-    }
     function type(letter) {
       if(keys[letter] > 0) {
         input += letter;

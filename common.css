@@ -1,12 +1,24 @@
 html {
-  font-family: 'Roboto', sans-serif;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  font-family: 'Roboto', sans-serif;
   min-height: 100vh;
   background: #1e1e1e;
   color: #fff;
   text-align: center;
+}
+body {
+  display: flex;
+  width: 100%;
+  height: auto;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  box-sizing: border-box;
+  overflow: auto;
+}
+body.keyboard {
+  margin-bottom: calc(clamp(2.4rem, calc((100vw - 1rem) / 3), 14rem));
 }
 h1 {
   font-size: 2em;
@@ -96,6 +108,41 @@ h1 {
   border: 6px solid black;
   border-radius: 50%;
 }
+
+#keyboard {
+  display: none;
+  position: fixed;
+  top: 100vh;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-size: clamp(0.8rem, calc((100vw - 1rem) / 21), 2rem);
+  background: rgba(0, 0, 0, 0.3);
+  border: grey 1px solid;
+  flex-direction: column;
+  align-items: center;
+}
+body.keyboard #keyboard {
+  top: unset;
+}
+#keyboard, #keyboard > .row {
+  display: flex;
+}
+#keyboard > .action-toggle-keyboard {
+  position: absolute;
+  top: -2.5rem;
+  right: 1rem;
+  font-size: 1rem;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+#keyboard > .row > .btn {
+  position: relative;
+  width: 1em;
+  height: 1em;
+  margin: 0.1em;
+}
+
 .options {
   display: flex;
   width: 300px;
