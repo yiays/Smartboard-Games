@@ -1,8 +1,8 @@
 <?php
 // Generates list in JSON of stock images for use in storyshuffle
 
-$dir = '../stockimgs/';
-$root = '/stockimgs/';
+$dir = '../img/stock/';
+$root = '/img/stock/';
 $files = scandir($dir);
 
 $out = [];

@@ -1,7 +1,7 @@
 <?php
 // Optimize any images added to the stock image collection
 
-$dir = '../stockimgs/';
+$dir = '/stockimgs/';
 $files = scandir($dir);
 
 foreach($files as $filename) {
