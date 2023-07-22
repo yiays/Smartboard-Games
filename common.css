@@ -76,6 +76,7 @@ h1 {
   position: absolute;
   top: 1rem;
   right: 1rem;
+  margin: 0;
 }
 .btn {
   display: flex;

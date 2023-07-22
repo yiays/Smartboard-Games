@@ -87,6 +87,12 @@ function get_leaderboard(scope,
   .fail(() => {alert("Failed to get the leaderboard!")});
 }
 
+// Update view when loading is complete
+function load_complete(showcls='.big-red.btn') {
+  $('.loader').hide();
+  $(showcls).show();
+}
+
 // Shows or hides the in-game keyboard
 function toggle_keyboard() {
   if(document.body.classList.contains('keyboard')) document.body.classList.remove('keyboard');

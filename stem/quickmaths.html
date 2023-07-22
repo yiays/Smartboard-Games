@@ -324,26 +324,18 @@
         document.title = "Quick Addition";
         $('#menu>h1').text("Quick Addition");
         $('#leaderboard>h1').text("Quickest Addition");
-        $('.pre>.img-loader').show();
-        $('.post>.img-loader').hide();
       }else if(mode == 1){
         document.title = "Quick Subtraction";
         $('#menu>h1').text("Quick Subtraction");
         $('#leaderboard>h1').text("Quickest Subtraction");
-        $('.pre>.img-loader').hide();
-        $('.post>.img-loader').show();
       }else if(mode == 2){
         document.title = "Quick Multiplication";
         $('#menu>h1').text("Quick Multiplication");
         $('#leaderboard>h1').text("Quickest Multiplication");
-        $('.pre>.img-loader').show();
-        $('.post>.img-loader').hide();
       }else if(mode == 3){
         document.title = "Quick Division";
         $('#menu>h1').text("Quick Division");
         $('#leaderboard>h1').text("Quickest Division");
-        $('.pre>.img-loader').hide();
-        $('.post>.img-loader').show();
       }
       else{
         console.error(`Unknown game mode ${mode} requested!`);

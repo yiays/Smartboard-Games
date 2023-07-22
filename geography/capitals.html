@@ -71,7 +71,7 @@
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
   <!-- <script src="/jquery-3.6.0.min.js"></script> -->
   <script src="//cdn.yiays.com/jquery-color.min.js"></script>
-  <script src="/common.js?v=3"></script>
+  <script src="/common.js?v=9.2"></script>
   <script>
     const difficulties = ['baby', 'easy', 'medium', 'hard'];
     let capitals, isocodes, difficulty, gamedifficulties, norepeat;
@@ -82,10 +82,7 @@
       let promises = [];
       promises.push($.getJSON('capitals.json', (data) => {capitals = data;}));
       promises.push($.getJSON('isocodes.json', (data) => {isocodes = data;}));
-      Promise.all(promises).then((_) => {
-        $('.loader').hide();
-        $('.big-red.btn').show();
-      });
+      Promise.all(promises).then((_) => load_complete());
 
       function newquestion() {
         while(true) {
