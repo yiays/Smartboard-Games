@@ -54,6 +54,7 @@ function shuffle(array) {
 }
 
 function submit_highscore(scope, score, username=null, secret=null, silent=false) {
+  // TODO: save username to browser
   if(username==null) username = prompt("Username");
   if(!username) return false;
   if(secret==null) secret = prompt("Secret code (must be typed by the teacher)");

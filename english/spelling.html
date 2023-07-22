@@ -4,76 +4,56 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Anagrams</title>
-  <meta name="description" content="Spell as many words as you can using the letters of another word.">
-  <meta name="tags" content="spelling, anagrams, challenge, typing, keyboard">
+  <title>Soelling 🐝</title>
+  <meta name="description" content="Hear a word, see the definition, and try your best to spell it!">
+  <meta name="tags" content="spelling, bee, challenge, typing, keyboard">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/common.css?v=8.9" rel="stylesheet">
   <style>
-    body {
-      margin-top: 2rem;
-    }
-    #found {
-      max-height: 8rem;
-      overflow-y: auto;
-    }
-    #keyboard > .row > .btn::after {
-      content: attr(data-count);
-      display: inline-block;
-      position: absolute;
-      font-size: 0.5em;
-      top: 0.3em;
-      right: 0.3em;
-      color: grey;
-    }
+    
   </style>
 </head>
 <body>
-  <p class="panel-controls">
-    <label for="modeswitch">Word: </label>
-    <select name="word" id="modeswitch">
-      <option selected value="">Select a word</option>
-    </select>
-  </p>
   <div id="menu" class="panel">
-    <h1>Anagrams</h1>
-    <p>Spell as many words as you can with the letters of another word.</p>
-    <div class="loader">Loading...</div>
-    <a class="big-red btn disabled" id="start" href="#" style="display:none">Go</a>
+    <h1>Spelling 🐝</h1>
+    <p>Hear a word, see the definition, and try your best to spell it!</p>
+    <a class="big-red btn" id="start" href="#">Go</a>
     <div class="options" style="margin-top: 1em">
-      <a class="btn action-leaderboard disabled" href="#">View leaderboard</a>
+      <a class="btn action-leaderboard" href="#">View leaderboard</a>
       <a class="btn" href="/">More games</a>
     </div>
+    <p class="panel-controls">
+      <label for="difficulty">Difficulty: </label>
+      <select id="difficulty" id="modeswitch" autofocus>
+        <option value="easy" selected>Easy</option>
+      </select>
+    </p>
   </div>
   <div id="game" class="panel" style="display:none;">
-    <h1 id="question">Question</h1>
+    <h1 id="question">Word 1</h1>
+    <p id="definition">Definition: </p>
     <p id="input">_</p>
-    <p id="found"></p>
     <br>
     <div class="options">
       <a class="btn confirm-action action-cancel" href="#">Menu</a>
-      <a class="btn action-finish" href="#">Finish</a>
+      <a class="btn action-check disabled" href="#">Check answer</a>
     </div>
   </div>
   <div id="results" class="panel" style="display:none;">
-    <h1>Results</h1>
-    <p>
-      You managed to find <span id="finalscore">0</span> words that can be spelt with the
-      letters of <span id="word">word</span>, <attr id="anagrams">0</attr> of which
-      were anagrams!
-    </p>
+    <h1>Correct / Incorrect</h1>
+    <p id="worddiff"></p>
     <div class="options">
       <a class="btn action-cancel" href="#">Menu</a>
-      <a class="btn action-leaderboard" href="#">View leaderboard</a>
+      <a class="btn action-leaderboard" href="#">Next word</a>
     </div>
   </div>
   <div id="leaderboard" class="panel" style="display:none;">
     <h1>Leaderboard</h1>
-    <p id="leaderboard-word">
-      WORD
+    <p id="leaderboard-difficulty">
+      (Easy)
     </p>
     <table id="board" width="100%">
       <thead>
@@ -91,77 +71,51 @@
   <div id="keyboard" style="display:none;">
     <a href="#" class="btn action-toggle-keyboard">⌨️</a>
     <div class="row">
-      <a href="#" class="btn action-type" data-count="0">Q</a>
-      <a href="#" class="btn action-type" data-count="0">W</a>
-      <a href="#" class="btn action-type" data-count="0">E</a>
-      <a href="#" class="btn action-type" data-count="0">R</a>
-      <a href="#" class="btn action-type" data-count="0">T</a>
-      <a href="#" class="btn action-type" data-count="0">Y</a>
-      <a href="#" class="btn action-type" data-count="0">U</a>
-      <a href="#" class="btn action-type" data-count="0">I</a>
-      <a href="#" class="btn action-type" data-count="0">O</a>
-      <a href="#" class="btn action-type" data-count="0">P</a>
+      <a href="#" class="btn action-type">Q</a>
+      <a href="#" class="btn action-type">W</a>
+      <a href="#" class="btn action-type">E</a>
+      <a href="#" class="btn action-type">R</a>
+      <a href="#" class="btn action-type">T</a>
+      <a href="#" class="btn action-type">Y</a>
+      <a href="#" class="btn action-type">U</a>
+      <a href="#" class="btn action-type">I</a>
+      <a href="#" class="btn action-type">O</a>
+      <a href="#" class="btn action-type">P</a>
     </div>
     <div class="row">
-      <a href="#" class="btn action-type" data-count="0">A</a>
-      <a href="#" class="btn action-type" data-count="0">S</a>
-      <a href="#" class="btn action-type" data-count="0">D</a>
-      <a href="#" class="btn action-type" data-count="0">F</a>
-      <a href="#" class="btn action-type" data-count="0">G</a>
-      <a href="#" class="btn action-type" data-count="0">H</a>
-      <a href="#" class="btn action-type" data-count="0">J</a>
-      <a href="#" class="btn action-type" data-count="0">K</a>
-      <a href="#" class="btn action-type" data-count="0">L</a>
+      <a href="#" class="btn action-type">A</a>
+      <a href="#" class="btn action-type">S</a>
+      <a href="#" class="btn action-type">D</a>
+      <a href="#" class="btn action-type">F</a>
+      <a href="#" class="btn action-type">G</a>
+      <a href="#" class="btn action-type">H</a>
+      <a href="#" class="btn action-type">J</a>
+      <a href="#" class="btn action-type">K</a>
+      <a href="#" class="btn action-type">L</a>
     </div>
-    <div class="row" style="padding-left:0.6em;">
-      <a href="#" class="btn action-type" data-count="0">Z</a>
-      <a href="#" class="btn action-type" data-count="0">X</a>
-      <a href="#" class="btn action-type" data-count="0">C</a>
-      <a href="#" class="btn action-type" data-count="0">V</a>
-      <a href="#" class="btn action-type" data-count="0">B</a>
-      <a href="#" class="btn action-type" data-count="0">N</a>
-      <a href="#" class="btn action-type" data-count="0">M</a>
+    <div class="row">
+      <a href="#" class="btn action-type">Z</a>
+      <a href="#" class="btn action-type">X</a>
+      <a href="#" class="btn action-type">C</a>
+      <a href="#" class="btn action-type">V</a>
+      <a href="#" class="btn action-type">B</a>
+      <a href="#" class="btn action-type">N</a>
+      <a href="#" class="btn action-type">M</a>
       <a href="#" class="btn action-untype">&lt;&times;</a>
-      <a href="#" class="btn action-submit">✓</a>
     </div>
   </div>
 
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
   <script src="//cdn.yiays.com/jquery-color.min.js"></script>
-  <script src="/common.js?v=9.2"></script>
+  <script src="/common.js?v=9"></script>
   <script>
-    const words = [
-      "truest",
-      "peach",
-      "players",
-      "study",
-      "conversation",
-      "astronomer",
-      "incredible",
-      "unidentifiably",
-      "triangulated",
-      "mountaineers",
-      "computerised",
-      "disagreement",
-      "replications",
-      "resistance",
-      "creative",
-      "parental",
-      "statement"
-    ];
-    let dictionary = [];
-    let word, keys, input, answers;
+    const words = {
+      0: {'testing': 'To try something and ensure it works'}
+    }
+    let word, input, answers;
     const animparams = {distance: 5, speed: 50, times: 2}
 
     $().ready(() => {
-      $.get('dictionary.txt?v=4.1')
-      .done((data) => {dictionary = data.split(/\r?\n/);load_complete()})
-      .fail(() => {alert("Failed to get the dictionary! Try reloading the page...")});
-
-      words.forEach((w) => {
-        $('#modeswitch').append(`<option value="${w}">${w.toUpperCase()}</option>`);
-      });
-
       $('#modeswitch').on('change', on_modechange);
 
       $('#start').on('click', newgame);
@@ -205,13 +159,13 @@
 
     function menu() {
       $('#game,#results,#leaderboard,#keyboard').hide();
-      $('#menu,.panel-controls').show();
+      $('#menu').show();
       $('body').removeClass('keyboard');
     }
 
     function newgame() {
       if(word) {
-        $('#menu,#results,#leaderboard,.panel-controls').hide();
+        $('#menu,#results,#leaderboard').hide();
         input = '';
         $('#input').text('_');
         $('#game,#keyboard').show();
@@ -286,7 +240,7 @@
 
     function showleaderboard() {
       $('#results,#menu,#game,#keyboard').hide();
-      $('#leaderboard,.panel-controls').show();
+      $('#leaderboard').show();
       $('body').removeClass('keyboard');
 
       $('#leaderboard-word').text(`(${word.toUpperCase()})`);
