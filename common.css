@@ -6,6 +6,14 @@ html {
   color: #fff;
   text-align: center;
 }
+@media screen and (min-width: 80rem) {
+  html {
+    font-size: 1.5rem;
+  }
+}
+input,select,button {
+  font-size: 1em;
+}
 body {
   display: flex;
   width: 100%;
@@ -56,12 +64,12 @@ h1 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 400px;
+  width: 25em;
   max-width: 80vw;
-  height: 350px;
+  height: 22em;
   padding: 2em;
   background: rgba(50, 50, 50, 0.6);
-  border-radius: 30px;
+  border-radius: 2em;
   box-shadow: rgba(0,0,0,0.25) 0.25rem 0.25rem 0.25rem 0;
 }
 .panel-controls {
@@ -105,7 +113,7 @@ h1 {
   height: 8rem;
   background: #e74c3c;
   font-size: 3em;
-  border: 6px solid black;
+  border: 0.3rem solid black;
   border-radius: 50%;
 }
 
@@ -145,7 +153,7 @@ body.keyboard #keyboard {
 
 .options {
   display: flex;
-  width: 300px;
+  width: 19em;
   flex-direction: row;
   justify-content: space-around;
 }
@@ -155,7 +163,7 @@ body.keyboard #keyboard {
   gap: 0.5rem;
 }
 .img-loader {
-  height: 210px;
+  height: 13em;
   margin-bottom: 1em;
   background: rgba(233, 233, 233, 0.5);
   animation: fadeloop 1s infinite;
