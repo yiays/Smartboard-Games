@@ -68,13 +68,27 @@
       display: inline-block;
       font-size: 0.9rem;
       margin: 0.25rem;
-      min-width: fit-content;
-      width: 12vw;
-      max-width: 10em;
+      min-width: 5em;
     }
     .category.active {
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
+    }
+    .c-trivia {
+      background-color: #863d0c;
+    }
+    .c-stem {
+      background-color: #1a547a;
+    }
+    .c-geography {
+      background-color: #1d663c;
+    }
+    .c-english {
+      background-color: #561f6d;
+    }
+    .c-other {
+      background-color: #aaa;
+      color: black!important;
     }
     .game {
       position: relative;
@@ -91,18 +105,6 @@
     .game sub {
       font-style: italic;
     }
-    .trivia {
-      background-color: #863d0c;
-    }
-    .stem {
-      background-color: #1a547a;
-    }
-    .geography {
-      background-color: #1d663c;
-    }
-    .english {
-      background-color: #561f6d;
-    }
   </style>
 </head>
 <body>
@@ -113,69 +115,80 @@
     </p>
   </div>
   <nav class="categories">
-    <a href="#" class="btn category none" data-filter="none">All</a>
-    <a href="#trivia" class="btn category trivia" data-filter="trivia">Trivia</a>
-    <a href="#stem" class="btn category stem" data-filter="stem">STEM</a>
-    <a href="#geography" class="btn category geography" data-filter="geography">Geography</a>
-    <a href="#english" class="btn category english" data-filter="english">English</a>
+    <a href="#" class="btn category" data-filter="none">All</a>
+    <a href="#trivia" class="btn category c-trivia" data-filter="trivia">Trivia</a>
+    <a href="#stem" class="btn category c-stem" data-filter="stem">STEM</a>
+    <a href="#geography" class="btn category c-geography" data-filter="geography">Geography</a>
+    <a href="#english" class="btn category c-english" data-filter="english">English</a>
+    <a href="#tool" class="btn category c-other" data-filter="tool">
+      <span class="icon icon-cog"></span> Tool
+    </a>
+    <a href="#leaderboard" class="btn category c-other" data-filter="leaderboard">
+      <span class="icon icon-stats-bars2"></span> Leaderboard
+    </a>
   </nav>
   <main>
     <div class="row games">
-      <a href="trivia/5secondrule.html" class="btn game trivia">
+      <a href="trivia/5secondrule.html" class="btn game c-trivia" data-filter="trivia tool">
         <h1>5 Second Rule</h1>
         <span class="icon icon-cog"></span>
         <p>Quickfire questions with a 5 second time limit</p>
       </a>
-      <a href="geography/capitals.html" class="btn game geography">
+      <a href="geography/capitals.html" class="btn game c-geography" data-filter="geography">
         <h1>Capital Cities</h1>
         <p>Guess the capital for each country</p>
       </a>
-      <a href="geography/capitals.html?mode=1" class="btn game geography">
+      <a href="geography/capitals.html?mode=1" class="btn game c-geography" data-filter="geography">
         <h1>Countries</h1>
         <p>Guess the country for each capital</p>
       </a>
-      <a href="geography/capitals.html?mode=2" class="btn game geography">
+      <a href="geography/capitals.html?mode=2" class="btn game c-geography" data-filter="geography">
         <h1>Flags</h1>
         <p>Guess the country for each flag</p>
       </a>
-      <a href="stem/quickmaths.html?mode=0" class="btn game stem">
+      <a href="stem/quickmaths.html?mode=0" class="btn game c-stem" data-filter="stem leaderboard">
         <h1>Quick Addition</h1>
+        <span class="icon icon-stats-bars2"></span>
         <p>Quickfire maths questions with multiple choice answers</p>
         •
         <sub>Reset leaderboard, new scoring system - 18/07/2023</sub>
         <sub>Made harder difficulty harder - 20/07/2023</sub>
       </a>
-      <a href="stem/quickmaths.html?mode=1" class="btn game stem">
+      <a href="stem/quickmaths.html?mode=1" class="btn game c-stem" data-filter="stem leaderboard">
         <h1>Quick Subtraction</h1>
+        <span class="icon icon-stats-bars2"></span>
         <p>Quickfire maths questions with multiple choice answers</p>
         •
         <sub>Reset leaderboard, new scoring system - 18/07/2023</sub>
       </a>
-      <a href="stem/quickmaths.html?mode=2" class="btn game stem">
+      <a href="stem/quickmaths.html?mode=2" class="btn game c-stem" data-filter="stem leaderboard">
         <h1>Quick Multiplication</h1>
+        <span class="icon icon-stats-bars2"></span>
         <p>Quickfire maths questions with multiple choice answers</p>
         •
         <sub>Reset leaderboard, new scoring system - 18/07/2023</sub>
       </a>
-      <a href="stem/quickmaths.html?mode=3" class="btn game stem">
+      <a href="stem/quickmaths.html?mode=3" class="btn game c-stem" data-filter="stem leaderboard">
         <h1>Quick Division</h1>
+        <span class="icon icon-stats-bars2"></span>
         <p>Quickfire maths questions with multiple choice answers</p>
         •
         <sub>Reset leaderboard, new scoring system - 18/07/2023</sub>
       </a>
-      <a href="english/anagrams.html" class="btn game english">
+      <a href="english/anagrams.html" class="btn game c-english" data-filter="english leaderboard">
         <h1>Anagrams</h1>
+        <span class="icon icon-stats-bars2"></span>
         <p>Spell as many words as you can with the letters of another word</p>
         •
         <sub>Keyboard support, word select - 18/07/2023</sub>
         <sub>More words, improved keyboard - 20/07/2023</sub>
       </a>
-      <a href="english/storyshuffle.html" class="btn game english">
+      <a href="english/storyshuffle.html" class="btn game c-english" data-filter="english tool">
         <h1>Story Shuffle</h1>
         <span class="icon icon-cog"></span>
         <p>Interpret a set of 3 random images to inspire your next fiction</p>
       </a>
-      <a href="stem/magicsquares.html" class="btn game stem">
+      <a href="stem/magicsquares.html" class="btn game c-stem" data-filter="stem">
         <h1>Magic Squares</h1>
         <p>Solve randomly generated magic square maths puzzles</p>
       </a>
@@ -186,13 +199,9 @@
     <span>
       Created by <a href="https://yiays.com">Yiays</a>
     </span>
-    <sub>
-      <span class="icon-cog"></span> = this is a tool, rather than a game
-    </sub>
   </footer>
   
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
-  <!-- <script src="/jquery-3.6.0.min.js"></script> -->
   <script>
     $().ready(() => {
       $('.category').on('click', (e) => {
@@ -204,7 +213,7 @@
         if(id == 'none'){
           $('.game').show();
         }else{
-          $(`.game.${id}`).show();
+          $(`.game[data-filter*=${id}]`).show();
         }
         $('.category.active').removeClass('active');
         $(`.category.${id}`).addClass('active');
