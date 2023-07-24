@@ -54,8 +54,22 @@ function shuffle(array) {
 }
 
 function submit_highscore(scope, score, username=null, secret=null, silent=false) {
-  // TODO: save username to browser
-  if(username==null) username = prompt("Username");
+  // Save username to browser
+  if(username === null) {
+    if(document.cookie.includes('username=')) {
+      username = document.cookie.split('; ').filter((s) => s.startsWith('username='))[0].slice(9);
+    }else{
+      username = prompt("Username").toLocaleLowerCase();
+      if(username.match(/[\w\d]{3,}/)) {
+        var expiry = (new Date());
+        expiry.setTime(expiry.getTime() + (1000*60*60*24*365*4)); // expires in 4 years
+        document.cookie = `username=${username};expires=${expiry.toUTCString()};path=/`;
+      }else{
+        alert("This username doesn't fit the required criteria! (3+ characters, letters and numbers only)");
+        return false;
+      }
+    }
+  }
   if(!username) return false;
   if(secret==null) secret = prompt("Secret code (must be typed by the teacher)");
   if(!secret) return false;
