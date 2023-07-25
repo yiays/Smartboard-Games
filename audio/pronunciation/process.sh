@@ -7,6 +7,7 @@ f_startsilenceremoval="silenceremove=start_periods=1:start_duration=0.1:start_th
 f_endsilenceremoval="areverse,$f_startsilenceremoval,areverse"
 # Compress the dynamic range of the sample
 f_compressor="acompressor=threshold=-15dB:ratio=3:attack=100:release=500"
+# f_amplify is customised to each sample, so we create it later
 
 readarray -d '' files < <(find . -type f -regextype posix-extended -regex '^.*\.raw\.(ogg|oga|mp3|wav)$' -print0)
 len=${#files[@]}
