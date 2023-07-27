@@ -1,14 +1,31 @@
-const bgs = [
-  '#16a085',
-  '#27ae60',
-  '#2980b9',
-  '#8e44ad',
-  '#2c3e50',
-  '#f39c12',
-  '#d35400',
-  '#c0392b',
-  '#34495e'
-];
+const c_schemes = {
+  'default': [
+    '#16a085',
+    '#27ae60',
+    '#2980b9',
+    '#8e44ad',
+    '#2c3e50',
+    '#f39c12',
+    '#d35400',
+    '#c0392b',
+    '#34495e'
+  ],
+  'alice': [
+    '#805f94',
+    '#9c5d3a',
+    '#d199b1',
+    '#46628c',
+    '#86bd8d'
+  ],
+  'roses': [
+    '#a31212',
+    '#751919',
+    '#4e7b3a',
+    '#3e5e2f',
+    '#5f2e2e'
+  ]
+}
+var theme = 'default';
 
 $().ready(() => {
   $('.img-loader>img').on('load', (e)=>{
@@ -22,14 +39,16 @@ $().ready(() => {
     e.stopImmediatePropagation();
   });
 
-  $('#start,.action-advance').on('click', ()=>{
-    $('html').animate({backgroundColor: bgs[Math.floor(Math.random() * bgs.length)]});
-  });
+  $('#start,.action-advance').on('click', advance_colour);
 
   $('.action-cancel').on('click', ()=>{
     $('html').animate({backgroundColor: '#1e1e1e'});
   });
 });
+
+function advance_colour() {
+  $('html').animate({backgroundColor: c_schemes[theme][Math.floor(Math.random() * c_schemes[theme].length)]});
+}
 
 function randint(max, min=0) {
   return Math.floor(Math.random() * (max - min + 1) + min);
