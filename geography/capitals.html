@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=8.8" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=9.1" rel="stylesheet">
   <style>
     body>.panel {
       height: 25em;
@@ -33,10 +33,10 @@
     <p>
       <label for="difficulty">Difficulty: </label>
       <select id="difficulty" autofocus>
-        <option value="baby">🍼 Baby</option>
         <option value="easy" selected>Easy</option>
         <option value="medium">Medium</option>
         <option value="hard">Hard</option>
+        <option value="harder">Harder</option>
       </select>
     </p>
     <div class="loader">Loading...</div>
@@ -70,9 +70,9 @@
 
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
   <script src="//cdn.yiays.com/jquery-color.min.js"></script>
-  <script src="/common.js?v=9.2"></script>
+  <script src="/common.js?v=11.4"></script>
   <script>
-    const difficulties = ['baby', 'easy', 'medium', 'hard'];
+    const difficulties = ['easy', 'medium', 'hard', 'harder'];
     let capitals, isocodes, difficulty, gamedifficulties, norepeat;
     let q = -1;
     let mode = 0;
