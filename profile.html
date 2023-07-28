@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Profile</title>
+  <meta name="description" content="Test your country, capital and flag knowledge with all the variations of tests in this game.">
+  <meta name="tags" content="geography, test, quiz, trivia, counties, capital cities, flags">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=9.1" rel="stylesheet">
+  <style>
+
+  </style>
+</head>
+<body>
+  <form id="login" class="panel">
+    <h1>Not logged in</h1>
+    <p>
+      Enter your details below
+    </p>
+    <label for="username">Username:</label>
+    <input type="text" id="username" placeholder="username" required>
+    <label for="secret">Secret:</label>
+    <input type="text" id="secret" placeholder="secret">
+    <br>
+    <sub>Leave secret blank for a new account, otherwise, find your secret on the profile page of a device you're signed in on</sub>
+    <br>
+    <div class="options">
+      <input type="submit" class="btn" value="Log in / sign up">
+      <a href="/" class="btn">Return to menu</a>
+    </div>
+  </form>
+  
+  <div id="profile" class="panel" style="display:none">
+    <h1 id="usertitle">Logged in</h1>
+    <p>
+      <span id="showname">Username: </span>
+      <br>
+      <span id="showsecret">Secret: </span>
+    </p>
+    <label for="theme">Colour scheme:</label>
+    <select name="theme" id="theme">
+      <option value="default">default</option>
+    </select>
+    <br>
+    <sub>Note your secret down somewhere to add your account to a new device</sub>
+    <br>
+    <div class="options">
+      <button class="btn disabled action-save">Save settings</button>
+      <button class="btn action-logout">Sign out</button>
+      <a href="/" class="btn">Games</a>
+    </div>
+  </d>
+
+  <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
+  <script src="//cdn.yiays.com/jquery-color.min.js"></script>
+  <script src="/common.js?v=11.4"></script>
+  <script>
+    $().ready(() => {
+      $('#login').submit((e) => {
+        e.preventDefault();
+
+        let fusername = $('#username').val().toLowerCase();
+        let fsecret = $('#secret').val();
+        if(fsecret)
+          log_in(fusername, fsecret);
+        else
+          sign_up(fusername);
+      });
+
+      $('.action-logout').on('click', log_out);
+    });
+  </script>
+</body>
+</html>

@@ -14,6 +14,10 @@ html {
 input,select,button {
   font-size: 1em;
 }
+input[type=submit], button {
+  border: none;
+  font: inherit;
+}
 body {
   display: flex;
   width: 100%;

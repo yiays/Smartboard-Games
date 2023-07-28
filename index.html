@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=8.8" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=9.1" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.yiays.com/yiaycons/yiaycons.css">
   <style>
     a {
@@ -26,6 +26,11 @@
       padding: 1em;
       z-index: 100;
     }
+    @media screen and (max-width: 40rem) {
+      .hero {
+        padding-top: 3rem;
+      }
+    }
     nav, footer {
       box-shadow: rgba(0,0,0,0.25) 0 0 0.25rem 0;
     }
@@ -33,6 +38,35 @@
       position: sticky;
       top: 0;
       z-index: 99;
+    }
+    .profile {
+      position: absolute;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      text-decoration: none;
+      gap: 0.2em;
+      top: 0;
+      right: 0;
+      font-size: 3rem;
+      padding: 1rem;
+      background: radial-gradient(at top right, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 70%);
+    }
+    .profile::before {
+      content: attr(data-username);
+      font-size: 0.33em;
+    }
+    .profile .pfp {
+      background: #555;
+      display: block;
+      width: 1em;
+      height: 1em;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+    .profile .icon {
+      position: relative;
+      top: 0.1em;
     }
     main {
       display: flex;
@@ -114,6 +148,11 @@
 </head>
 <body>
   <div class="hero">
+    <a href="/profile.html" class="profile" data-username="not logged in">
+      <i class="pfp">
+        <span class="icon icon-">user</span>
+      </i>
+    </a>
     <h1>Smartboard Games</h1>
     <p>
       A collection of simple educational games (and some tools), designed to be compatible with smartboards, tablets, and phones.
@@ -145,16 +184,22 @@
         <p class="badges"></p>
         <h1>Capital Cities</h1>
         <p>Guess the capital for each country</p>
+        •
+        <sub>Tweaked difficulty names - 29/07/2023</sub>
       </a>
       <a href="geography/capitals.html?mode=1" class="btn game c-geography" data-filter="geography">
         <p class="badges"></p>
         <h1>Countries</h1>
         <p>Guess the country for each capital</p>
+        •
+        <sub>Tweaked difficulty names - 29/07/2023</sub>
       </a>
       <a href="geography/capitals.html?mode=2" class="btn game c-geography" data-filter="geography">
         <p class="badges"></p>
         <h1>Flags</h1>
         <p>Guess the country for each flag</p>
+        •
+        <sub>Tweaked difficulty names - 29/07/2023</sub>
       </a>
       <a href="stem/quickmaths.html?mode=0" class="btn game c-stem" data-filter="stem leaderboard" data-scope="quickmaths_0_*">
         <p class="badges">
@@ -226,10 +271,8 @@
   
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
   <script src="//cdn.yiays.com/jquery-color.min.js"></script>
-  <script src="/common.js?v=-3"></script>
+  <script src="/common.js?v=11.4"></script>
   <script>
-    let username;
-
     $().ready(() => {
       $('.category').on('click', (e) => {
         filter(e.target.dataset.filter);
@@ -249,8 +292,7 @@
       filter(location.hash?location.hash.substr(1):'none');
 
       // Show 🥇, 🥈, or 🥉 if a saved username is on the default leaderboard
-      if(document.cookie.includes('username=')) {
-        username = document.cookie.split('; ').filter((s) => s.startsWith('username='))[0].slice(9);
+      if(username) {
         $('.game[data-scope]').each((_,el) => {
           $.getJSON(`https://highscore.yiays.com/?scope=${el.dataset.scope}&username=${username}`)
           .done((data) => {addLeaderboardBadges(el, data)});

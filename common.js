@@ -25,9 +25,23 @@ const c_schemes = {
     '#5f2e2e'
   ]
 }
-var theme = 'default';
+
+let username = null, secret = null, theme = 'default';
+if(document.cookie.includes('username=')) {
+  username = document.cookie.split('; ').filter((s) => s.startsWith('username='))[0].slice(9);
+}
+if(document.cookie.includes('secret=')) {
+  secret = document.cookie.split('; ').filter((s) => s.startsWith('secret='))[0].slice(7);
+}
+if(document.cookie.includes('theme=')) {
+  theme = document.cookie.split('; ').filter((s) => s.startsWith('theme='))[0].slice(6);
+}
 
 $().ready(() => {
+  if(username && secret) {
+    complete_login(username, secret, theme);
+  }
+
   $('.img-loader>img').on('load', (e)=>{
     $(e.target).animate({'opacity':1});
   });
@@ -40,14 +54,15 @@ $().ready(() => {
   });
 
   $('#start,.action-advance').on('click', advance_colour);
-
-  $('.action-cancel').on('click', ()=>{
-    $('html').animate({backgroundColor: '#1e1e1e'});
-  });
+  $('.action-cancel').on('click', reset_colour);
 });
 
 function advance_colour() {
   $('html').animate({backgroundColor: c_schemes[theme][Math.floor(Math.random() * c_schemes[theme].length)]});
+}
+
+function reset_colour() {
+  $('html').animate({backgroundColor: '#1e1e1e'});
 }
 
 function randint(max, min=0) {
@@ -72,30 +87,88 @@ function shuffle(array) {
   return array;
 }
 
-function submit_highscore(scope, score, username=null, secret=null, silent=false) {
-  // Save username to browser
-  if(username === null) {
-    if(document.cookie.includes('username=')) {
-      username = document.cookie.split('; ').filter((s) => s.startsWith('username='))[0].slice(9);
-    }else{
-      username = prompt("Username").toLocaleLowerCase();
-      if(username.match(/[\w\d]{3,}/)) {
-        var expiry = (new Date());
-        expiry.setTime(expiry.getTime() + (1000*60*60*24*365*4)); // expires in 4 years
-        document.cookie = `username=${username};expires=${expiry.toUTCString()};path=/`;
-      }else{
-        alert("This username doesn't fit the required criteria! (3+ characters, letters and numbers only)");
-        return false;
-      }
-    }
+function sign_up(pusername, callback=null) {
+  if(pusername.match(/[\w\d]{3,15}/)) {
+    $.post('https://highscore.yiays.com/', {'username':pusername})
+    .done((data) => {
+      complete_login(pusername, data.secret, data.theme, callback);
+      alert(`Your secret code is ${data.secret}. Note this down in order to be able to sign in later.`);
+    })
+    .fail((error) => alert(error.responseText? error.responseText : "Unable create an account at this time."))
+  }else{
+    alert("This username doesn't fit the required criteria! (3+ characters, letters and numbers only)");
+    return false;
   }
-  if(!username) return false;
-  if(secret==null) secret = prompt("Secret code (must be typed by the teacher)");
-  if(!secret) return false;
+}
+
+function log_in(pusername=null, psecret=null, callback=null) {
+  if(pusername==null) pusername = prompt('Username').toLowerCase();
+  if(!pusername) return false;
+  if(psecret==null) psecret = prompt('Secret (check account page on signed in device for secret)');
+  if(!psecret) return false;
+
+  $.get(`https://highscore.yiays.com/?secret=${psecret}&username=${pusername}`)
+  .done((data) => complete_login(pusername, data.secret, data.theme, callback))
+  .fail((error) => {
+    if(error.status == 401) sign_up(pusername, callback);
+    else alert(error.responseText? error.responseText : "Unable to log you in at this time.");
+  });
+}
+
+function complete_login(pusername, psecret, ptheme, callback=null) {
+  // Saves retrieved info to cookies and updates ui
+  var expiry = (new Date());
+  expiry.setTime(expiry.getTime() + (1000*60*60*24*365*4)); // expires in 4 years
+
+  document.cookie=`username=${pusername};expires=${expiry.toUTCString()};path=/`;
+  username=pusername
+  $('#showname').text(`Username: ${pusername}`);
+  $('[data-username]').attr('data-username', pusername);
+
+  document.cookie=`secret=${psecret};expires=${expiry.toUTCString()};path=/`;
+  secret=psecret;
+  $('#showsecret').text(`Secret: ${psecret}`);
+
+  document.cookie=`theme=${ptheme};expires=${expiry.toUTCString()};path=/`;
+  theme = ptheme;
+  $('#theme').val(theme);
+
+  $('#login').hide();
+  $('#profile').show();
+
+  advance_colour();
+
+  if(callback !== null) {
+    callback();
+  }
+}
+
+function log_out() {
+  document.cookie = 'username=;expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/';
+  username = null;
+  document.cookie = 'secret=;expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/';
+  secret = null;
+  document.cookie = 'theme=;expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/';
+  theme = 'default';
+
+  $('#profile').hide();
+  $('#login').show();
+
+  reset_colour();
+}
+
+function submit_highscore(scope, score, silent=false) {
+  if(username === null || secret === null) {
+    log_in(null, null, () => submit_highscore(scope, score, silent));
+    return false;
+  }
 
   $.get(`https://highscore.yiays.com/?secret=${secret}&scope=${scope}&username=${username}&score=${score}`)
   .done((data) => { if(!silent) alert(data); showleaderboard(); })
-  .fail((error) => { alert(error.responseText? error.responseText : "Something went wrong! Failed to save your highscore.")});
+  .fail((error) => {
+    if(error.status == 403) log_out();
+    alert(error.responseText? error.responseText : "Something went wrong! Failed to save your highscore.");
+  });
   return true;
 }
 
@@ -118,7 +191,7 @@ function get_leaderboard(scope,
     });
     if(i==0) $('#board>tbody').html('<tr><td colspan=3>No highscores yet, be the first!</td></tr>');
   })
-  .fail(() => {alert("Failed to get the leaderboard!")});
+  .fail(() => alert("Failed to get the leaderboard!"));
 }
 
 // Update view when loading is complete
