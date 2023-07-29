@@ -326,13 +326,16 @@
         $('.game[data-scope]').each((_,el) => {
           if(el.dataset.scope in badgeCache)
             addLeaderboardBadges(el, badgeCache[el.dataset.scope]);
-          else
+          else {
             badgeCache = null;
+            update_badges();
+            return false;
+          }
         });
       }
     }
 
-    placeEmoji = {1:'🥇', 2:'🥈', 3:'🥉'}
+    const placeEmoji = {1:'🥇', 2:'🥈', 3:'🥉'};
     function addLeaderboardBadges(el, data) {
       let badgeContainer = $(el).find('.badges');
       Object.entries(data).forEach((place) => {

@@ -87,72 +87,6 @@
       promises.push($.getJSON('isocodes.json', (data) => {isocodes = data;}));
       Promise.all(promises).then((_) => load_complete());
 
-      function newquestion() {
-        while(true) {
-          q = randint(capitals.length - 1);
-
-          if(norepeat.indexOf(q) >= 0) {
-            if(norepeat.length >= capitals.length) {
-              alert("Out of countries! Select a higher difficulty for more.");
-              menu();
-              return;
-            }
-            continue;
-          }
-          norepeat.push(q);
-          if(gamedifficulties.indexOf(capitals[q].difficulty) >= 0) {
-            break;
-          }
-        }
-
-        if(mode == 0){
-          $('#question').text(`What's the capital of ${capitals[q].country}?`);
-          $('.pre .flag').css('opacity', 0);
-          if(capitals[q].country in isocodes) {
-            $('.pre .flag').attr('src', `/flags/${isocodes[capitals[q].country].toLowerCase()}.svg`);
-            $('.pre .img-loader').removeClass('loaded');
-          }else{
-            console.warn(`${capitals[q].country} missing from isocodes!`);
-          }
-          $('#answer').html(capitals[q].city + "<br><sub>Population: " + capitals[q].pop + "</sub>");
-        }
-        else if(mode == 1){
-          $('#question').text(`Which country has ${capitals[q].city} as their capital?`);
-          $('.post .flag').css('opacity', 0);
-          if(capitals[q].country in isocodes) {
-            $('.post .flag').attr('src', `/flags/${isocodes[capitals[q].country].toLowerCase()}.svg`);
-            $('.post .img-loader').removeClass('loaded');
-          }else{
-            console.warn(`${capitals[q].country} missing from isocodes!`);
-          }
-          $('#answer').text(capitals[q].country);
-        }
-        else if(mode == 2){
-          $('#question').text('Which country has this flag?');
-          $('.pre .flag').css('opacity', 0);
-          if(capitals[q].country in isocodes) {
-            $('.pre .flag').attr('src', `/flags/${isocodes[capitals[q].country].toLowerCase()}.svg`);
-            $('.pre .img-loader').removeClass('loaded');
-          }else{
-            console.warn(`${capitals[q].country} missing from isocodes!`);
-          }
-          $('#answer').text(capitals[q].country);
-        }
-
-        $('#game .post').hide();
-        $('#game .pre').show();
-      }
-
-      function showanswer() {
-        $('#game .pre').hide();
-        $('#game .post').show();
-      }
-
-      function menu() {
-        $('#hype,#game').hide();
-        $('#menu').show();
-      }
-
       $('#start').on('click', (e) => {
         e.preventDefault();
 
@@ -179,6 +113,75 @@
       $('.action-answer').on('click', showanswer);
     });
 
+    function newquestion(e=null) {
+      if(e) e.preventDefault();
+      while(true) {
+        q = randint(capitals.length - 1);
+
+        if(norepeat.indexOf(q) >= 0) {
+          if(norepeat.length >= capitals.length) {
+            alert("Out of countries! Select a higher difficulty for more.");
+            menu();
+            return;
+          }
+          continue;
+        }
+        norepeat.push(q);
+        if(gamedifficulties.indexOf(capitals[q].difficulty) >= 0) {
+          break;
+        }
+      }
+
+      if(mode == 0){
+        $('#question').text(`What's the capital of ${capitals[q].country}?`);
+        $('.pre .flag').css('opacity', 0);
+        if(capitals[q].country in isocodes) {
+          $('.pre .flag').attr('src', `/flags/${isocodes[capitals[q].country].toLowerCase()}.svg`);
+          $('.pre .img-loader').removeClass('loaded');
+        }else{
+          console.warn(`${capitals[q].country} missing from isocodes!`);
+        }
+        $('#answer').html(capitals[q].city + "<br><sub>Population: " + capitals[q].pop + "</sub>");
+      }
+      else if(mode == 1){
+        $('#question').text(`Which country has ${capitals[q].city} as their capital?`);
+        $('.post .flag').css('opacity', 0);
+        if(capitals[q].country in isocodes) {
+          $('.post .flag').attr('src', `/flags/${isocodes[capitals[q].country].toLowerCase()}.svg`);
+          $('.post .img-loader').removeClass('loaded');
+        }else{
+          console.warn(`${capitals[q].country} missing from isocodes!`);
+        }
+        $('#answer').text(capitals[q].country);
+      }
+      else if(mode == 2){
+        $('#question').text('Which country has this flag?');
+        $('.pre .flag').css('opacity', 0);
+        if(capitals[q].country in isocodes) {
+          $('.pre .flag').attr('src', `/flags/${isocodes[capitals[q].country].toLowerCase()}.svg`);
+          $('.pre .img-loader').removeClass('loaded');
+        }else{
+          console.warn(`${capitals[q].country} missing from isocodes!`);
+        }
+        $('#answer').text(capitals[q].country);
+      }
+
+      $('#game .post').hide();
+      $('#game .pre').show();
+    }
+
+    function showanswer(e=null) {
+      if(e) e.preventDefault();
+      $('#game .pre').hide();
+      $('#game .post').show();
+    }
+
+    function menu(e=null) {
+      if(e) e.preventDefault();
+      $('#hype,#game').hide();
+      $('#menu').show();
+    }
+
     function on_modechange() {
       if(mode == 0){
         document.title = "Capital Cities";
@@ -203,10 +206,12 @@
       }else{
         console.error(`Unknown game mode ${mode} requested!`);
       }
+      if(!('mode' in urlParams) || urlParams.mode != mode)
+        window.history.pushState({}, '', document.location.href.split('?')[0]+`?mode=${mode}`);
     }
 
     var urlParams;
-    (window.onpopstate = function () {
+    window.onpopstate = function() {
       var match,
         pl     = /\+/g,  // Regex for replacing addition symbol with a space
         search = /([^&=]+)=?([^&]*)/g,
@@ -216,7 +221,16 @@
       urlParams = {};
       while (match = search.exec(query))
         urlParams[decode(match[1])] = decode(match[2]);
-    })();
+      
+      if('mode' in urlParams && urlParams.mode != mode) {
+        mode = Number(urlParams.mode);
+        on_modechange();
+      } else if (mode != 0) {
+        mode = 0;
+        on_modechange();
+      }
+    };
+    window.onpopstate();
   </script>
 </body>
 </html>

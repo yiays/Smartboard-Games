@@ -161,7 +161,7 @@
       $('.action-results').on('click', showanswers);
 
       $('.action-submit').on('click', () => {
-        submit_highscore(`quickmaths_${mode}_${difficulty}`, score, null, 1235);
+        submit_highscore(`quickmaths_${mode}_${difficulty}`, score);
       });
 
       $('.action-leaderboard').on('click', showleaderboard);
@@ -174,7 +174,8 @@
       on_modechange();
     });
 
-    function newgame() {
+    function newgame(e=null) {
+      if(e) e.preventDefault();
       $('#menu,#leaderboard,#modeswitch').hide();
       $('#game').show();
       difficulty = $('#difficulty').val();
@@ -244,6 +245,7 @@
     }
 
     function checkanswer(e) {
+      e.preventDefault();
       if(e.target.classList.contains('disabled')) return;
 
       if(e.target.innerText == ans) {
@@ -262,7 +264,8 @@
       newquestion();
     }
 
-    function showanswers(e) {
+    function showanswers(e=null) {
+      if(e) e.preventDefault();
       $('#timer-current').parent().hide();
       $('#question').text("Challenge complete!");
       $('#game .play').hide();
@@ -270,7 +273,8 @@
       $('#game .results').show();
     }
 
-    function showscore() {
+    function showscore(e=null) {
+      if(e) e.preventDefault();
       $('#game .play').hide();
       $('#game .results').hide();
       $('#game .end').show();
@@ -282,7 +286,8 @@
       $('#score').text(`${Math.round(score * 100) / 100} correct answers per second`);
     }
 
-    function menu() {
+    function menu(e=null) {
+      if(e) e.preventDefault();
       $('#game,#leaderboard').hide();
       $('#menu,#modeswitch').show();
       clearInterval(intTimer);
@@ -339,6 +344,8 @@
       else{
         console.error(`Unknown game mode ${mode} requested!`);
       }
+      if(!('mode' in urlParams) || urlParams.mode != mode)
+        window.history.pushState({}, '', document.location.href.split('?')[0]+`?mode=${mode}`);
 
       if($('#leaderboard').is(':visible')) {
         showleaderboard();
@@ -346,7 +353,7 @@
     }
 
     var urlParams;
-    (window.onpopstate = function () {
+    window.onpopstate = function () {
       var match,
         pl     = /\+/g,  // Regex for replacing addition symbol with a space
         search = /([^&=]+)=?([^&]*)/g,
@@ -356,7 +363,16 @@
       urlParams = {};
       while (match = search.exec(query))
         urlParams[decode(match[1])] = decode(match[2]);
-    })();
+      
+      if('mode' in urlParams && urlParams.mode != mode) {
+        mode = Number(urlParams.mode);
+        on_modechange();
+      } else if (mode != 0) {
+        mode = 0;
+        on_modechange();
+      }
+    }
+    window.onpopstate();
   </script>
 </body>
 </html>

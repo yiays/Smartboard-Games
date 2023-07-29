@@ -162,7 +162,7 @@
         $('#modeswitch').append(`<option value="${w}">${w.toUpperCase()}</option>`);
       });
 
-      $('#modeswitch').on('change', on_modechange);
+      $('#modeswitch').on('change', (e) => {word=e.target.value; on_modechange()});
 
       $('#start').on('click', newgame);
 
@@ -189,27 +189,41 @@
       $('.action-leaderboard').on('click', showleaderboard);
 
       $('.action-finish').on('click', endgame);
+
+      if('word' in urlParams) {
+        word = urlParams.word;
+        on_modechange();
+      }
     });
 
     function on_modechange() {
-      word = this.value;
-      if(word.length) {
-        $('#start,.action-leaderboard').removeClass('disabled');
-        if($('#leaderboard').is(':visible')) showleaderboard();
-      }
-      else {
+      if(word === undefined || words.indexOf(word) == -1) {
         $('#start,.action-leaderboard').addClass('disabled');
         if($('#leaderboard').is(':visible')) menu();
+        if('word' in urlParams)
+          window.history.pushState({}, '', document.location.href.split('?')[0]);
+        if($('#modeswitch').val())
+          $('#modeswitch').val('');
+      }
+      else {
+        $('#start,.action-leaderboard').removeClass('disabled');
+        if($('#leaderboard').is(':visible')) showleaderboard();
+        if(!('word' in urlParams) || urlParams.word != word)
+          window.history.pushState({}, '', document.location.href.split('?')[0]+`?word=${word}`);
+        if($('#modeswitch').val() != word)
+          $('#modeswitch').val(word);
       }
     }
 
-    function menu() {
+    function menu(e=null) {
+      if(e) e.preventDefault();
       $('#game,#results,#leaderboard,#keyboard').hide();
       $('#menu,.panel-controls').show();
       $('body').removeClass('keyboard');
     }
 
-    function newgame() {
+    function newgame(e=null) {
+      if(e) e.preventDefault();
       if(word) {
         $('#menu,#results,#leaderboard,.panel-controls').hide();
         input = '';
@@ -281,10 +295,11 @@
       $('#anagrams').text(anagrams.length);
       $('#anagrams').prop('title', anagrams.join('\n'));
 
-      submit_highscore(`anagrams_${word}`, `[${anagrams.length},${answers.length}]`, null, 1235);
+      submit_highscore(`anagrams_${word}`, `[${anagrams.length},${answers.length}]`);
     }
 
-    function showleaderboard() {
+    function showleaderboard(e=null) {
+      if(e) e.preventDefault();
       $('#results,#menu,#game,#keyboard').hide();
       $('#leaderboard,.panel-controls').show();
       $('body').removeClass('keyboard');
@@ -322,6 +337,28 @@
         $('#game').shake(animparams);
       }
     }
+    
+    var urlParams;
+    window.onpopstate = function () {
+      var match,
+        pl     = /\+/g,  // Regex for replacing addition symbol with a space
+        search = /([^&=]+)=?([^&]*)/g,
+        decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+        query  = window.location.search.substring(1);
+    
+      urlParams = {};
+      while (match = search.exec(query))
+        urlParams[decode(match[1])] = decode(match[2]);
+      
+      if('word' in urlParams && urlParams.word != word) {
+        word = urlParams.word;
+        on_modechange();
+      } else if (word != undefined) {
+        word = undefined;
+        on_modechange();
+      }
+    }
+    window.onpopstate();
   </script>
 </body>
 </html>

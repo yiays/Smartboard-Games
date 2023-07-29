@@ -191,13 +191,15 @@
       }
     }
 
-    function menu() {
+    function menu(e=null) {
+      if(e) e.preventDefault();
       $('#game,#results,#leaderboard,#keyboard').hide();
       $('#menu').show();
       $('body').removeClass('keyboard');
     }
 
-    function newgame() {
+    function newgame(e=null) {
+      if(e) e.preventDefault();
       if(word) {
         $('#menu,#results,#leaderboard').hide();
         input = '';
@@ -234,7 +236,8 @@
 
     }
 
-    function checkanswer() {
+    function checkanswer(e=null) {
+      if(e) e.preventDefault();
       let check = input.toLowerCase();
 
       if(check == word) {
@@ -255,7 +258,8 @@
       resetkeys();
     }
 
-    function endgame() {
+    function endgame(e=null) {
+      if(e) e.preventDefault();
       if(!confirm("After finishing, you can't enter any more words. Continue?")) return;
 
       $('#menu,#game,#keyboard').hide();
@@ -269,10 +273,11 @@
       $('#anagrams').text(anagrams.length);
       $('#anagrams').prop('title', anagrams.join('\n'));
 
-      submit_highscore(`anagrams_${word}`, `[${anagrams.length},${answers.length}]`, null, 1235);
+      submit_highscore(`anagrams_${word}`, `[${anagrams.length},${answers.length}]`);
     }
 
-    function showleaderboard() {
+    function showleaderboard(e=null) {
+      if(e) e.preventDefault();
       $('#results,#menu,#game,#keyboard').hide();
       $('#leaderboard').show();
       $('body').removeClass('keyboard');
