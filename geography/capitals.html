@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=9.2" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=9.3" rel="stylesheet">
   <style>
     body>.panel {
       height: 25em;
@@ -44,7 +44,7 @@
       </select>
     </p>
     <div class="loader">Loading...</div>
-    <a class="big-red btn" id="start" href="#" style="display:none;">Go</a>
+    <button class="big-red btn" id="start" style="display:none;">Go</button>
     <div class="options" style="margin-top: 1em">
       <a class="btn" href="/">More games</a>
     </div>
@@ -56,8 +56,8 @@
         <img class="flag" src="" alt="Flag" style="opacity:0;">
       </div>
       <div class="options">
-        <a class="btn action-cancel" href="#">Menu</a>
-        <a class="btn action-answer" href="#">Show answer</a>
+        <button class="btn action-cancel">Menu</button>
+        <button class="btn action-answer">Show answer</button>
       </div>
     </div>
     <div class="post">
@@ -66,8 +66,8 @@
         <img class="flag" src="" alt="Flag" style="opacity:0;">
       </div>
       <div class="options">
-        <a class="btn action-cancel" href="#">Menu</a>
-        <a class="btn action-advance" href="#">Next question</a>
+        <button class="btn action-cancel">Menu</button>
+        <button class="btn action-advance">Next question</button>
       </div>
     </div>
   </div>
@@ -88,8 +88,6 @@
       Promise.all(promises).then((_) => load_complete());
 
       $('#start').on('click', (e) => {
-        e.preventDefault();
-
         $('#menu').hide();
         $('#game').show();
         difficulty = $('#difficulty').val();
@@ -113,8 +111,7 @@
       $('.action-answer').on('click', showanswer);
     });
 
-    function newquestion(e=null) {
-      if(e) e.preventDefault();
+    function newquestion() {
       while(true) {
         q = randint(capitals.length - 1);
 
@@ -170,14 +167,12 @@
       $('#game .pre').show();
     }
 
-    function showanswer(e=null) {
-      if(e) e.preventDefault();
+    function showanswer() {
       $('#game .pre').hide();
       $('#game .post').show();
     }
 
-    function menu(e=null) {
-      if(e) e.preventDefault();
+    function menu() {
       $('#hype,#game').hide();
       $('#menu').show();
     }

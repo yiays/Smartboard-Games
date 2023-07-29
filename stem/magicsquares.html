@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=9.1" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=9.3" rel="stylesheet">
   <style>
     body>.panel {
       height: 25em;
@@ -52,7 +52,7 @@
         <option value="harder">Harder</option>
       </select>
     </p>
-    <a class="big-red btn action-start" href="#">Go</a>
+    <button class="big-red btn action-start">Go</button>
     <div class="options" style="margin-top: 1em">
       <a class="btn" href="/">More games</a>
     </div>
@@ -65,15 +65,15 @@
     <form class="play">
       <br>
       <div class="options">
-        <a class="btn action-cancel not-confirm-action" href="#">Menu</a>
+        <button class="btn action-cancel not-confirm-action">Menu</button>
         <input type="submit" class="btn" value="Check answers">
       </div>
     </form>
     <div class="results">
       <br>
       <div class="options">
-        <a class="btn action-cancel" href="#">Menu</a>
-        <a class="btn action-new" href="#">Generate another</a>
+        <button class="btn action-cancel">Menu</button>
+        <button class="btn action-new">Generate another</button>
       </div>
     </div>
   </div>
@@ -99,9 +99,7 @@
 
       $('.action-new').on('click', newquestion);
 
-      $('.action-start').on('click', (e) => {
-        e.preventDefault();
-
+      $('.action-start').on('click', () => {
         $('#menu').hide();
         $('#game').show();
         difficulty = $('#difficulty').val();
@@ -246,9 +244,7 @@
       $('#magicsquare').html(newhtml);
     }
 
-    function checkanswer(e) {
-      e.preventDefault();
-
+    function checkanswer() {
       correct = [];
       incorrect = [];
       

@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=9.1" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=9.3" rel="stylesheet">
   <style>
     body {
       margin-top: 2rem;
@@ -46,9 +46,9 @@
         <option value="harder">Harder</option>
       </select>
     </p>
-    <a class="big-red btn" id="start" href="#">Go</a>
+    <button class="big-red btn" id="start">Go</button>
     <div class="options" style="margin-top: 1em">
-      <a class="btn action-leaderboard" href="#">View leaderboard</a>
+      <button class="btn action-leaderboard">View leaderboard</button>
       <a class="btn" href="/">More games</a>
     </div>
   </div>
@@ -67,7 +67,7 @@
     </table>
     <br>
     <div class="options">
-      <a class="btn action-cancel" href="#">Back</a>
+      <button class="btn action-cancel">Back</button>
     </div>
   </div>
   <div id="game" class="panel" style="display:none;">
@@ -81,14 +81,14 @@
     <br>
     <div class="play">
       <div class="multichoice">
-        <a class="btn action-answer" href="#">1</a>
-        <a class="btn action-answer" href="#">2</a>
-        <a class="btn action-answer" href="#">3</a>
-        <a class="btn action-answer" href="#">4</a>
+        <button class="btn action-answer">1</button>
+        <button class="btn action-answer">2</button>
+        <button class="btn action-answer">3</button>
+        <button class="btn action-answer">4</button>
       </div>
       <br>
       <div class="options" style="position:relative;top:3.7rem;">
-        <a class="btn action-cancel" href="#">Menu</a>
+        <button class="btn action-cancel">Menu</button>
       </div>
     </div>
     <div class="results">
@@ -96,7 +96,7 @@
         
       </ul>
       <div class="options">
-        <a class="btn action-end" href="#">Score</a>
+        <button class="btn action-end">Score</button>
       </div>
     </div>
     <div class="end">
@@ -104,9 +104,9 @@
       <hr><b>Your score: <span id="score">0 in 0 seconds</span></b>
       <br><br>
       <div class="options">
-        <a class="btn confirm-action action-cancel" href="#">Menu</a>
-        <a class="btn action-results" href="#">Results</a>
-        <a class="btn action-submit" href="#">Submit highscore</a>
+        <button class="btn confirm-action action-cancel">Menu</button>
+        <button class="btn action-results">Results</button>
+        <button class="btn action-submit">Submit highscore</button>
       </div>
       <br>
     </div>
@@ -174,8 +174,7 @@
       on_modechange();
     });
 
-    function newgame(e=null) {
-      if(e) e.preventDefault();
+    function newgame() {
       $('#menu,#leaderboard,#modeswitch').hide();
       $('#game').show();
       difficulty = $('#difficulty').val();
@@ -245,7 +244,6 @@
     }
 
     function checkanswer(e) {
-      e.preventDefault();
       if(e.target.classList.contains('disabled')) return;
 
       if(e.target.innerText == ans) {
@@ -264,8 +262,7 @@
       newquestion();
     }
 
-    function showanswers(e=null) {
-      if(e) e.preventDefault();
+    function showanswers() {
       $('#timer-current').parent().hide();
       $('#question').text("Challenge complete!");
       $('#game .play').hide();
@@ -273,8 +270,7 @@
       $('#game .results').show();
     }
 
-    function showscore(e=null) {
-      if(e) e.preventDefault();
+    function showscore() {
       $('#game .play').hide();
       $('#game .results').hide();
       $('#game .end').show();
@@ -286,8 +282,7 @@
       $('#score').text(`${Math.round(score * 100) / 100} correct answers per second`);
     }
 
-    function menu(e=null) {
-      if(e) e.preventDefault();
+    function menu() {
       $('#game,#leaderboard').hide();
       $('#menu,#modeswitch').show();
       clearInterval(intTimer);

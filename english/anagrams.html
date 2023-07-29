@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=9.1" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=9.3" rel="stylesheet">
   <style>
     body {
       margin-top: 2rem;
@@ -42,9 +42,9 @@
     <h1>Anagrams</h1>
     <p>Spell as many words as you can with the letters of another word.</p>
     <div class="loader">Loading...</div>
-    <a class="big-red btn disabled" id="start" href="#" style="display:none">Go</a>
+    <button class="big-red btn disabled" id="start" style="display:none">Go</button>
     <div class="options" style="margin-top: 1em">
-      <a class="btn action-leaderboard disabled" href="#">View leaderboard</a>
+      <button class="btn action-leaderboard disabled">View leaderboard</button>
       <a class="btn" href="/">More games</a>
     </div>
   </div>
@@ -54,8 +54,8 @@
     <p id="found"></p>
     <br>
     <div class="options">
-      <a class="btn confirm-action action-cancel" href="#">Menu</a>
-      <a class="btn action-finish" href="#">Finish</a>
+      <button class="btn confirm-action action-cancel">Menu</button>
+      <button class="btn action-finish">Finish</button>
     </div>
   </div>
   <div id="results" class="panel" style="display:none;">
@@ -66,8 +66,8 @@
       were anagrams!
     </p>
     <div class="options">
-      <a class="btn action-cancel" href="#">Menu</a>
-      <a class="btn action-leaderboard" href="#">View leaderboard</a>
+      <button class="btn action-cancel">Menu</button>
+      <button class="btn action-leaderboard">View leaderboard</button>
     </div>
   </div>
   <div id="leaderboard" class="panel" style="display:none;">
@@ -85,44 +85,44 @@
     </table>
     <br>
     <div class="options">
-      <a class="btn action-cancel" href="#">Back</a>
+      <button class="btn action-cancel">Back</button>
     </div>
   </div>
   <div id="keyboard" style="display:none;">
-    <a href="#" class="btn action-toggle-keyboard">⌨️</a>
+    <button class="btn action-toggle-keyboard">⌨️</button>
     <div class="row">
-      <a href="#" class="btn action-type" data-count="0">Q</a>
-      <a href="#" class="btn action-type" data-count="0">W</a>
-      <a href="#" class="btn action-type" data-count="0">E</a>
-      <a href="#" class="btn action-type" data-count="0">R</a>
-      <a href="#" class="btn action-type" data-count="0">T</a>
-      <a href="#" class="btn action-type" data-count="0">Y</a>
-      <a href="#" class="btn action-type" data-count="0">U</a>
-      <a href="#" class="btn action-type" data-count="0">I</a>
-      <a href="#" class="btn action-type" data-count="0">O</a>
-      <a href="#" class="btn action-type" data-count="0">P</a>
+      <button class="btn action-type" data-count="0">Q</button>
+      <button class="btn action-type" data-count="0">W</button>
+      <button class="btn action-type" data-count="0">E</button>
+      <button class="btn action-type" data-count="0">R</button>
+      <button class="btn action-type" data-count="0">T</button>
+      <button class="btn action-type" data-count="0">Y</button>
+      <button class="btn action-type" data-count="0">U</button>
+      <button class="btn action-type" data-count="0">I</button>
+      <button class="btn action-type" data-count="0">O</button>
+      <button class="btn action-type" data-count="0">P</button>
     </div>
     <div class="row">
-      <a href="#" class="btn action-type" data-count="0">A</a>
-      <a href="#" class="btn action-type" data-count="0">S</a>
-      <a href="#" class="btn action-type" data-count="0">D</a>
-      <a href="#" class="btn action-type" data-count="0">F</a>
-      <a href="#" class="btn action-type" data-count="0">G</a>
-      <a href="#" class="btn action-type" data-count="0">H</a>
-      <a href="#" class="btn action-type" data-count="0">J</a>
-      <a href="#" class="btn action-type" data-count="0">K</a>
-      <a href="#" class="btn action-type" data-count="0">L</a>
+      <button class="btn action-type" data-count="0">A</button>
+      <button class="btn action-type" data-count="0">S</button>
+      <button class="btn action-type" data-count="0">D</button>
+      <button class="btn action-type" data-count="0">F</button>
+      <button class="btn action-type" data-count="0">G</button>
+      <button class="btn action-type" data-count="0">H</button>
+      <button class="btn action-type" data-count="0">J</button>
+      <button class="btn action-type" data-count="0">K</button>
+      <button class="btn action-type" data-count="0">L</button>
     </div>
     <div class="row" style="padding-left:0.6em;">
-      <a href="#" class="btn action-type" data-count="0">Z</a>
-      <a href="#" class="btn action-type" data-count="0">X</a>
-      <a href="#" class="btn action-type" data-count="0">C</a>
-      <a href="#" class="btn action-type" data-count="0">V</a>
-      <a href="#" class="btn action-type" data-count="0">B</a>
-      <a href="#" class="btn action-type" data-count="0">N</a>
-      <a href="#" class="btn action-type" data-count="0">M</a>
-      <a href="#" class="btn action-untype">&lt;&times;</a>
-      <a href="#" class="btn action-submit">✓</a>
+      <button class="btn action-type" data-count="0">Z</button>
+      <button class="btn action-type" data-count="0">X</button>
+      <button class="btn action-type" data-count="0">C</button>
+      <button class="btn action-type" data-count="0">V</button>
+      <button class="btn action-type" data-count="0">B</button>
+      <button class="btn action-type" data-count="0">N</button>
+      <button class="btn action-type" data-count="0">M</button>
+      <button class="btn action-untype">&lt;&times;</button>
+      <button class="btn action-submit">✓</button>
     </div>
   </div>
 
@@ -177,9 +177,7 @@
 
       $('.action-cancel').on('click', menu);
 
-      $('.action-results').on('click', (e) => {
-        e.preventDefault();
-
+      $('.action-results').on('click', () => {
         $('#leaderboard').hide();
         $('#results').show();
       })
@@ -215,15 +213,13 @@
       }
     }
 
-    function menu(e=null) {
-      if(e) e.preventDefault();
+    function menu() {
       $('#game,#results,#leaderboard,#keyboard').hide();
       $('#menu,.panel-controls').show();
       $('body').removeClass('keyboard');
     }
 
-    function newgame(e=null) {
-      if(e) e.preventDefault();
+    function newgame() {
       if(word) {
         $('#menu,#results,#leaderboard,.panel-controls').hide();
         input = '';
@@ -298,8 +294,7 @@
       submit_highscore(`anagrams_${word}`, `[${anagrams.length},${answers.length}]`);
     }
 
-    function showleaderboard(e=null) {
-      if(e) e.preventDefault();
+    function showleaderboard() {
       $('#results,#menu,#game,#keyboard').hide();
       $('#leaderboard,.panel-controls').show();
       $('body').removeClass('keyboard');

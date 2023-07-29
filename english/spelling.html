@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=9.1" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=9.3" rel="stylesheet">
   <style>
     
   </style>
@@ -20,9 +20,9 @@
   <div id="menu" class="panel">
     <h1>Spelling 🐝</h1>
     <p>Hear a word, see the definition, and try your best to spell it!</p>
-    <a class="big-red btn" id="start" href="#">Go</a>
+    <button class="big-red btn" id="start">Go</button>
     <div class="options" style="margin-top: 1em">
-      <a class="btn action-leaderboard" href="#">View leaderboard</a>
+      <button class="btn action-leaderboard">View leaderboard</button>
       <a class="btn" href="/">More games</a>
     </div>
     <p class="panel-controls">
@@ -38,16 +38,16 @@
     <p id="input">_</p>
     <br>
     <div class="options">
-      <a class="btn confirm-action action-cancel" href="#">Menu</a>
-      <a class="btn action-check disabled" href="#">Check answer</a>
+      <button class="btn confirm-action action-cancel">Menu</button>
+      <button class="btn action-check disabled">Check answer</button>
     </div>
   </div>
   <div id="results" class="panel" style="display:none;">
     <h1>Correct / Incorrect</h1>
     <p id="worddiff"></p>
     <div class="options">
-      <a class="btn action-cancel" href="#">Menu</a>
-      <a class="btn action-leaderboard" href="#">Next word</a>
+      <button class="btn action-cancel">Menu</button>
+      <button class="btn action-leaderboard">Next word</button>
     </div>
   </div>
   <div id="leaderboard" class="panel" style="display:none;">
@@ -65,43 +65,43 @@
     </table>
     <br>
     <div class="options">
-      <a class="btn action-cancel" href="#">Back</a>
+      <button class="btn action-cancel">Back</button>
     </div>
   </div>
   <div id="keyboard" style="display:none;">
-    <a href="#" class="btn action-toggle-keyboard">⌨️</a>
+    <button class="btn action-toggle-keyboard">⌨️</button>
     <div class="row">
-      <a href="#" class="btn action-type">Q</a>
-      <a href="#" class="btn action-type">W</a>
-      <a href="#" class="btn action-type">E</a>
-      <a href="#" class="btn action-type">R</a>
-      <a href="#" class="btn action-type">T</a>
-      <a href="#" class="btn action-type">Y</a>
-      <a href="#" class="btn action-type">U</a>
-      <a href="#" class="btn action-type">I</a>
-      <a href="#" class="btn action-type">O</a>
-      <a href="#" class="btn action-type">P</a>
+      <button class="btn action-type">Q</button>
+      <button class="btn action-type">W</button>
+      <button class="btn action-type">E</button>
+      <button class="btn action-type">R</button>
+      <button class="btn action-type">T</button>
+      <button class="btn action-type">Y</button>
+      <button class="btn action-type">U</button>
+      <button class="btn action-type">I</button>
+      <button class="btn action-type">O</button>
+      <button class="btn action-type">P</button>
     </div>
     <div class="row">
-      <a href="#" class="btn action-type">A</a>
-      <a href="#" class="btn action-type">S</a>
-      <a href="#" class="btn action-type">D</a>
-      <a href="#" class="btn action-type">F</a>
-      <a href="#" class="btn action-type">G</a>
-      <a href="#" class="btn action-type">H</a>
-      <a href="#" class="btn action-type">J</a>
-      <a href="#" class="btn action-type">K</a>
-      <a href="#" class="btn action-type">L</a>
+      <button class="btn action-type">A</button>
+      <button class="btn action-type">S</button>
+      <button class="btn action-type">D</button>
+      <button class="btn action-type">F</button>
+      <button class="btn action-type">G</button>
+      <button class="btn action-type">H</button>
+      <button class="btn action-type">J</button>
+      <button class="btn action-type">K</button>
+      <button class="btn action-type">L</button>
     </div>
     <div class="row">
-      <a href="#" class="btn action-type">Z</a>
-      <a href="#" class="btn action-type">X</a>
-      <a href="#" class="btn action-type">C</a>
-      <a href="#" class="btn action-type">V</a>
-      <a href="#" class="btn action-type">B</a>
-      <a href="#" class="btn action-type">N</a>
-      <a href="#" class="btn action-type">M</a>
-      <a href="#" class="btn action-untype">&lt;&times;</a>
+      <button class="btn action-type">Z</button>
+      <button class="btn action-type">X</button>
+      <button class="btn action-type">C</button>
+      <button class="btn action-type">V</button>
+      <button class="btn action-type">B</button>
+      <button class="btn action-type">N</button>
+      <button class="btn action-type">M</button>
+      <button class="btn action-untype">&lt;&times;</button>
     </div>
   </div>
 
@@ -165,9 +165,7 @@
 
       $('.action-cancel').on('click', menu);
 
-      $('.action-results').on('click', (e) => {
-        e.preventDefault();
-
+      $('.action-results').on('click', () => {
         $('#leaderboard').hide();
         $('#results').show();
       })
@@ -191,15 +189,13 @@
       }
     }
 
-    function menu(e=null) {
-      if(e) e.preventDefault();
+    function menu() {
       $('#game,#results,#leaderboard,#keyboard').hide();
       $('#menu').show();
       $('body').removeClass('keyboard');
     }
 
-    function newgame(e=null) {
-      if(e) e.preventDefault();
+    function newgame() {
       if(word) {
         $('#menu,#results,#leaderboard').hide();
         input = '';
@@ -236,8 +232,7 @@
 
     }
 
-    function checkanswer(e=null) {
-      if(e) e.preventDefault();
+    function checkanswer() {
       let check = input.toLowerCase();
 
       if(check == word) {
@@ -258,8 +253,7 @@
       resetkeys();
     }
 
-    function endgame(e=null) {
-      if(e) e.preventDefault();
+    function endgame() {
       if(!confirm("After finishing, you can't enter any more words. Continue?")) return;
 
       $('#menu,#game,#keyboard').hide();
@@ -276,8 +270,7 @@
       submit_highscore(`anagrams_${word}`, `[${anagrams.length},${answers.length}]`);
     }
 
-    function showleaderboard(e=null) {
-      if(e) e.preventDefault();
+    function showleaderboard() {
       $('#results,#menu,#game,#keyboard').hide();
       $('#leaderboard').show();
       $('body').removeClass('keyboard');

@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=9.1" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=9.3" rel="stylesheet">
 </head>
 <body>
   <div id="menu" class="panel">
@@ -22,7 +22,7 @@
 
     <h1>5 Second Rule</h1>
     <p>Quickfire questions with a 5 second time limit</p>
-    <a class="big-red btn" id="start" href="#">Go</a>
+    <button class="big-red btn" id="start">Go</button>
     <div class="options" style="margin-top: 1em">
       <a class="btn" href="/">More games</a>
     </div>
@@ -31,12 +31,12 @@
     <h1 id="question">Question</h1>
     <span class="countdown">5</span>
     <div class="options pre">
-      <a class="btn action-cancel" href="#">Menu</a>
-      <a class="btn action-timer" href="#">Start the timer</a>
+      <button class="btn action-cancel">Menu</button>
+      <button class="btn action-timer">Start the timer</button>
     </div>
     <div class="options post">
-      <a class="btn action-cancel" href="#">Menu</a>
-      <a class="btn action-advance" href="#">Next question</a>
+      <button class="btn action-cancel">Menu</button>
+      <button class="btn action-advance">Next question</button>
     </div>
   </div>
 
@@ -272,9 +272,7 @@
         $('#menu').show();
       }
 
-      $('#start').on('click', (e) => {
-        e.preventDefault();
-
+      $('#start').on('click', () => {
         $('#menu').hide();
         $('#game').show();
         
