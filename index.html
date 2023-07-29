@@ -273,6 +273,11 @@
   <script src="//cdn.yiays.com/jquery-color.min.js"></script>
   <script src="/common.js?v=11.4"></script>
   <script>
+    let badgeCache;
+    if(localStorage.getItem('badges')) {
+      badgeCache = JSON.parse(localStorage.getItem('badges'));
+    }
+
     $().ready(() => {
       $('.category').on('click', (e) => {
         filter(e.target.dataset.filter);
@@ -293,12 +298,39 @@
 
       // Show 🥇, 🥈, or 🥉 if a saved username is on the default leaderboard
       if(username) {
-        $('.game[data-scope]').each((_,el) => {
-          $.getJSON(`https://highscore.yiays.com/?scope=${el.dataset.scope}&username=${username}`)
-          .done((data) => {addLeaderboardBadges(el, data)});
-        });
+        if(badgeCache) {
+          if(badgeCache.username == username) {
+            $.get('https://highscore.yiays.com/?modified')
+            .done((data) => update_badges(badgeCache.modified, data))
+          } else {
+            update_badges();
+          }
+        } else {
+          update_badges()
+        }
       }
     });
+
+    function update_badges(cacheDate=0, badgeDate=Infinity) {
+      if(cacheDate < badgeDate) {
+        badgeCache = {username: username, modified: (new Date()).valueOf()}
+        $('.game[data-scope]').each((_,el) => {
+          $.getJSON(`https://highscore.yiays.com/?scope=${el.dataset.scope}&username=${username}`)
+          .done((data) => {
+            addLeaderboardBadges(el, data);
+            badgeCache[el.dataset.scope] = data;
+          })
+          .then(() => localStorage.setItem('badges', JSON.stringify(badgeCache)));
+        });
+      }else{
+        $('.game[data-scope]').each((_,el) => {
+          if(el.dataset.scope in badgeCache)
+            addLeaderboardBadges(el, badgeCache[el.dataset.scope]);
+          else
+            badgeCache = null;
+        });
+      }
+    }
 
     placeEmoji = {1:'🥇', 2:'🥈', 3:'🥉'}
     function addLeaderboardBadges(el, data) {
