@@ -168,10 +168,13 @@ body.keyboard #keyboard {
   gap: 0.5rem;
 }
 .img-loader {
-  height: 13em;
   margin-bottom: 1em;
   background: rgba(233, 233, 233, 0.5);
   animation: fadeloop 1s infinite;
+}
+.img-loader.loaded {
+  background: none;
+  animation: none;
 }
 @keyframes fadeloop {
   0% {

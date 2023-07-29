@@ -11,10 +11,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=9.1" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=9.2" rel="stylesheet">
   <style>
     body>.panel {
       height: 25em;
+    }
+    .flag, .img-loader {
+      aspect-ratio: 3/2;
+      width: 19em;
     }
   </style>
 </head>
@@ -49,7 +53,7 @@
     <h1 id="question">Question</h1>
     <div class="pre">
       <div class="img-loader">
-        <img class="flag" src="" alt="Flag" width="300" height="210" style="opacity:0;">
+        <img class="flag" src="" alt="Flag" style="opacity:0;">
       </div>
       <div class="options">
         <a class="btn action-cancel" href="#">Menu</a>
@@ -59,7 +63,7 @@
     <div class="post">
       <h2 id="answer">Answer</h2>
       <div class="img-loader" style="display:none;">
-        <img class="flag" src="" alt="Flag" width="300" height="210" style="opacity:0;">
+        <img class="flag" src="" alt="Flag" style="opacity:0;">
       </div>
       <div class="options">
         <a class="btn action-cancel" href="#">Menu</a>
@@ -70,7 +74,7 @@
 
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
   <script src="//cdn.yiays.com/jquery-color.min.js"></script>
-  <script src="/common.js?v=11.4"></script>
+  <script src="/common.js?v=11.6"></script>
   <script>
     const difficulties = ['easy', 'medium', 'hard', 'harder'];
     let capitals, isocodes, difficulty, gamedifficulties, norepeat;
@@ -106,6 +110,7 @@
           $('.pre .flag').css('opacity', 0);
           if(capitals[q].country in isocodes) {
             $('.pre .flag').attr('src', `/flags/${isocodes[capitals[q].country].toLowerCase()}.svg`);
+            $('.pre .img-loader').removeClass('loaded');
           }else{
             console.warn(`${capitals[q].country} missing from isocodes!`);
           }
@@ -116,6 +121,7 @@
           $('.post .flag').css('opacity', 0);
           if(capitals[q].country in isocodes) {
             $('.post .flag').attr('src', `/flags/${isocodes[capitals[q].country].toLowerCase()}.svg`);
+            $('.post .img-loader').removeClass('loaded');
           }else{
             console.warn(`${capitals[q].country} missing from isocodes!`);
           }
@@ -126,6 +132,7 @@
           $('.pre .flag').css('opacity', 0);
           if(capitals[q].country in isocodes) {
             $('.pre .flag').attr('src', `/flags/${isocodes[capitals[q].country].toLowerCase()}.svg`);
+            $('.pre .img-loader').removeClass('loaded');
           }else{
             console.warn(`${capitals[q].country} missing from isocodes!`);
           }

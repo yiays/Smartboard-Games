@@ -44,6 +44,7 @@ $().ready(() => {
 
   $('.img-loader>img').on('load', (e)=>{
     $(e.target).animate({'opacity':1});
+    $(e.target).parent().addClass('loaded');
   });
   
   $('.confirm-action').on('click', (e) => {
