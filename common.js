@@ -215,12 +215,16 @@ function init_keyboard_capture(charset=/[A-Za-z]/i) {
       type(e.key.toUpperCase());
     }
     else if(e.key == 'Backspace') {
+      e.preventDefault();
       e.stopImmediatePropagation();
       untype();
+      return false;
     }
     else if(e.key == 'Enter') {
+      e.preventDefault();
       e.stopImmediatePropagation();
       checkanswer();
+      return false;
     }
   });
 }
