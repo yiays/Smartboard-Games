@@ -11,9 +11,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=9.3" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=11.7" rel="stylesheet">
   <style>
-    
+    audio {
+      width: 15em;
+      height: 2em;
+      margin: 0;
+    }
+    .media-loader {
+      height: 2em;
+    }
   </style>
 </head>
 <body>
@@ -26,14 +33,19 @@
       <a class="btn" href="/">More games</a>
     </div>
     <p class="panel-controls">
-      <label for="difficulty">Difficulty: </label>
-      <select id="difficulty" id="modeswitch" autofocus>
-        <option value="easy" selected>Easy</option>
+      <label for="modeswitch">Difficulty: </label>
+      <select id="modeswitch" autofocus>
+        <option value="0" selected>Easy</option>
+        <option value="1">Medium</option>
+        <option value="2">Hard</option>
       </select>
     </p>
   </div>
   <div id="game" class="panel" style="display:none;">
     <h1 id="question">Word 1</h1>
+    <div class="media-loader">
+      <audio id="audio" controls src=""></audio>
+    </div>
     <p id="definition">Definition: </p>
     <p id="input">_</p>
     <br>
@@ -47,7 +59,7 @@
     <p id="worddiff"></p>
     <div class="options">
       <button class="btn action-cancel">Menu</button>
-      <button class="btn action-leaderboard">Next word</button>
+      <button class="btn action-next">Next word</button>
     </div>
   </div>
   <div id="leaderboard" class="panel" style="display:none;">
@@ -107,7 +119,7 @@
 
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
   <script src="//cdn.yiays.com/jquery-color.min.js"></script>
-  <script src="/common.js?v=11.4"></script>
+  <script src="/common.js?v=11.8"></script>
   <script>
     const words = {
       0: {
@@ -142,12 +154,14 @@
         'miscellaneous': "Anything that doesn't fit in other categories",
         'oligarchy': "A small group of people that maintain control over a country",
         'phenomenon': "An unusual happening",
-        'spontanaeity': "To be unpredictable and make decisions on a whim"
+        'spontaneity': "To be unpredictable and make decisions on a whim"
         // TODO: find 2 more
       }
     }
-    let word, input, answers;
-    const animparams = {distance: 5, speed: 50, times: 2}
+    let word, wordorder, input, answers, norepeat;
+    let difficulty = 0;
+    const diffname = ['Easy', 'Medium', 'Hard'];
+    const animparams = {distance: 5, speed: 50, times: 2};
 
     $().ready(() => {
       $('#modeswitch').on('change', on_modechange);
@@ -165,12 +179,9 @@
 
       $('.action-cancel').on('click', menu);
 
-      $('.action-results').on('click', () => {
-        $('#leaderboard').hide();
-        $('#results').show();
-      })
+      $('.action-check').on('click', checkanswer)
 
-      $('.action-submit').on('click', checkanswer);
+      $('.action-next').on('click', newquestion);
 
       $('.action-leaderboard').on('click', showleaderboard);
 
@@ -178,87 +189,62 @@
     });
 
     function on_modechange() {
-      word = this.value;
-      if(word.length) {
-        $('#start,.action-leaderboard').removeClass('disabled');
-        if($('#leaderboard').is(':visible')) showleaderboard();
-      }
-      else {
-        $('#start,.action-leaderboard').addClass('disabled');
-        if($('#leaderboard').is(':visible')) menu();
-      }
+      difficulty = Number(this.value);
+      if($('#leaderboard').is(':visible')) showleaderboard();
     }
 
     function menu() {
       $('#game,#results,#leaderboard,#keyboard').hide();
-      $('#menu').show();
       $('body').removeClass('keyboard');
+      $('#menu').show();
     }
 
     function newgame() {
-      if(word) {
-        $('#menu,#results,#leaderboard').hide();
-        input = '';
-        $('#input').text('_');
-        $('#game,#keyboard').show();
-        $('body').addClass('keyboard');
-        answers = [];
-        $('#question').text(word.toUpperCase());
-        resetkeys();
-      }
+      $('#menu,#results,#leaderboard').hide();
+      $('#keyboard').show();
+      $('body').addClass('keyboard');
+      answers = [];
+      norepeat = [];
+      wordorder = shuffle(Object.keys(words[difficulty]));
+      newquestion();
     }
 
-    function resetkeys() {
-      keys = {
-        'Q':0,'W':0,'E':0,'R':0,'T':0,'Y':0,'U':0,'I':0,'O':0,'P':0,
-        'A':0,'S':0,'D':0,'F':0,'G':0,'H':0,'J':0,'K':0,'L':0,
-        'Z':0,'X':0,'C':0,'V':0,'B':0,'N':0,'M':0
-      }
-      for(var i=0; i<word.length; i++) {
-        var letter = word.charAt(i).toUpperCase();
-        keys[letter] += 1;
-      }
+    function newquestion() {
+      $('#results').hide();
+      $('#game').show();
+      $('#question').text(`Word ${answers.length+1}`);
+      input = '';
+      $('#input').text('_');
+      $('.action-check').addClass('disabled');
 
-      $('.action-type').each((i, el) => {
-        $(el).attr('data-count', keys[$(el).text()]);
-        if(keys[$(el).text()] > 0)
-          $(el).removeClass('disabled');
-        else
-          $(el).addClass('disabled');
-      });
-
-      $('#found').text(answers.join(', ').toUpperCase())
-      .animate({scrollTop: $('#found')[0].scrollHeight}, 300);
-
+      word = wordorder[answers.length];
+      $('.media-loader').removeClass('loaded');
+      $('#audio').attr('src', `/audio/pronunciation/${word}.ogg`);
+      $('#definition').text(`Definition: ${words[difficulty][word]}`);
     }
 
     function checkanswer() {
+      $('#game').hide();
       let check = input.toLowerCase();
+      answers.push(check);
 
       if(check == word) {
-        $('#game').shake(animparams);
-        return;
+        $('#results>h1').text('Correct');
+        $('#worddiff').html(check.toUpperCase()).addClass('correct');
       }
-      if(answers.indexOf(check) >= 0) {
+      else {
         $('#game').shake(animparams);
-        return;
+        $('#results>h1').text('Incorrect');
+        $('#worddiff').html(`<span class="incorrect squiggle">${check.toUpperCase()}</span> <span class="correct">${word.toUpperCase()}</span>`).removeClass('correct');
       }
-      if(dictionary.indexOf(check) == -1) {
-        $('#game').shake(animparams);
-        return;
-      }
-      answers.push(check);
-      input = '';
-      $('#input').text('_');
-      resetkeys();
+
+      $('#results').show();
     }
 
     function endgame() {
-      if(!confirm("After finishing, you can't enter any more words. Continue?")) return;
-
       $('#menu,#game,#keyboard').hide();
-      $('#results').show();
       $('body').removeClass('keyboard');
+      $('#results').show();
       
       $('#finalscore').text(answers.length);
       $('#finalscore').prop('title', answers.join('\n'));
@@ -267,7 +253,7 @@
       $('#anagrams').text(anagrams.length);
       $('#anagrams').prop('title', anagrams.join('\n'));
 
-      submit_highscore(`anagrams_${word}`, `[${anagrams.length},${answers.length}]`);
+      submit_highscore(`spelling_${difficulty}`, `[${anagrams.length},${answers.length}]`);
     }
 
     function showleaderboard() {
@@ -275,38 +261,30 @@
       $('#leaderboard').show();
       $('body').removeClass('keyboard');
 
-      $('#leaderboard-word').text(`(${word.toUpperCase()})`);
+      $('#leaderboard-word').text(`(${diffname[difficulty]})`);
 
-      get_leaderboard(`anagrams_${word}`,
-                      result_converter=(value) => `${value[0]} Anagram(s), ${value[1]} Word(s)`,
-                      sorter=(a,b) => (a[2][0]===b[2][0])?b[2][1]-a[2][1]:b[2][0]-a[2][0]);
+      get_leaderboard(
+        `spelling_${difficulty}`,
+        result_converter=(value) => `${value[0]} Anagram(s), ${value[1]} Word(s)`,
+        sorter=(a,b) => (a[2][0]===b[2][0])?b[2][1]-a[2][1]:b[2][0]-a[2][0]
+      );
     }
 
     function type(letter) {
-      if(keys[letter] > 0) {
-        input += letter;
-        $('#input').text(input + '_');
-
-        keys[letter] -= 1
-        $(`.action-type:contains('${letter}')`).attr('data-count', keys[letter]);
-        if(keys[letter] <= 0) {
-          $(`.action-type:contains('${letter}')`).addClass('disabled');
-        }
-      }else{
-        $('#game').shake(animparams);
-      }
+      input += letter;
+      $('#input').text(input + '_');
+      $('.action-check').removeClass('disabled');
     }
     function untype() {
       if (input.length) {
         var letter = input.charAt(input.length - 1);
         input = input.slice(0, -1);
-        keys[letter] += 1;
-        $(`.action-type:contains('${letter}')`).attr('data-count', keys[letter]);
-        $(`.action-type:contains('${letter}')`).removeClass('disabled');
         $('#input').text(input + '_');
       } else {
         $('#game').shake(animparams);
       }
+      if(input.length == 0)
+        $('.action-check').addClass('disabled');
     }
   </script>
 </body>
