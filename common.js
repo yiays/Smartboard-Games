@@ -42,8 +42,11 @@ $().ready(() => {
     complete_login(username, secret, theme);
   }
 
-  $('.img-loader>img').on('load', (e)=>{
-    $(e.target).animate({'opacity':1});
+  $('.media-loader>*').on('load', (e)=>{
+    $(e.target).parent().addClass('loaded');
+  });
+  
+  $('.media-loader>*').on('canplay', (e)=>{
     $(e.target).parent().addClass('loaded');
   });
   

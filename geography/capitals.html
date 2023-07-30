@@ -11,12 +11,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=9.3" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=9.5" rel="stylesheet">
   <style>
     body>.panel {
       height: 25em;
     }
-    .flag, .img-loader {
+    .flag, .media-loader {
       aspect-ratio: 3/2;
       width: 19em;
     }
@@ -52,8 +52,8 @@
   <div id="game" class="panel" style="display:none;">
     <h1 id="question">Question</h1>
     <div class="pre">
-      <div class="img-loader">
-        <img class="flag" src="" alt="Flag" style="opacity:0;">
+      <div class="media-loader">
+        <img class="flag" src="" alt="Flag">
       </div>
       <div class="options">
         <button class="btn action-cancel">Menu</button>
@@ -62,8 +62,8 @@
     </div>
     <div class="post">
       <h2 id="answer">Answer</h2>
-      <div class="img-loader" style="display:none;">
-        <img class="flag" src="" alt="Flag" style="opacity:0;">
+      <div class="media-loader" style="display:none;">
+        <img class="flag" src="" alt="Flag">
       </div>
       <div class="options">
         <button class="btn action-cancel">Menu</button>
@@ -74,7 +74,7 @@
 
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
   <script src="//cdn.yiays.com/jquery-color.min.js"></script>
-  <script src="/common.js?v=11.6"></script>
+  <script src="/common.js?v=11.7"></script>
   <script>
     const difficulties = ['easy', 'medium', 'hard', 'harder'];
     let capitals, isocodes, difficulty, gamedifficulties, norepeat;
@@ -131,10 +131,9 @@
 
       if(mode == 0){
         $('#question').text(`What's the capital of ${capitals[q].country}?`);
-        $('.pre .flag').css('opacity', 0);
         if(capitals[q].country in isocodes) {
           $('.pre .flag').attr('src', `/flags/${isocodes[capitals[q].country].toLowerCase()}.svg`);
-          $('.pre .img-loader').removeClass('loaded');
+          $('.pre .media-loader').removeClass('loaded');
         }else{
           console.warn(`${capitals[q].country} missing from isocodes!`);
         }
@@ -142,10 +141,9 @@
       }
       else if(mode == 1){
         $('#question').text(`Which country has ${capitals[q].city} as their capital?`);
-        $('.post .flag').css('opacity', 0);
         if(capitals[q].country in isocodes) {
           $('.post .flag').attr('src', `/flags/${isocodes[capitals[q].country].toLowerCase()}.svg`);
-          $('.post .img-loader').removeClass('loaded');
+          $('.post .media-loader').removeClass('loaded');
         }else{
           console.warn(`${capitals[q].country} missing from isocodes!`);
         }
@@ -156,7 +154,7 @@
         $('.pre .flag').css('opacity', 0);
         if(capitals[q].country in isocodes) {
           $('.pre .flag').attr('src', `/flags/${isocodes[capitals[q].country].toLowerCase()}.svg`);
-          $('.pre .img-loader').removeClass('loaded');
+          $('.pre .media-loader').removeClass('loaded');
         }else{
           console.warn(`${capitals[q].country} missing from isocodes!`);
         }
@@ -182,22 +180,22 @@
         document.title = "Capital Cities";
         $('#menu>h1').text("Capital cities");
         $('#menu>h1 + p').text("Guess the capital for each country");
-        $('.pre>.img-loader').show();
-        $('.post>.img-loader').hide();
+        $('.pre>.media-loader').show();
+        $('.post>.media-loader').hide();
       }
       else if(mode == 1){
         document.title = "Countries";
         $('#menu>h1').text("Countries");
         $('#menu>h1 + p').text("Guess the country for each capital");
-        $('.pre>.img-loader').hide();
-        $('.post>.img-loader').show();
+        $('.pre>.media-loader').hide();
+        $('.post>.media-loader').show();
       }
       else if(mode == 2){
         document.title = "Flags";
         $('#menu>h1').text("Flags");
         $('#menu>h1 + p').text("Guess the country for each flag");
-        $('.pre>.img-loader').show();
-        $('.post>.img-loader').hide();
+        $('.pre>.media-loader').show();
+        $('.post>.media-loader').hide();
       }else{
         console.error(`Unknown game mode ${mode} requested!`);
       }

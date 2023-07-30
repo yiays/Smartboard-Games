@@ -152,8 +152,8 @@ body.keyboard #keyboard {
 }
 #keyboard > .row > .btn {
   position: relative;
-  width: 1em;
-  height: 1em;
+  width: 1.5em;
+  height: 1.6em;
   margin: 0.1em;
 }
 
@@ -168,14 +168,21 @@ body.keyboard #keyboard {
   grid-template: 1fr 1fr / 1fr 1fr;
   gap: 0.5rem;
 }
-.img-loader {
+.media-loader {
   margin-bottom: 1em;
   background: rgba(233, 233, 233, 0.5);
   animation: fadeloop 1s infinite;
 }
-.img-loader.loaded {
+.media-loader > * {
+  opacity: 0;
+  transition: 250ms;
+}
+.media-loader.loaded {
   background: none;
   animation: none;
+}
+.media-loader.loaded > * {
+  opacity: 1;
 }
 @keyframes fadeloop {
   0% {
