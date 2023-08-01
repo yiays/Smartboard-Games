@@ -244,7 +244,9 @@
       $('#magicsquare').html(newhtml);
     }
 
-    function checkanswer() {
+    function checkanswer(e) {
+      e.preventDefault();
+
       correct = [];
       incorrect = [];
       
