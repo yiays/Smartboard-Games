@@ -133,7 +133,19 @@ h1 {
   border: 0.3rem solid black;
   border-radius: 50%;
 }
+.options {
+  display: flex;
+  width: 19em;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.multichoice {
+  display: grid;
+  grid-template: 1fr 1fr / 1fr 1fr;
+  gap: 0.5rem;
+}
 
+/* On-screen popup keyboard */
 #keyboard {
   display: none;
   position: fixed;
@@ -168,17 +180,34 @@ body.keyboard #keyboard {
   margin: 0.1em;
 }
 
-.options {
-  display: flex;
-  width: 19em;
-  flex-direction: row;
-  justify-content: space-around;
+/* Fractional representation - https://codepen.io/yiays/pen/dyQweVg */
+.fraction {
+  display: inline-block;
+  position: relative;
+  text-indent: -100vw;
+  white-space: nowrap;
+  vertical-align: bottom;
+  overflow: hidden;
 }
-.multichoice {
-  display: grid;
-  grid-template: 1fr 1fr / 1fr 1fr;
-  gap: 0.5rem;
+.fraction::before, .fraction::after {
+  position: absolute;
+  text-indent: 0;
+  font-size: 0.5em;
+  left: 10%;
+  right: 10%;
+  text-align: center;
 }
+.fraction::before {
+  content: attr(data-num);
+  top: 0;
+  border-bottom: 1px solid white;
+}
+.fraction::after {
+  content: attr(data-denom);
+  bottom: 0;
+}
+
+/* Dynamic media loading */
 .media-loader {
   margin-bottom: 1em;
   background: rgba(233, 233, 233, 0.5);
@@ -207,6 +236,7 @@ body.keyboard #keyboard {
   }
 }
 
+/* Loading animation */
 .loader,
 .loader:before,
 .loader:after {
