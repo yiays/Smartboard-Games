@@ -56,6 +56,16 @@
       content: attr(data-username);
       font-size: 0.33em;
     }
+    .profile::after {
+      content: attr(data-note);
+      font-size: 0.2em;
+      position: absolute;
+      font-style: italic;
+      top: 0.6em;
+      right: 1em;
+      width: max-content;
+
+    }
     .profile .pfp {
       background: #555;
       display: block;
@@ -148,7 +158,7 @@
 </head>
 <body>
   <div class="hero">
-    <a href="/profile.html" class="profile" data-username="not logged in">
+    <a href="/profile.html" class="profile" data-username="not logged in" data-note="You can now change your colour theme - 1/08/2023">
       <i class="pfp">
         <span class="icon icon-">user</span>
       </i>
@@ -236,6 +246,7 @@
         <h1>Quick Division</h1>
         <p>Quickfire maths questions with multiple choice answers</p>
         •
+        <sub>Now with fractions! - 1/08/2023</sub>
         <sub>Reset leaderboard, new scoring system - 18/07/2023</sub>
       </a>
       <a href="english/anagrams.html" class="btn game c-english" data-filter="english leaderboard" data-scope="anagrams_*">
