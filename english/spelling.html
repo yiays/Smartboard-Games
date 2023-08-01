@@ -58,8 +58,16 @@
     <h1>Correct / Incorrect</h1>
     <p id="worddiff"></p>
     <div class="options">
-      <button class="btn action-cancel">Menu</button>
+      <button class="btn action-cancel confirm-action">Menu</button>
       <button class="btn action-next">Next word</button>
+    </div>
+  </div>
+  <div id="summary" class="panel" style="display:none;">
+    <h1>Finished</h1>
+    <p id="finalscore"></p>
+    <div class="options">
+      <button class="btn action-cancel confirm-action">Menu</button>
+      <button class="btn action-finish">Submit highscore</button>
     </div>
   </div>
   <div id="leaderboard" class="panel" style="display:none;">
@@ -119,7 +127,7 @@
 
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
   <script src="//cdn.yiays.com/jquery-color.min.js"></script>
-  <script src="/common.js?v=11.8"></script>
+  <script src="/common.js?v=11.12"></script>
   <script>
     const words = {
       0: {
@@ -233,7 +241,7 @@
         $('#worddiff').html(check.toUpperCase()).addClass('correct');
       }
       else {
-        $('#game').shake(animparams);
+        shake($('#game'), animparams);
         $('#results>h1').text('Incorrect');
         $('#worddiff').html(`<span class="incorrect squiggle">${check.toUpperCase()}</span> <span class="correct">${word.toUpperCase()}</span>`).removeClass('correct');
       }
@@ -281,7 +289,7 @@
         input = input.slice(0, -1);
         $('#input').text(input + '_');
       } else {
-        $('#game').shake(animparams);
+        shake($('#game'), animparams);
       }
       if(input.length == 0)
         $('.action-check').addClass('disabled');

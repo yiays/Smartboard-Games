@@ -128,7 +128,7 @@
 
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
   <script src="//cdn.yiays.com/jquery-color.min.js"></script>
-  <script src="/common.js?v=11.5"></script>
+  <script src="/common.js?v=11.12"></script>
   <script>
     const words = [
       "truest",
@@ -260,15 +260,15 @@
       let check = input.toLowerCase();
 
       if(check == word) {
-        $('#game').shake(animparams);
+        shake($('#game'), animparams);
         return;
       }
       if(answers.indexOf(check) >= 0) {
-        $('#game').shake(animparams);
+        shake($('#game'), animparams);
         return;
       }
       if(dictionary.indexOf(check) == -1) {
-        $('#game').shake(animparams);
+        shake($('#game'), animparams);
         return;
       }
       answers.push(check);
@@ -317,7 +317,7 @@
           $(`.action-type:contains('${letter}')`).addClass('disabled');
         }
       }else{
-        $('#game').shake(animparams);
+        shake($('#game'), animparams);
       }
     }
     function untype() {
@@ -329,7 +329,7 @@
         $(`.action-type:contains('${letter}')`).removeClass('disabled');
         $('#input').text(input + '_');
       } else {
-        $('#game').shake(animparams);
+        shake($('#game'), animparams);
       }
     }
     
