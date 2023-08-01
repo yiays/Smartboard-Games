@@ -5,13 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quick Maths</title>
-  <meta name="description" content="Test your times tables by solving multiplication questions as fast as you can!">
+  <meta name="description" content="Test your speed solving skills by answering maths questions as fast as you can!">
   <meta name="tags" content="addition, subtraction, multiplication, division, speed, times tables, maths, mathematics, challenge, leaderboard">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=9.3" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=12.2" rel="stylesheet">
   <style>
     body {
       margin-top: 2rem;
@@ -22,6 +22,15 @@
     #answers {
       display: inline-block;
       text-align: left;
+    }
+    .multichoice {
+      height: 8em;
+    }
+    .multichoice .btn {
+      font-size: 2em;
+    }
+    .multichoice .fraction {
+      pointer-events: none;
     }
   </style>
 </head>
@@ -86,7 +95,6 @@
         <button class="btn action-answer">3</button>
         <button class="btn action-answer">4</button>
       </div>
-      <br>
       <div class="options" style="position:relative;top:3.7rem;">
         <button class="btn action-cancel">Menu</button>
       </div>
@@ -114,7 +122,7 @@
 
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
   <script src="//cdn.yiays.com/jquery-color.min.js"></script>
-  <script src="/common.js?v=12.4"></script>
+  <script src="/common.js?v=12.5"></script>
   <script>
     const gamerules = {
       'easy': {'min': 1, 'max': 4},
@@ -147,7 +155,7 @@
     let mode = 2;
     let difficulty, norepeat, tested;
     let q;
-    let ans;
+    let correctAnswer;
     let timerCurrent, totalTime, totalRight, slowDown, score;
     let intTimer;
 
@@ -216,10 +224,10 @@
           norepeat.push(`${rb} ${modesymbols[mode]} ${ra}`);
         break;
       }
-      ans = modeactions[mode](ra, rb);
-      let answers = [ans];
+      correctAnswer = modeactions[mode](ra, rb);
+      let answers = [correctAnswer];
       while(answers.length < 4) {
-        wrongans = randomizers[randint(randomizers.length - 1)](ans);
+        wrongans = randomizers[randint(randomizers.length - 1)](correctAnswer);
         if(answers.indexOf(wrongans) < 0) {
           answers.push(wrongans);
         }
@@ -229,7 +237,10 @@
       $('#question').text(`What is ${q}?`);
       // Slowdown mechanic hints at when an answer was wrong and encourages the user to think about the next one
       for(var i in answers) {
-        $('.multichoice > .btn').eq(i).text(answers[i]).addClass('disabled');
+        $('.multichoice > .btn').eq(i)
+        .html(fraction_representation(answers[i]))
+        .addClass('disabled')
+        .attr('data-value', answers[i]);
       }
       setTimeout(() => {
         for(var i in answers) $('.multichoice > .btn').eq(i).removeClass('disabled');
@@ -246,12 +257,15 @@
     function checkanswer(e) {
       if(e.target.classList.contains('disabled')) return;
 
-      if(e.target.innerText == ans) {
-        $('#answers').append(`<li>${q} = <span class="correct">${ans}</span></li>`);
+      var rightAns = fraction_representation(correctAnswer);
+      if(e.target.dataset.value == correctAnswer) {
+        $('#answers').append(`<li>${q} = <span class="correct">${rightAns}</span></li>`);
         totalRight += 1;
         if(slowDown > 0) slowDown--;
       }else{
-        $('#answers').append(`<li>${q} = <u class="incorrect squiggle">${e.target.innerText}</u> <span class="correct">${ans}</span></li>`);
+        var yourAns = fraction_representation(e.target.dataset.value);
+        console.log(e.target.dataset.value, correctAnswer, rightAns, yourAns);
+        $('#answers').append(`<li>${q} = <u class="incorrect squiggle">${yourAns}</u> <span class="correct">${rightAns}</span></li>`);
         slowDown += 1;
       }
       

@@ -242,6 +242,46 @@ function init_keyboard_capture(charset=/[A-Za-z]/i) {
   });
 }
 
+// Fraction simplification and presentation - https://codepen.io/yiays/pen/dyQweVg
+// Mathematically find the fraction
+function getlowestfraction(x0) {
+  // Searches for the best fitting fraction down to `eps` precision
+  // https://stackoverflow.com/a/14011299
+  var eps = 1.0E-6;
+  var h, h1, h2, k, k1, k2, a, x;
+  x = x0;
+  a = Math.floor(x);
+  h1 = 1;
+  k1 = 0;
+  h = a;
+  k = 1;
+  while (x-a > eps*k*k) {
+    x = 1/(x-a);
+    a = Math.floor(x);
+    h2 = h1; h1 = h;
+    k2 = k1; k1 = k;
+    h = h2 + a*h1;
+    k = k2 + a*k1;
+  }
+  return [h, k];
+}
+
+// Represent the fraction in html
+function fraction_representation(number) {
+  if(number === 0) return '0';
+  var num = number, n, d, w;
+  if(number < 0)
+    num = Math.abs(number);
+  if(num%1 !== 0) {
+    [n,d] = getlowestfraction(num % 1);
+    w = Math.max(`${n}`.length, `${d}`.length) / 3;
+  }
+  var sign = number < 0 ? '-' : '';
+  var numRep = Math.floor(num) ? `${Math.floor(num)}` : '';
+  var fracRep = n?`<span class="fraction" style="width:${w}em" data-num="${n}" data-denom="${d}">${n}/${d}</span>`:'';
+  return sign+numRep+(numRep&&fracRep?'+':'')+fracRep;
+}
+
 // Shake plugin for JQuery - https://github.com/ninty9notout/jquery-shake
 (function(d){d.fn.shake=function(a){"function"===typeof a&&(a={callback:a});a=d.extend({direction:"left",distance:20,times:3,speed:140,easing:"swing"},a);return this.each(function(){var b=d(this),k={position:b.css("position"),top:b.css("top"),bottom:b.css("bottom"),left:b.css("left"),right:b.css("right")};b.css("position","relative");var c="up"==a.direction||"down"==a.direction?"top":"left",e="up"==a.direction||"left"==a.direction?"pos":"neg",f={},g={},h={};f[c]=("pos"==e?"-=":"+=")+a.distance;g[c]=
 ("pos"==e?"+=":"-=")+2*a.distance;h[c]=("pos"==e?"-=":"+=")+2*a.distance;b.animate(f,a.speed,a.easing);for(c=1;c<a.times;c++)b.animate(g,a.speed,a.easing).animate(h,a.speed,a.easing);b.animate(g,a.speed,a.easing).animate(f,a.speed/2,a.easing,function(){b.css(k);a.callback&&a.callback.apply(this,arguments)})})}})(jQuery);
