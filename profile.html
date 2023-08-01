@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=9.3" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=12.1" rel="stylesheet">
   <style>
 
   </style>
@@ -58,9 +58,16 @@
 
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
   <script src="//cdn.yiays.com/jquery-color.min.js"></script>
-  <script src="/common.js?v=11.4"></script>
+  <script src="/common.js?v=12.4"></script>
   <script>
+    let original_theme = theme;
+
     $().ready(() => {
+      Object.keys(c_schemes).forEach((c_scheme) => {
+        if(c_scheme != 'default')
+          $('#theme').append(`<option value="${c_scheme}">${c_scheme}</option>`);
+      });
+
       $('#login').submit((e) => {
         e.preventDefault();
 
@@ -73,7 +80,38 @@
       });
 
       $('.action-logout').on('click', log_out);
+
+      $('#theme').on('change', change_theme);
+
+      $('.action-save').on('click', save_prefs);
     });
+
+    function change_theme(e) {
+      // Preview theme
+      theme = e.target.value;
+      advance_colour();
+
+      $('.action-save').removeClass('disabled');
+    }
+
+    function save_prefs() {
+      if(theme != original_theme) {
+        $.get(`https://highscore.yiays.com/?secret=${secret}&username=${username}&theme=${theme}`)
+        .done((data) => {
+          complete_login(username, data.secret, data.theme, null, true);
+          alert("Profile updated successfully! (Note: it can take up to two days for settings to sync)");
+          original_theme = theme;
+          $('.action-save').addClass('disabled');
+        })
+        .fail((error) => {
+          if(error.status == 403) {
+            alert(error.responseText);
+            log_out();
+          }
+          else alert(error.responseText? error.responseText : "Unable to save settings at this time.");
+        });
+      }
+    }
   </script>
 </body>
 </html>

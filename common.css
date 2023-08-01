@@ -58,6 +58,17 @@ h1 {
   left: -2px;
   display: block;
 }
+.spoiler {
+  display: inline-block;
+  background: black;
+  padding: 0 0.25em;
+  color: black;
+  transition: color 500ms;
+}
+.spoiler:hover {
+  color: inherit;
+}
+
 .countdown {
   font-size: 1.5em;
   margin-bottom: 1rem;

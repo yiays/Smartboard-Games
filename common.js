@@ -26,7 +26,7 @@ const c_schemes = {
   ]
 }
 
-let username = null, secret = null, theme = 'default';
+let username = null, secret = null, theme = 'default', themeExpired=true;
 if(document.cookie.includes('username=')) {
   username = document.cookie.split('; ').filter((s) => s.startsWith('username='))[0].slice(9);
 }
@@ -35,11 +35,15 @@ if(document.cookie.includes('secret=')) {
 }
 if(document.cookie.includes('theme=')) {
   theme = document.cookie.split('; ').filter((s) => s.startsWith('theme='))[0].slice(6);
+  themeExpired = false;
 }
 
 $().ready(() => {
   if(username && secret) {
-    complete_login(username, secret, theme);
+    if(themeExpired)
+      log_in(username, secret);
+    else
+      complete_login(username, secret, theme);
   }
 
   $('.media-loader>*').on('load', (e)=>{
@@ -95,7 +99,7 @@ function sign_up(pusername, callback=null) {
   if(pusername.match(/[\w\d]{3,15}/)) {
     $.post('https://highscore.yiays.com/', {'username':pusername})
     .done((data) => {
-      complete_login(pusername, data.secret, data.theme, callback);
+      complete_login(pusername, data.secret, data.theme, callback, true);
       alert(`Your secret code is ${data.secret}. Note this down in order to be able to sign in later.`);
     })
     .fail((error) => alert(error.responseText? error.responseText : "Unable create an account at this time."))
@@ -112,30 +116,35 @@ function log_in(pusername=null, psecret=null, callback=null) {
   if(!psecret) return false;
 
   $.get(`https://highscore.yiays.com/?secret=${psecret}&username=${pusername}`)
-  .done((data) => complete_login(pusername, data.secret, data.theme, callback))
+  .done((data) => complete_login(pusername, data.secret, data.theme, callback, true))
   .fail((error) => {
     if(error.status == 401) sign_up(pusername, callback);
     else alert(error.responseText? error.responseText : "Unable to log you in at this time.");
   });
 }
 
-function complete_login(pusername, psecret, ptheme, callback=null) {
+function complete_login(pusername, psecret, ptheme, callback=null, online=false) {
   // Saves retrieved info to cookies and updates ui
-  var expiry = (new Date());
-  expiry.setTime(expiry.getTime() + (1000*60*60*24*365*4)); // expires in 4 years
+  if(online) {
+    // This information is authoritative, so reset the cookies
+    var expiry = new Date();
+    expiry.setTime(expiry.getTime() + (1000*60*60*24*365*4)); // expires in 4 years
+    var themeExpiry = new Date();
+    themeExpiry.setTime(themeExpiry.getTime() + (1000*60*60*48)); // expires in 48 hours
+    document.cookie=`username=${pusername};expires=${expiry.toUTCString()};path=/`;
+    document.cookie=`secret=${psecret};expires=${expiry.toUTCString()};path=/`;
+    document.cookie=`theme=${ptheme};expires=${themeExpiry.toUTCString()};path=/`;
+  }
 
-  document.cookie=`username=${pusername};expires=${expiry.toUTCString()};path=/`;
   username=pusername
   $('#showname').text(`Username: ${pusername}`);
   $('[data-username]').attr('data-username', pusername);
 
-  document.cookie=`secret=${psecret};expires=${expiry.toUTCString()};path=/`;
   secret=psecret;
-  $('#showsecret').text(`Secret: ${psecret}`);
+  $('#showsecret').html(`Secret: <span class="spoiler">${psecret}</span>`);
 
-  document.cookie=`theme=${ptheme};expires=${expiry.toUTCString()};path=/`;
   theme = ptheme;
-  $('#theme').val(theme);
+  $('#theme').val(ptheme);
 
   $('#login').hide();
   $('#profile').show();
