@@ -100,11 +100,11 @@ function sign_up(pusername, callback=null) {
     $.post('https://highscore.yiays.com/', {'username':pusername})
     .done((data) => {
       complete_login(pusername, data.secret, data.theme, callback, true);
-      alert(`Your secret code is ${data.secret}. Note this down in order to be able to sign in later.`);
+      toasty(`Your secret code is ${data.secret}. Note this down in order to be able to sign in later.`, 0);
     })
-    .fail((error) => alert(error.responseText? error.responseText : "Unable create an account at this time."))
+    .fail((error) => toasty(error.responseText? error.responseText : "Unable create an account at this time.", 20, true))
   }else{
-    alert("This username doesn't fit the required criteria! (3+ characters, letters and numbers only)");
+    toasty("This username doesn't fit the required criteria! (3+ characters, letters and numbers only)", 20, true);
     return false;
   }
 }
@@ -119,7 +119,7 @@ function log_in(pusername=null, psecret=null, callback=null) {
   .done((data) => complete_login(pusername, data.secret, data.theme, callback, true))
   .fail((error) => {
     if(error.status == 401) sign_up(pusername, callback);
-    else alert(error.responseText? error.responseText : "Unable to log you in at this time.");
+    else toasty(error.responseText? error.responseText : "Unable to log you in at this time.", 20, true);
   });
 }
 
@@ -177,10 +177,10 @@ function submit_highscore(scope, score, silent=false) {
   }
 
   $.get(`https://highscore.yiays.com/?secret=${secret}&scope=${scope}&username=${username}&score=${score}`)
-  .done((data) => { if(!silent) alert(data); showleaderboard(); })
+  .done((data) => { if(!silent) toasty(data, 10); showleaderboard(); })
   .fail((error) => {
     if(error.status == 403) log_out();
-    alert(error.responseText? error.responseText : "Something went wrong! Failed to save your highscore.");
+    toasty(error.responseText? error.responseText : "Something went wrong! Failed to save your highscore.", 20, true);
   });
   return true;
 }
@@ -204,7 +204,31 @@ function get_leaderboard(scope,
     });
     if(i==0) $('#board>tbody').html('<tr><td colspan=3>No highscores yet, be the first!</td></tr>');
   })
-  .fail(() => alert("Failed to get the leaderboard!"));
+  .fail(() => toasty("Failed to get the leaderboard!", 20, true));
+}
+
+// Toasty
+let toastyId = 0;
+function toasty(msg, expiry=5, error=false) {
+  var myToasty = toastyId++;
+  // Create toasty
+  $(document.body).append(`
+    <div class="toasty ${expiry>0?'finite':''} ${error?'error':''}" id="toasty-${myToasty}" style="--expiry:${expiry}s;--id:${myToasty};">
+      ${msg}
+      <a class="close">×</a>
+    </div>`);
+  // Add event listener for close button
+  $(`#toasty-${myToasty}>.close`).on('click', () => {
+    $(`#toasty-${myToasty}`).addClass('finite').css('--expiry', '250ms');
+    setTimeout(() => {
+      $(`#toasty-${myToasty}`).remove();
+    }, 250);
+  });
+  // Schedule deletion
+  if(expiry > 0)
+    setTimeout(() => {
+      $(`#toasty-${myToasty}`).remove();
+    }, expiry*1000);
 }
 
 // Update view when loading is complete

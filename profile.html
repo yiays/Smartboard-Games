@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=12.1" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=13.7" rel="stylesheet">
   <style>
 
   </style>
@@ -58,7 +58,7 @@
 
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
   <script src="//cdn.yiays.com/jquery-color.min.js"></script>
-  <script src="/common.js?v=12.4"></script>
+  <script src="common.js?v=13.7"></script>
   <script>
     let original_theme = theme;
 
@@ -99,16 +99,16 @@
         $.get(`https://highscore.yiays.com/?secret=${secret}&username=${username}&theme=${theme}`)
         .done((data) => {
           complete_login(username, data.secret, data.theme, null, true);
-          alert("Profile updated successfully! (Note: it can take up to two days for settings to sync)");
+          toasty("Profile updated successfully! (Note: it can take up to two days for settings to sync)", 10);
           original_theme = theme;
           $('.action-save').addClass('disabled');
         })
         .fail((error) => {
           if(error.status == 403) {
-            alert(error.responseText);
+            toasty(error.responseText, 20, true);
             log_out();
           }
-          else alert(error.responseText? error.responseText : "Unable to save settings at this time.");
+          else toasty(error.responseText? error.responseText : "Unable to save settings at this time.", 20, true);
         });
       }
     }

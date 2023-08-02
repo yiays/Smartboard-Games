@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=9.5" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=13.7" rel="stylesheet">
   <style>
     body>.panel {
       height: 25em;
@@ -74,7 +74,7 @@
 
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
   <script src="//cdn.yiays.com/jquery-color.min.js"></script>
-  <script src="/common.js?v=12.4"></script>
+  <script src="common.js?v=13.7"></script>
   <script>
     const difficulties = ['easy', 'medium', 'hard', 'harder'];
     let capitals, isocodes, difficulty, gamedifficulties, norepeat;
@@ -117,7 +117,7 @@
 
         if(norepeat.indexOf(q) >= 0) {
           if(norepeat.length >= capitals.length) {
-            alert("Out of countries! Select a higher difficulty for more.");
+            toasty("Out of countries! Select a higher difficulty for more.", 10, true);
             menu();
             return;
           }

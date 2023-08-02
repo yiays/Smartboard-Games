@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=9.4" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=13.7" rel="stylesheet">
   <style>
     body {
       margin-top: 2rem;
@@ -128,7 +128,7 @@
 
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
   <script src="//cdn.yiays.com/jquery-color.min.js"></script>
-  <script src="/common.js?v=12.4"></script>
+  <script src="common.js?v=13.7"></script>
   <script>
     const words = [
       "truest",
@@ -156,7 +156,7 @@
     $().ready(() => {
       $.get('dictionary.txt?v=4.2')
       .done((data) => {dictionary = data.split(/\r?\n/);load_complete()})
-      .fail(() => {alert("Failed to get the dictionary! Try reloading the page...")});
+      .fail(() => {toasty("Failed to get the dictionary! Try reloading the page...", 20, true)});
 
       words.forEach((w) => {
         $('#modeswitch').append(`<option value="${w}">${w.toUpperCase()}</option>`);
