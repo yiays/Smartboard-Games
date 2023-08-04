@@ -1,28 +1,28 @@
 const c_schemes = {
   'default': [
-    '#16a085',
-    '#27ae60',
-    '#2980b9',
-    '#8e44ad',
-    '#2c3e50',
-    '#f39c12',
-    '#d35400',
-    '#c0392b',
-    '#34495e'
+    '16a085',
+    '27ae60',
+    '2980b9',
+    '8e44ad',
+    '2c3e50',
+    'f39c12',
+    'd35400',
+    'c0392b',
+    '34495e'
   ],
   'alice': [
-    '#805f94',
-    '#9c5d3a',
-    '#d199b1',
-    '#46628c',
-    '#86bd8d'
+    '805f94',
+    '9c5d3a',
+    'd199b1',
+    '46628c',
+    '86bd8d'
   ],
   'roses': [
-    '#a31212',
-    '#751919',
-    '#4e7b3a',
-    '#3e5e2f',
-    '#5f2e2e'
+    'a31212',
+    '751919',
+    '4e7b3a',
+    '3e5e2f',
+    '5f2e2e'
   ]
 }
 
@@ -65,12 +65,27 @@ $().ready(() => {
   $('.action-cancel').on('click', reset_colour);
 });
 
-function advance_colour() {
-  $('html').animate({backgroundColor: c_schemes[theme][Math.floor(Math.random() * c_schemes[theme].length)]});
+let currentCol = '1a547a';
+let colSetter = null;
+function set_colour(colour) {
+  if(colSetter) clearInterval(colSetter);
+  var start = new Date();
+  colSetter = setInterval(() => {
+    if(((new Date()) - start) >= 1000) {
+      $('html').css('--theme', '#'+colour);
+      currentCol = colour;
+      clearInterval(colSetter);
+      return;
+    }
+    $('html').css('--theme', '#'+colour_interpolate(currentCol, colour, ((new Date()) - start) / 1000));
+  }, 1000/30);
 }
-
+function advance_colour() {
+  var newCol = c_schemes[theme][Math.floor(Math.random() * c_schemes[theme].length)];
+  set_colour(newCol);
+}
 function reset_colour() {
-  $('html').animate({backgroundColor: '#1e1e1e'});
+  set_colour('1a547a');
 }
 
 function randint(max, min=0) {
@@ -317,4 +332,28 @@ function shake(target, animparams) {
     target.shake(animparams);
     shaketimer = setTimeout(() => shaketimer=null, 300);
   }
+}
+
+// Colour interpolation - 
+function colour_interpolate(col1, col2, p) {
+  const rgb1 = parseInt(col1, 16);
+  const rgb2 = parseInt(col2, 16);
+
+  const [r1, g1, b1] = colour_toArray(rgb1);
+  const [r2, g2, b2] = colour_toArray(rgb2);
+
+  const q = 1-p;
+  const rr = Math.round(r1 * q + r2 * p);
+  const rg = Math.round(g1 * q + g2 * p);
+  const rb = Math.round(b1 * q + b2 * p);
+
+  return  Number((rr << 16) + (rg << 8) + rb).toString(16);
+}
+
+function colour_toArray(rgb) {
+  const r = rgb >> 16;
+  const g = (rgb >> 8) % 256;
+  const b = rgb % 256;
+
+  return [r, g, b];
 }

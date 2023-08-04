@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=13.8" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=14.7" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.yiays.com/yiaycons/yiaycons.css">
   <style>
     a {
@@ -120,19 +120,25 @@
     }
     .c-trivia {
       background-color: #863d0c;
+      background-color: var(--trivia);
     }
     .c-stem {
       background-color: #1a547a;
+      background-color: var(--stem);
     }
     .c-geography {
       background-color: #1d663c;
+      background-color: var(--geo);
     }
     .c-english {
       background-color: #561f6d;
+      background-color: var(--eng);
     }
     .c-other {
       background-color: #aaa;
-      color: black!important;
+      background-color: var(--secondary);
+      color: black !important;
+      color: var(--antitext) !important;
     }
     .game {
       position: relative;
@@ -281,8 +287,7 @@
   </footer>
   
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
-  <script src="//cdn.yiays.com/jquery-color.min.js"></script>
-  <script src="/common.js?v=13.7"></script>
+  <script src="/common.js?v=14.6"></script>
   <script>
     let badgeCache;
     if(localStorage.getItem('badges')) {
