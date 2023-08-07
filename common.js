@@ -349,7 +349,6 @@ function colour_interpolate(col1, col2, p) {
 
   return  Number((rr << 16) + (rg << 8) + rb).toString(16);
 }
-
 function colour_toArray(rgb) {
   const r = rgb >> 16;
   const g = (rgb >> 8) % 256;
@@ -357,3 +356,56 @@ function colour_toArray(rgb) {
 
   return [r, g, b];
 }
+
+// https://www.30secondsofcode.org/js/s/levenshtein-distance/
+function levenshteinDistance(a, b, log=false) {
+  if (!a.length) return b.length;
+  if (!b.length) return a.length;
+  const arr = [];
+  for (let i = 0; i <= b.length; i++) {
+    arr[i] = [i];
+    for (let j = 1; j <= a.length; j++) {
+      arr[i][j] =
+        i === 0
+          ? j
+          : Math.min(
+              arr[i - 1][j] + 1,
+              arr[i][j - 1] + 1,
+              arr[i - 1][j - 1] + (a[j - 1] === b[i - 1] ? 0 : 1)
+            );
+    }
+  }
+
+  if(log) {
+    let i = b.length;
+    let j = a.length;
+    
+    const edits = {};
+    
+    while (i > 0 || j > 0) {
+      if (i === 0) {
+        edits[j-1] = `-${a[j-1]}`;
+        j--;
+      } else if (j === 0) {
+        edits[i-1] = `+${b[i-1]}`;
+        i--;
+      } else if (arr[i-1][j-1] <= arr[i-1][j] && arr[i-1][j-1] <= arr[i][j-1]) {
+        if (arr[i-1][j-1] < arr[i][j]) {
+          edits[j-1] = `~${a[j-1]}${b[i-1]}`;
+        }
+        i--;
+        j--;
+      } else if (arr[i-1][j] <= arr[i][j-1]) {
+        edits[j-1] = `-${a[j-1]}`;
+        j--;
+      } else {
+        edits[i-1] = `+${b[i-1]}`;
+        i--;
+      }
+    }
+    
+    return [arr[b.length][a.length], edits];
+  }
+
+  return arr[b.length][a.length];
+};

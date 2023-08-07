@@ -54,6 +54,8 @@ body.keyboard {
 h1 {
   font-size: 2em;
 }
+
+/* Text decorators */
 .correct {
   color: #2ecc71;
   color: var(--correct);
@@ -80,6 +82,9 @@ h1 {
   bottom: -1px;
   left: -2px;
   display: block;
+}
+.missing {
+  opacity: 0.5;
 }
 .spoiler {
   display: inline-block;
@@ -309,7 +314,6 @@ body.keyboard #keyboard {
 .media-loader {
   margin-bottom: 1em;
   background: var(--text);
-  opacity: 0.5;
   animation: fadeloop 1s infinite;
 }
 .media-loader > * {
@@ -325,13 +329,13 @@ body.keyboard #keyboard {
 }
 @keyframes fadeloop {
   0% {
-    opacity: 0.5;
-  }
-  50% {
     opacity: 0.25;
   }
-  0% {
-    opacity: 0.5;
+  50% {
+    opacity: 0.125;
+  }
+  100% {
+    opacity: 0.25;
   }
 }
 

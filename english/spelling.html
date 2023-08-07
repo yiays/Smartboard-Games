@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=14.7" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=14.9" rel="stylesheet">
   <style>
     audio {
       width: 15em;
@@ -44,7 +44,7 @@
   <div id="game" class="panel" style="display:none;">
     <h1 id="question">Word 1</h1>
     <div class="media-loader">
-      <audio id="audio" controls src=""></audio>
+      <audio id="audio" autoplay="true" controls src=""></audio>
     </div>
     <p id="definition">Definition: </p>
     <p id="input">_</p>
@@ -64,7 +64,7 @@
   </div>
   <div id="summary" class="panel" style="display:none;">
     <h1>Finished</h1>
-    <p id="finalscore"></p>
+    <attr id="finalscore"></attr>
     <div class="options">
       <button class="btn action-cancel confirm-action">Menu</button>
       <button class="btn action-finish">Submit highscore</button>
@@ -72,7 +72,7 @@
   </div>
   <div id="leaderboard" class="panel" style="display:none;">
     <h1>Leaderboard</h1>
-    <p id="leaderboard-difficulty">
+    <p id="leaderboard-diff">
       (Easy)
     </p>
     <table id="board" width="100%">
@@ -126,7 +126,7 @@
   </div>
 
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
-  <script src="/common.js?v=14.6"></script>
+  <script src="/common.js?v=14.7"></script>
   <script>
     const words = {
       0: {
@@ -165,7 +165,7 @@
         // TODO: find 2 more
       }
     }
-    let word, wordorder, input, answers, norepeat;
+    let word, wordorder, input, answers, score, scores;
     let difficulty = 0;
     const diffname = ['Easy', 'Medium', 'Hard'];
     const animparams = {distance: 5, speed: 50, times: 2};
@@ -184,6 +184,15 @@
       $('.action-untype').on('click', untype);
       init_keyboard_capture();
 
+      $(document).on('keydown', (e) => {
+        if($('#results').is(':visible') && e.key == 'Enter') {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          newquestion();
+          return false;
+        }
+      });
+
       $('.action-cancel').on('click', menu);
 
       $('.action-check').on('click', checkanswer)
@@ -192,7 +201,9 @@
 
       $('.action-leaderboard').on('click', showleaderboard);
 
-      $('.action-finish').on('click', endgame);
+      $('.action-finish').on('click', () => {
+        submit_highscore(`spelling_${diffname[difficulty]}`, score);
+      });
     });
 
     function on_modechange() {
@@ -201,23 +212,27 @@
     }
 
     function menu() {
-      $('#game,#results,#leaderboard,#keyboard').hide();
+      $('#game,#results,#summary,#leaderboard,#keyboard').hide();
       $('body').removeClass('keyboard');
       $('#menu').show();
     }
 
     function newgame() {
-      $('#menu,#results,#leaderboard').hide();
+      $('#menu,#results,#summary,#leaderboard').hide();
       $('#keyboard').show();
       $('body').addClass('keyboard');
       answers = [];
-      norepeat = [];
+      scores = [];
       wordorder = shuffle(Object.keys(words[difficulty]));
       newquestion();
     }
 
     function newquestion() {
-      $('#results').hide();
+      if(answers.length >= wordorder.length) {
+        endgame();
+        return;
+      }
+      $('#results,#summary').hide();
       $('#game').show();
       $('#question').text(`Word ${answers.length+1}`);
       input = '';
@@ -229,51 +244,91 @@
       $('#audio').attr('src', `/audio/pronunciation/${word}.ogg`);
       $('#definition').text(`Definition: ${words[difficulty][word]}`);
     }
-
+ 
     function checkanswer() {
       $('#game').hide();
       let check = input.toLowerCase();
       answers.push(check);
 
       if(check == word) {
+        scores.push(1);
         $('#results>h1').text('Correct');
         $('#worddiff').html(check.toUpperCase()).addClass('correct');
       }
       else {
+        let [wordscore, diff] = levenshteinDistance(word, check, true);
+        scores.push(Math.max(word.length-wordscore,0)/word.length);
+        console.log(diff);
+        console.log(wordscore);
+
+        var out = '';
+        if(Object.keys(diff).length <= 3) { // Hack: heruristics for skipping difference mode
+          var i=0, cursor=0, buffer = [], bufferMode='correct';
+          // Show mistakes inline
+          function insertchar(char, mode) {
+            if(mode==bufferMode) buffer.push(char);
+            else {
+              if(buffer.length)
+                out += `<span class="${bufferMode}">${buffer.join('').toUpperCase()}</span>`;
+              bufferMode = mode;
+              buffer = [char];
+            }
+          }
+          while(cursor < word.length) {
+            if(diff[i]) {
+              if(diff[i][1]==check[cursor]) {
+                // Fix for the imperfect diff algorithm
+                insertchar(word[cursor++], 'correct');
+              }
+              else if(diff[i][0] == '-') {
+                insertchar(diff[i][1], 'missing');
+                cursor++;
+              }
+              else if(diff[i][0] == '+') insertchar(diff[i][1], 'incorrect');
+              else if(diff[i][0] == '~') {
+                insertchar(diff[i][2], 'incorrect');
+                insertchar(diff[i][1], 'missing');
+                cursor++;
+              } else console.warn(`Invalid state "${diff[i][0]}" in levenshtein log.`)
+            } else{
+              insertchar(word[cursor++], 'correct');
+            }
+            i++;
+          }
+          // Finalize out by flushing the buffer
+          insertchar('', '');
+        }else{
+          // Too many differences, just show a comparison instead
+          out=`<span class="incorrect">${check.toUpperCase()}</span><br><span class="correct">${word.toUpperCase()}</span>`;
+        }
         shake($('#game'), animparams);
         $('#results>h1').text('Incorrect');
-        $('#worddiff').html(`<span class="incorrect squiggle">${check.toUpperCase()}</span> <span class="correct">${word.toUpperCase()}</span>`).removeClass('correct');
+        $('#worddiff').html(out).removeClass('correct');;//+`<br><span class="correct">${word.toUpperCase()}</span>`).removeClass('correct');
       }
 
       $('#results').show();
     }
 
     function endgame() {
-      $('#menu,#game,#keyboard').hide();
+      $('#menu,#game,#results,#keyboard').hide();
       $('body').removeClass('keyboard');
-      $('#results').show();
+      $('#summary').show();
       
-      $('#finalscore').text(answers.length);
+      score = Math.round((scores.reduce((a,b)=>a+b) / scores.length)*10000)/100;
+      $('#finalscore').text(`${score}% accuracy`);
       $('#finalscore').prop('title', answers.join('\n'));
-      $('#word').text(word);
-      let anagrams = answers.filter((e) => {return e.length == word.length});
-      $('#anagrams').text(anagrams.length);
-      $('#anagrams').prop('title', anagrams.join('\n'));
-
-      submit_highscore(`spelling_${difficulty}`, `[${anagrams.length},${answers.length}]`);
     }
 
     function showleaderboard() {
-      $('#results,#menu,#game,#keyboard').hide();
+      $('#results,#summary,#menu,#game,#keyboard').hide();
       $('#leaderboard').show();
       $('body').removeClass('keyboard');
 
-      $('#leaderboard-word').text(`(${diffname[difficulty]})`);
+      $('#leaderboard-diff').text(`(${diffname[difficulty].charAt(0).toUpperCase()+diffname[difficulty].slice(1)} difficulty)`);
 
       get_leaderboard(
-        `spelling_${difficulty}`,
-        result_converter=(value) => `${value[0]} Anagram(s), ${value[1]} Word(s)`,
-        sorter=(a,b) => (a[2][0]===b[2][0])?b[2][1]-a[2][1]:b[2][0]-a[2][0]
+        `spelling_${diffname[difficulty]}`,
+        result_converter=(v) => `${v}% accuracy`
       );
     }
 
