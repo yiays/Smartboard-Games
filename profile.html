@@ -58,12 +58,16 @@
   <script>
     let original_theme = theme;
 
-    $().ready(() => {
+    {
+      // Add options before JQuery so the login process can use them
+      var themeSelect = document.getElementById('theme');
       Object.keys(c_schemes).forEach((c_scheme) => {
         if(c_scheme != 'default')
-          $('#theme').append(`<option value="${c_scheme}">${c_scheme}</option>`);
+          themeSelect.options[themeSelect.options.length] = new Option(c_scheme, c_scheme);
       });
+    }
 
+    $().ready(() => {
       $('#login').submit((e) => {
         e.preventDefault();
 
