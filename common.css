@@ -17,7 +17,7 @@ html {
   --theme: #1a547a;
   display: flex;
   font-family: 'Roboto', sans-serif;
-  min-height: 100vh;
+  min-height: 100lvh;
   background: #1e1e1e;
   background: radial-gradient(circle at center, var(--theme) 0%, var(--bg) 60%);
   background-attachment: fixed;
@@ -186,6 +186,7 @@ h1 {
   width: max-content;
   max-width: 20em;
   margin: 0 auto;
+  margin-bottom: calc((100vh - 100dvh) / 2);
   padding: 1em 2em;
   background: var(--primary);
   box-shadow: rgba(0,0,0,0.25) 0 0 0.5rem 0;
