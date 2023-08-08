@@ -352,6 +352,7 @@
           if(el.dataset.scope in badgeCache)
             addLeaderboardBadges(el, badgeCache[el.dataset.scope]);
           else {
+            clearLeaderboardBadges();
             badgeCache = null;
             update_badges();
             return false;
@@ -370,6 +371,9 @@
         else
         badgeContainer.append(`<span class="placement" title="${place[0]}">✅</span>`);
       });
+    }
+    function clearLeaderboardBadges() {
+      $('.badges > .placement').remove();
     }
     function diffsorter(arr) {
       const order = ['baby','easy','medium','hard','harder'];
