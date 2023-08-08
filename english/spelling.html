@@ -126,7 +126,7 @@
   </div>
 
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
-  <script src="/common.js?v=14.7"></script>
+  <script src="/common.js?v=14.11"></script>
   <script>
     const words = {
       0: {
@@ -220,7 +220,7 @@
     function newgame() {
       $('#menu,#results,#summary,#leaderboard').hide();
       $('#keyboard').show();
-      $('body').addClass('keyboard');
+      popup_keyboard();
       answers = [];
       scores = [];
       wordorder = shuffle(Object.keys(words[difficulty]));

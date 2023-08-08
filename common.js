@@ -26,7 +26,7 @@ const c_schemes = {
   ]
 }
 
-let username = null, secret = null, theme = 'default', themeExpired=true;
+let username=null, secret=null, theme='default', keyboard=true, themeExpired=true;
 if(document.cookie.includes('username=')) {
   username = document.cookie.split('; ').filter((s) => s.startsWith('username='))[0].slice(9);
 }
@@ -36,6 +36,9 @@ if(document.cookie.includes('secret=')) {
 if(document.cookie.includes('theme=')) {
   theme = document.cookie.split('; ').filter((s) => s.startsWith('theme='))[0].slice(6);
   themeExpired = false;
+}
+if(document.cookie.includes('keyboard=')) {
+  keyboard = document.cookie.split('; ').filter((s) => s.startsWith('keyboard='))[0].slice(9)=='1'?true:false;
 }
 
 $().ready(() => {
@@ -252,12 +255,27 @@ function load_complete(showcls='.big-red.btn') {
   $(showcls).show();
 }
 
+// Pops up the keyboard as long as it wasn't manually disabled before
+function popup_keyboard() {
+  if(keyboard) {
+    document.body.classList.add('keyboard');
+  }
+}
 // Shows or hides the in-game keyboard
 function toggle_keyboard() {
-  if(document.body.classList.contains('keyboard')) document.body.classList.remove('keyboard');
-  else document.body.classList.add('keyboard');
+  var expiry = new Date();
+  expiry.setTime(expiry.getTime() + (1000*60*60*24*30)); // expires in 1 month
+  if(document.body.classList.contains('keyboard')) {
+    document.body.classList.remove('keyboard');
+    document.cookie=`keyboard=0;expires=${expiry.toUTCString()};path=/`;
+    keyboard = false;
+  }
+  else {
+    document.body.classList.add('keyboard');
+    document.cookie=`keyboard=1;expires=${expiry.toUTCString()};path=/`;
+    keyboard = true;
+  }
 }
-
 // Takes input from the physical keyboard and sends it to type() and untype()
 function init_keyboard_capture(charset=/[A-Za-z]/i) {
   $(document).on('keydown', (e) => {
@@ -305,7 +323,7 @@ function getlowestfraction(x0) {
   return [h, k];
 }
 
-// Represent the fraction in html
+// Represent fractions in html
 function fraction_representation(number) {
   if(number === 0) return '0';
   var num = number, n, d, w;
@@ -377,6 +395,7 @@ function levenshteinDistance(a, b, log=false) {
   }
 
   if(log) {
+    // Approximately guesses which changes the levenschtein algorithm found
     let i = b.length;
     let j = a.length;
     
