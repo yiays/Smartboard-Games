@@ -41,6 +41,18 @@ if(document.cookie.includes('keyboard=')) {
   keyboard = document.cookie.split('; ').filter((s) => s.startsWith('keyboard='))[0].slice(9)=='1'?true:false;
 }
 
+const bc = new BroadcastChannel('general');
+bc.onmessage = (e) => {
+  let frag = e.data.split(' ');
+  if(frag[0] == 'login') { // login broadcast event
+    username = frag[1];
+    secret = frag[2];
+    theme = frag[3];
+    complete_login(username, secret, theme, null, false, false);
+    toasty("Logged in successfully", 10)
+  }
+};
+
 $().ready(() => {
   if(username && secret) {
     if(themeExpired)
@@ -141,7 +153,7 @@ function log_in(pusername=null, psecret=null, callback=null) {
   });
 }
 
-function complete_login(pusername, psecret, ptheme, callback=null, online=false) {
+function complete_login(pusername, psecret, ptheme, callback=null, online=false, broadcast=true) {
   // Saves retrieved info to cookies and updates ui
   if(online) {
     // This information is authoritative, so reset the cookies
@@ -168,10 +180,10 @@ function complete_login(pusername, psecret, ptheme, callback=null, online=false)
   $('#profile').show();
 
   advance_colour();
+  
+  if(broadcast) bc.postMessage(`login ${username} ${secret} ${theme}`);
 
-  if(callback !== null) {
-    callback();
-  }
+  if(callback !== null) callback();
 }
 
 function log_out() {
@@ -190,7 +202,8 @@ function log_out() {
 
 function submit_highscore(scope, score, silent=false) {
   if(username === null || secret === null) {
-    log_in(null, null, () => submit_highscore(scope, score, silent));
+    if(confirm("You need to make an account first! Continue?"))
+      window.open("/profile.html", '_blank');
     return false;
   }
 

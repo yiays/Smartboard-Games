@@ -164,7 +164,7 @@
 </head>
 <body>
   <div class="hero">
-    <a href="/profile.html" class="profile" data-username="not logged in" data-note="You can now change your colour theme - 1/08/2023">
+    <a href="/profile.html" class="profile" data-username="not logged in" data-note="Improved highscore submitting when not logged in - 17/09/2023">
       <i class="pfp">
         <span class="icon icon-">user</span>
       </i>
@@ -200,22 +200,16 @@
         <p class="badges"></p>
         <h1>Capital Cities</h1>
         <p>Guess the capital for each country</p>
-        •
-        <sub>Tweaked difficulty names - 29/07/2023</sub>
       </a>
       <a href="geography/capitals.html?mode=1" class="btn game c-geography" data-filter="geography">
         <p class="badges"></p>
         <h1>Countries</h1>
         <p>Guess the country for each capital</p>
-        •
-        <sub>Tweaked difficulty names - 29/07/2023</sub>
       </a>
       <a href="geography/capitals.html?mode=2" class="btn game c-geography" data-filter="geography">
         <p class="badges"></p>
         <h1>Flags</h1>
         <p>Guess the country for each flag</p>
-        •
-        <sub>Tweaked difficulty names - 29/07/2023</sub>
       </a>
       <a href="stem/quickmaths.html?mode=0" class="btn game c-stem" data-filter="stem leaderboard" data-scope="quickmaths_0_*">
         <p class="badges">
@@ -224,7 +218,6 @@
         <h1>Quick Addition</h1>
         <p>Quickfire maths questions with multiple choice answers</p>
         •
-        <sub>Reset leaderboard, new scoring system - 18/07/2023</sub>
         <sub>Made harder difficulty harder - 20/07/2023</sub>
       </a>
       <a href="stem/quickmaths.html?mode=1" class="btn game c-stem" data-filter="stem leaderboard" data-scope="quickmaths_1_*">
@@ -233,8 +226,6 @@
         </p>
         <h1>Quick Subtraction</h1>
         <p>Quickfire maths questions with multiple choice answers</p>
-        •
-        <sub>Reset leaderboard, new scoring system - 18/07/2023</sub>
       </a>
       <a href="stem/quickmaths.html?mode=2" class="btn game c-stem" data-filter="stem leaderboard" data-scope="quickmaths_2_*">
         <p class="badges">
@@ -242,8 +233,6 @@
         </p>
         <h1>Quick Multiplication</h1>
         <p>Quickfire maths questions with multiple choice answers</p>
-        •
-        <sub>Reset leaderboard, new scoring system - 18/07/2023</sub>
       </a>
       <a href="stem/quickmaths.html?mode=3" class="btn game c-stem" data-filter="stem leaderboard" data-scope="quickmaths_3_*">
         <p class="badges">
@@ -253,7 +242,6 @@
         <p>Quickfire maths questions with multiple choice answers</p>
         •
         <sub>Now with fractions! - 1/08/2023</sub>
-        <sub>Reset leaderboard, new scoring system - 18/07/2023</sub>
       </a>
       <a href="english/anagrams.html" class="btn game c-english" data-filter="english leaderboard" data-scope="anagrams_*">
         <p class="badges">
@@ -262,7 +250,6 @@
         <h1>Anagrams</h1>
         <p>Spell as many words as you can with the letters of another word</p>
         •
-        <sub>Keyboard support, word select - 18/07/2023</sub>
         <sub>More words, improved keyboard - 20/07/2023</sub>
       </a>
       <a href="english/storyshuffle.html" class="btn game c-english" data-filter="english tool">
@@ -284,7 +271,7 @@
         <h1>Spelling 🐝</h1>
         <p>Hear a word, see the definition, and try your best to spell it!</p>
         •
-        <sub>Added some more words - 17/09/2023</sub>
+        <sub>More words, fixed badges - 17/09/2023</sub>
       </a>
     </div>
   </main>
@@ -296,7 +283,7 @@
   </footer>
   
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
-  <script src="/common.js?v=14.7"></script>
+  <script src="/common.js?v=15.2"></script>
   <script>
     let badgeCache;
     if(localStorage.getItem('badges')) {
@@ -378,8 +365,8 @@
     function diffsorter(arr) {
       const order = ['baby','easy','medium','hard','harder'];
       return arr.sort((a, b) => {
-        const indexA = order.indexOf(a[0]);
-        const indexB = order.indexOf(b[0]);
+        const indexA = order.indexOf(a[0].toLowerCase());
+        const indexB = order.indexOf(b[0].toLowerCase());
         if (indexA === -1 && indexB === -1) {
           return a[0].localeCompare(b[0]);
         } else if (indexA === -1) {
