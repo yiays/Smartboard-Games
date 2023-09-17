@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flashcards</title>
+  <meta name="description" content="Train your memory with a variety of pre-made flashcards for learning languages">
+  <meta name="tags" content="test, quiz, flashcard, language, memory">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=14.12" rel="stylesheet">
+  <style>
+    #game {
+      perspective: 1000px;
+    }
+    .flashcard {
+      position: relative;
+      width: 10em;
+      height: 6em;
+      background: var(--bg);
+      border-radius: 1em;
+      box-shadow: rgba(0,0,0,0.25) 0.25rem 0.25rem 0.25rem 0;
+      --a-visibility: visible;
+      --b-visibility: hidden;
+    }
+    .flashcard.flipped {
+      animation: flipcard 500ms ease forwards;
+    }
+    .flashcard .side-a, .flashcard .side-b {
+      display: grid;
+      position: absolute;
+      inset: 0;
+      align-content: center;
+    }
+    .flashcard .side-a {
+      font-size: 4em;
+      visibility: var(--a-visibility);
+    }
+    .flashcard .side-b {
+      visibility: var(--b-visibility);
+      transform: rotateY(180deg);
+    }
+    @keyframes flipcard {
+      0% {
+        transform: rotateY(0deg);
+        background: var(--bg);
+        --a-visibility: visible;
+        --b-visibility: hidden;
+      }
+      100% {
+        transform: rotateY(-180deg);
+        background: var(--accent);
+        --a-visibility: hidden;
+        --b-visibility: visible;
+      }
+    }
+  </style>
+</head>
+<body>
+  <p class="panel-controls">
+    <label for="modeswitch">Word: </label>
+    <select name="set" id="modeswitch">
+      <option selected value="">Select a set</option>
+    </select>
+  </p>
+  <div id="menu" class="panel">
+    <h1>Flashcards</h1>
+    <p>
+      Train your memory with a variety of pre-made flashcards for learning languages
+    </p>
+    <div class="loader">Loading...</div>
+    <button class="big-red btn disabled" id="start" style="display:none;">Go</button>
+    <div class="options" style="margin-top: 1em">
+      <a class="btn" href="/">More games</a>
+    </div>
+  </div>
+  <div id="game" class="panel" style="display:none;">
+    <h1 id="question">Card 0/0</h1>
+    <div class="flashcard">
+      <div class="side-a">
+        Question
+      </div>
+      <div class="side-b">
+        Answer
+      </div>
+    </div>
+    <br>
+
+    <div class="pre">
+      <div class="options">
+        <button class="btn action-cancel">Menu</button>
+        <button class="btn action-answer">Show answer</button>
+      </div>
+    </div>
+    <div class="post">
+      <div class="options">
+        <button class="btn action-cancel">Menu</button>
+        <button class="btn action-advance">Next question</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
+  <script src="/common.js?v=15.2"></script>
+  <script>
+    let norepeat = [];
+    let flashcards = {};
+    let mode = '';
+    let number = -1;
+
+    $().ready(() => {
+      let promises = [];
+      promises.push($.getJSON('flashcards.json', (data) => {populate_modelist(data)}));
+      Promise.all(promises).then((_) => load_complete());
+
+      $('#start').on('click', (e) => {
+        $('#menu,.panel-controls').hide();
+        $('#game').show();
+        mode = $('#modeswitch').val();
+        norepeat = [];
+        
+        newquestion();
+
+        return false;
+      });
+
+      $('#modeswitch').on('change', (e) => {mode = e.target.value;on_modechange()});
+
+      $('.action-cancel').on('click', menu);
+
+      $('.action-advance').on('click', newquestion);
+
+      $('.action-answer').on('click', showanswer);
+    });
+
+    function populate_modelist(data) {
+      Object.keys(data).forEach((set) => {
+        let keyname = set.toLowerCase().replace(/ - .*/, '').replace(' ','_') + '_' + data[set].length;
+        flashcards[keyname] = data[set];
+        $('#modeswitch').append(`<option value="${keyname}">${set}</option>`);
+      });
+
+      if('mode' in urlParams) {
+        mode = urlParams.mode;
+        on_modechange();
+      }
+    }
+
+    function newquestion() {
+      while(true) {
+        number = randint(flashcards[mode].length - 1);
+
+        if(norepeat.indexOf(number) >= 0) {
+          if(norepeat.length >= flashcards[mode].length) {
+            toasty("Out of cards!", 10, true);
+            menu();
+            return;
+          }
+          continue;
+        }
+        norepeat.push(number);
+        break;
+      }
+
+      $('#question').text(`Card ${norepeat.length} / ${flashcards[mode].length}`);
+      let [question, answer] = Object.entries(flashcards[mode][number])[0]
+      $('#game>.flashcard>.side-a').text(question);
+      $('#game>.flashcard>.side-b').text(answer);
+
+      $('#game>.flashcard').removeClass('flipped');
+      $('#game .post').hide();
+      $('#game .pre').show();
+    }
+
+    function showanswer() {
+      $('#game>.flashcard').addClass('flipped');
+      $('#game .pre').hide();
+      $('#game .post').show();
+    }
+
+    function menu() {
+      $('#game').hide();
+      $('#menu,.panel-controls').show();
+    }
+
+    function on_modechange() {
+      $('#modeswitch').val(mode);
+      if(mode == '') {
+        $('#start').addClass('disabled');
+      } else {
+        $('#start').removeClass('disabled');
+      }
+      if(!('mode' in urlParams) || urlParams.mode != mode)
+        window.history.pushState({}, '', document.location.href.split('?')[0]+`?mode=${mode}`);
+      menu();
+    }
+
+    var urlParams;
+    window.onpopstate = function() {
+      var match,
+        pl     = /\+/g,  // Regex for replacing addition symbol with a space
+        search = /([^&=]+)=?([^&]*)/g,
+        decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+        query  = window.location.search.substring(1);
+    
+      urlParams = {};
+      while (match = search.exec(query))
+        urlParams[decode(match[1])] = decode(match[2]);
+      
+      if('mode' in urlParams && urlParams.mode != mode) {
+        mode = urlParams.mode;
+        on_modechange();
+      } else if (mode != '') {
+        mode = '';
+        on_modechange();
+      }
+    };
+    window.onpopstate();
+  </script>
+</body>
+</html>
