@@ -150,7 +150,6 @@
       }
       else if(mode == 2){
         $('#question').text('Which country has this flag?');
-        $('.pre .flag').css('opacity', 0);
         if(capitals[q].country in isocodes) {
           $('.pre .flag').attr('src', `/flags/${isocodes[capitals[q].country].toLowerCase()}.svg`);
           $('.pre .media-loader').removeClass('loaded');
