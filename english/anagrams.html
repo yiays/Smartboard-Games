@@ -146,14 +146,22 @@
       "resistance",
       "creative",
       "parental",
-      "statement"
+      "statement",
+      "nonuniversalist",
+      "spectatorial",
+      "cameralistic",
+      "recreationist",
+      "unmaledictory",
+      "pharmacolite",
+      "miscreations",
+      "nondialectic"
     ];
     let dictionary = [];
     let word, keys, input, answers;
     const animparams = {distance: 5, speed: 50, times: 2}
 
     $().ready(() => {
-      $.get('dictionary.txt?v=5.0')
+      $.get('dictionary.txt?v=5.1')
       .done((data) => {dictionary = data.split(/\r?\n/);load_complete()})
       .fail(() => {toasty("Failed to get the dictionary! Try reloading the page...", 20, true)});
 

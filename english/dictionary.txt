@@ -484,6 +484,7 @@ acclimation
 acclimatisation
 acclimatise
 acclimatised
+acclimatiser
 acclimatises
 acclimatising
 acclimatization
@@ -10137,6 +10138,7 @@ cameo
 cameos
 camera
 cameral
+cameralistic
 cameraman
 cameramen
 cameras
@@ -22050,6 +22052,7 @@ document
 documentable
 documentaries
 documentary
+documentarily
 documentation
 documented
 documenting
@@ -38979,6 +38982,7 @@ invoked
 invokes
 invoking
 involuntarily
+involuntariness
 involuntary
 involution
 involve
@@ -45913,6 +45917,7 @@ miscounting
 miscounts
 miscreant
 miscreants
+miscreations
 miscue
 miscued
 miscues
@@ -48632,6 +48637,7 @@ nonconformity
 nondescript
 nondescriptly
 nondescripts
+nondialectric
 none
 nonentities
 nonentity
@@ -48662,6 +48668,7 @@ nonstock
 nonsuit
 nontax
 nonuser
+nonuniversalist
 noodle
 noodles
 nook
@@ -53481,6 +53488,7 @@ pharmaceutics
 pharmacies
 pharmacist
 pharmacists
+pharmacolite
 pharmacological
 pharmacologically
 pharmacology
@@ -54734,6 +54742,7 @@ poesy
 poet
 poetaster
 poetasters
+poetastrical
 poetess
 poetesses
 poetic
@@ -59498,6 +59507,7 @@ recreates
 recreating
 recreation
 recreational
+recreationist
 recreations
 recreative
 recriminate
@@ -68370,6 +68380,7 @@ spectated
 spectates
 spectating
 spectator
+spectatorial
 spectators
 specter
 specters
@@ -77473,6 +77484,7 @@ unicorns
 unicycle
 unicycles
 unidentifiable
+unidentifiably
 unidentified
 unidiomatic
 unidirectional
@@ -77733,6 +77745,7 @@ unmaintained
 unmake
 unmakes
 unmaking
+unmaledictory
 unman
 unmanageable
 unmanageably
