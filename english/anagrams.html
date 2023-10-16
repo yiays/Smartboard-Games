@@ -161,7 +161,7 @@
     const animparams = {distance: 5, speed: 50, times: 2}
 
     $().ready(() => {
-      $.get('dictionary.txt?v=5.1')
+      $.get('dictionary.txt?v=5.2')
       .done((data) => {dictionary = data.split(/\r?\n/);load_complete()})
       .fail(() => {toasty("Failed to get the dictionary! Try reloading the page...", 20, true)});
 
