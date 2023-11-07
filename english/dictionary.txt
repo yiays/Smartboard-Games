@@ -10763,7 +10763,6 @@ carouses
 carousing
 carp
 carpal
-carpe
 carped
 carpenter
 carpenters
@@ -10980,6 +10979,7 @@ casuistical
 casuistry
 casuists
 casus
+cat
 catabolic
 catabolism
 catachresis
@@ -23282,6 +23282,7 @@ earn
 earned
 earner
 earners
+earnest
 earnestly
 earnestness
 earning
@@ -70838,6 +70839,7 @@ suddenly
 suddenness
 suds
 sudsy
+sue
 sued
 suede
 sues
