@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=14.12" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=14.14" rel="stylesheet">
   <style>
     body>.panel {
       height: 25em;
@@ -26,6 +26,7 @@
       border-color: var(--text);
     }
     #magicsquare input[type=number] {
+      appearance: textfield;
       -moz-appearance: textfield;
       font-size: 1.2em;
       width: 2rem;
@@ -60,7 +61,7 @@
   </div>
   <div id="game" class="panel" style="display:none;">
     <h1>Magic Squares</h1>
-    <p>The sum is <span id="sum">0</span></p>
+    <p>The sum in every direction is <span id="sum">0</span></p>
     <table id="magicsquare"></table>
     <br>
     <form class="play">

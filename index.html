@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=14.12" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=14.14" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.yiays.com/yiaycons/yiaycons.css">
   <style>
     a {
@@ -147,6 +147,11 @@
       min-height: 5em;
       max-height: 12em;
       margin: 1em;
+      font-size: 1em;
+      transition: font-size 250ms;
+    }
+    .game.hidden {
+      font-size: 0em;
     }
     .game .badges {
       width: 100%;
@@ -164,7 +169,7 @@
 </head>
 <body>
   <div class="hero">
-    <a href="/profile.html" class="profile" data-username="not logged in" data-note="Improved highscore submitting when not logged in - 17/09/2023">
+    <a href="/profile.html" class="profile" data-username="not logged in" data-note="Fixed new account registration - 29/03/2024">
       <i class="pfp">
         <span class="icon icon-">user</span>
       </i>
@@ -180,70 +185,83 @@
     <a href="#stem" class="btn category c-stem" data-filter="stem">STEM</a>
     <a href="#geography" class="btn category c-geography" data-filter="geography">Geography</a>
     <a href="#english" class="btn category c-english" data-filter="english">English</a>
-    <a href="#tool" class="btn category c-other" data-filter="tool">
-      <span class="icon icon-cog"></span> Tool
-    </a>
-    <a href="#leaderboard" class="btn category c-other" data-filter="leaderboard">
-      <span class="icon icon-stats-bars2"></span> Leaderboard
-    </a>
+    <a href="#tool" class="btn category c-other" data-filter="tool"><span class="icon icon-cog"></span> Tool</a>
+    <a href="#leaderboard" class="btn category c-other" data-filter="leaderboard"><span class="icon icon-stats-bars2"></span> Leaderboard</a>
+    <a href="#team" class="btn category c-other" data-filter="team"><span class="icon icon-users"></span> Team</a>
   </nav>
   <main>
     <div class="row games">
-      <a href="trivia/5secondrule.html" class="btn game c-trivia" data-filter="trivia tool">
+      <a href="trivia/5secondrule.html" class="btn game c-trivia" data-filter="trivia team">
         <p class="badges">
-          <span class="icon icon-cog"></span>
+          <span class="icon icon-users"></span>
         </p>
         <h1>5 Second Rule</h1>
         <p>Quickfire questions with a 5 second time limit</p>
+        •
+        <sub>Added team game filter for games like this - 31/03/2024</sub>
       </a>
-      <a href="geography/capitals.html" class="btn game c-geography" data-filter="geography">
-        <p class="badges"></p>
+      <a href="geography/capitals.html" class="btn game c-geography" data-filter="geography team">
+        <p class="badges">
+          <span class="icon icon-users"></span>
+        </p>
         <h1>Capital Cities</h1>
         <p>Guess the capital for each country</p>
+        •
+        <sub>Added baby difficulty and fleshed out harder difficulty - 31/03/2024</sub>
       </a>
-      <a href="geography/capitals.html?mode=1" class="btn game c-geography" data-filter="geography">
-        <p class="badges"></p>
+      <a href="geography/capitals.html?mode=1" class="btn game c-geography" data-filter="geography team">
+        <p class="badges">
+          <span class="icon icon-users"></span>
+        </p>
         <h1>Countries</h1>
         <p>Guess the country for each capital</p>
+        •
+        <sub>Added baby difficulty and fleshed out harder difficulty - 31/03/2024</sub>
       </a>
-      <a href="geography/capitals.html?mode=2" class="btn game c-geography" data-filter="geography">
-        <p class="badges"></p>
+      <a href="geography/capitals.html?mode=2" class="btn game c-geography" data-filter="geography team">
+        <p class="badges">
+          <span class="icon icon-users"></span>
+        </p>
         <h1>Flags</h1>
         <p>Guess the country for each flag</p>
         •
-        <sub>Fixed invisible flags - 20/09/2023</sub>
+        <sub>Added baby difficulty and fleshed out harder difficulty - 31/03/2024</sub>
       </a>
-      <a href="stem/quickmaths.html?mode=0" class="btn game c-stem" data-filter="stem leaderboard" data-scope="quickmaths_0_*">
+      <a href="stem/quickmaths.html?mode=0&difficulty=easy" class="btn game c-stem" data-filter="stem leaderboard" data-scope="quickmaths_0_*">
         <p class="badges">
           <span class="icon icon-stats-bars2"></span>
         </p>
         <h1>Quick Addition</h1>
         <p>Quickfire maths questions with multiple choice answers</p>
         •
-        <sub>Made harder difficulty harder - 20/07/2023</sub>
+        <sub>Improved leaderboard checking - 31/03/2024</sub>
       </a>
-      <a href="stem/quickmaths.html?mode=1" class="btn game c-stem" data-filter="stem leaderboard" data-scope="quickmaths_1_*">
+      <a href="stem/quickmaths.html?mode=1&difficulty=easy" class="btn game c-stem" data-filter="stem leaderboard" data-scope="quickmaths_1_*">
         <p class="badges">
           <span class="icon icon-stats-bars2"></span>
         </p>
         <h1>Quick Subtraction</h1>
         <p>Quickfire maths questions with multiple choice answers</p>
+        •
+        <sub>Improved leaderboard checking - 31/03/2024</sub>
       </a>
-      <a href="stem/quickmaths.html?mode=2" class="btn game c-stem" data-filter="stem leaderboard" data-scope="quickmaths_2_*">
+      <a href="stem/quickmaths.html?mode=2&difficulty=easy" class="btn game c-stem" data-filter="stem leaderboard" data-scope="quickmaths_2_*">
         <p class="badges">
           <span class="icon icon-stats-bars2"></span>
         </p>
         <h1>Quick Multiplication</h1>
         <p>Quickfire maths questions with multiple choice answers</p>
+        •
+        <sub>Improved leaderboard checking - 31/03/2024</sub>
       </a>
-      <a href="stem/quickmaths.html?mode=3" class="btn game c-stem" data-filter="stem leaderboard" data-scope="quickmaths_3_*">
+      <a href="stem/quickmaths.html?mode=3&difficulty=easy" class="btn game c-stem" data-filter="stem leaderboard" data-scope="quickmaths_3_*">
         <p class="badges">
           <span class="icon icon-stats-bars2"></span>
         </p>
         <h1>Quick Division</h1>
         <p>Quickfire maths questions with multiple choice answers</p>
         •
-        <sub>Now with fractions! - 1/08/2023</sub>
+        <sub>Improved leaderboard checking - 31/03/2024</sub>
       </a>
       <a href="english/anagrams.html" class="btn game c-english" data-filter="english leaderboard" data-scope="anagrams_*">
         <p class="badges">
@@ -251,15 +269,13 @@
         </p>
         <h1>Anagrams</h1>
         <p>Spell as many words as you can with the letters of another word</p>
-        •
-        <sub>Even more words! - 17/10/2023</sub>
       </a>
       <a href="english/storyshuffle.html" class="btn game c-english" data-filter="english tool">
         <p class="badges">
           <span class="icon icon-cog"></span>
         </p>
         <h1>Story Shuffle</h1>
-        <p>Interpret a set of 3 random images to inspire your next fiction</p>
+        <p>Interpret a set of 3 random images to inspire your next story</p>
       </a>
       <a href="stem/magicsquares.html" class="btn game c-stem" data-filter="stem">
         <p class="badges"></p>
@@ -272,8 +288,6 @@
         </p>
         <h1>Spelling 🐝</h1>
         <p>Hear a word, see the definition, and try your best to spell it!</p>
-        •
-        <sub>More words, fixed badges - 17/09/2023</sub>
       </a>
       <a href="trivia/flashcards.html" class="btn game c-trivia" data-filter="trivia tool">
         <p class="badges">
@@ -281,8 +295,6 @@
         </p>
         <h1>Flashcards</h1>
         <p>Train your memory with a variety of pre-made flashcards for learning languages</p>
-        •
-        <sub>New tool! Might be made into a game... - 17/09/2023</sub>
       </a>
     </div>
   </main>
@@ -307,11 +319,11 @@
       });
 
       function filter(id) {
-        $('.game').hide();
+        $('.game').addClass('hidden');
         if(id == 'none'){
-          $('.game').show();
+          $('.game').removeClass('hidden');
         }else{
-          $(`.game[data-filter*=${id}]`).show();
+          $(`.game[data-filter*=${id}]`).removeClass('hidden');
         }
         $('.category.active').removeClass('active');
         $(`.category.${id}`).addClass('active');

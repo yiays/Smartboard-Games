@@ -49,10 +49,15 @@ body {
   overflow: auto;
 }
 body.keyboard {
-  margin-bottom: calc(clamp(2.4rem, calc((100vw - 1rem) / 3), 14rem));
+  margin-bottom: calc(clamp(2.4rem, calc((100vw - 1rem) / 3), 16rem));
 }
 h1 {
   font-size: 2em;
+}
+
+/* Utilities */
+.passthrough {
+  display: contents;
 }
 
 /* Text decorators */
@@ -100,6 +105,7 @@ h1 {
   color: var(--text);
 }
 
+/* Elements */
 .countdown {
   font-size: 1.5em;
   margin-bottom: 1rem;
@@ -278,8 +284,8 @@ body.keyboard #keyboard {
 }
 #keyboard > .row > .btn {
   position: relative;
-  width: 1.5em;
-  height: 1.6em;
+  width: 2.0em;
+  height: 2.2em;
   margin: 0.1em;
 }
 

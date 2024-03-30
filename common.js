@@ -181,6 +181,7 @@ function complete_login(pusername, psecret, ptheme, callback=null, online=false,
 
   advance_colour();
   
+  // Inform other open tabs of the new login status
   if(broadcast) bc.postMessage(`login ${username} ${secret} ${theme}`);
 
   if(callback !== null) callback();

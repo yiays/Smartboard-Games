@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=14.12" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=14.14" rel="stylesheet">
   <style>
     audio {
       width: 15em;
@@ -24,14 +24,7 @@
   </style>
 </head>
 <body>
-  <div id="menu" class="panel">
-    <h1>Spelling 🐝</h1>
-    <p>Hear a word, see the definition, and try your best to spell it!</p>
-    <button class="big-red btn" id="start">Go</button>
-    <div class="options" style="margin-top: 1em">
-      <button class="btn action-leaderboard">View leaderboard</button>
-      <a class="btn" href="/">More games</a>
-    </div>
+  <div class="panel">
     <p class="panel-controls">
       <label for="modeswitch">Difficulty: </label>
       <select id="modeswitch" autofocus>
@@ -40,54 +33,63 @@
         <option value="2">Hard</option>
       </select>
     </p>
-  </div>
-  <div id="game" class="panel" style="display:none;">
-    <h1 id="question">Word 1</h1>
-    <div class="media-loader">
-      <audio id="audio" autoplay="true" controls src=""></audio>
+    <div id="menu" class="passthrough">
+      <h1>Spelling 🐝</h1>
+      <p>Hear a word, see the definition, and try your best to spell it!</p>
+      <button class="big-red btn" id="start">Go</button>
+      <div class="options" style="margin-top: 1em">
+        <button class="btn action-leaderboard">View leaderboard</button>
+        <a class="btn" href="/">More games</a>
+      </div>
     </div>
-    <p id="definition">Definition: </p>
-    <p id="input">_</p>
-    <br>
-    <div class="options">
-      <button class="btn confirm-action action-cancel">Menu</button>
-      <button class="btn action-check disabled">Check answer</button>
+    <div id="game" class="passthrough" style="display:none;">
+      <h1 id="question">Word 1</h1>
+      <div class="media-loader">
+        <audio id="audio" autoplay="true" controls src=""></audio>
+      </div>
+      <p id="definition">Definition: </p>
+      <p id="input">_</p>
+      <br>
+      <div class="options">
+        <button class="btn confirm-action action-cancel">Menu</button>
+        <button class="btn action-check disabled">Check answer</button>
+      </div>
     </div>
-  </div>
-  <div id="results" class="panel" style="display:none;">
-    <h1>Correct / Incorrect</h1>
-    <p id="worddiff"></p>
-    <div class="options">
-      <button class="btn action-cancel confirm-action">Menu</button>
-      <button class="btn action-next">Next word</button>
+    <div id="results" class="passthrough" style="display:none;">
+      <h1>Correct / Incorrect</h1>
+      <p id="worddiff"></p>
+      <div class="options">
+        <button class="btn action-cancel confirm-action">Menu</button>
+        <button class="btn action-next">Next word</button>
+      </div>
     </div>
-  </div>
-  <div id="summary" class="panel" style="display:none;">
-    <h1>Finished</h1>
-    <p>
-      <attr id="finalscore"></attr>
-    </p>
-    <div class="options">
-      <button class="btn action-cancel confirm-action">Menu</button>
-      <button class="btn action-finish">Submit highscore</button>
+    <div id="summary" class="passthrough" style="display:none;">
+      <h1>Finished</h1>
+      <p>
+        <attr id="finalscore"></attr>
+      </p>
+      <div class="options">
+        <button class="btn action-cancel confirm-action">Menu</button>
+        <button class="btn action-finish">Submit highscore</button>
+      </div>
     </div>
-  </div>
-  <div id="leaderboard" class="panel" style="display:none;">
-    <h1>Leaderboard</h1>
-    <p id="leaderboard-diff">
-      (Easy)
-    </p>
-    <table id="board" width="100%">
-      <thead>
-        <th>Place</th><th>Name</th><th>Score</th>
-      </thead>
-      <tbody>
-        <td>--</td><td>-----</td><td>---</td>
-      </tbody>
-    </table>
-    <br>
-    <div class="options">
-      <button class="btn action-cancel">Back</button>
+    <div id="leaderboard" class="passthrough" style="display:none;">
+      <h1>Leaderboard</h1>
+      <p id="leaderboard-diff">
+        (Easy)
+      </p>
+      <table id="board" width="100%">
+        <thead>
+          <th>Place</th><th>Name</th><th>Score</th>
+        </thead>
+        <tbody>
+          <td>--</td><td>-----</td><td>---</td>
+        </tbody>
+      </table>
+      <br>
+      <div class="options">
+        <button class="btn action-cancel">Back</button>
+      </div>
     </div>
   </div>
   <div id="keyboard" style="display:none;">
@@ -196,7 +198,7 @@
       init_keyboard_capture();
 
       $(document).on('keydown', (e) => {
-        if($('#results').is(':visible') && e.key == 'Enter') {
+        if($('#results>h1').is(':visible') && e.key == 'Enter') {
           e.preventDefault();
           e.stopImmediatePropagation();
           newquestion();
@@ -219,17 +221,17 @@
 
     function on_modechange() {
       difficulty = Number(this.value);
-      if($('#leaderboard').is(':visible')) showleaderboard();
+      if($('#leaderboard>h1').is(':visible')) showleaderboard();
     }
 
     function menu() {
       $('#game,#results,#summary,#leaderboard,#keyboard').hide();
       $('body').removeClass('keyboard');
-      $('#menu').show();
+      $('#menu,.panel-controls').show();
     }
 
     function newgame() {
-      $('#menu,#results,#summary,#leaderboard').hide();
+      $('#menu,#results,#summary,#leaderboard,.panel-controls').hide();
       $('#keyboard').show();
       popup_keyboard();
       answers = [];
@@ -332,7 +334,7 @@
 
     function showleaderboard() {
       $('#results,#summary,#menu,#game,#keyboard').hide();
-      $('#leaderboard').show();
+      $('#leaderboard,.panel-controls').show();
       $('body').removeClass('keyboard');
 
       $('#leaderboard-diff').text(`(${diffname[difficulty].charAt(0).toUpperCase()+diffname[difficulty].slice(1)} difficulty)`);

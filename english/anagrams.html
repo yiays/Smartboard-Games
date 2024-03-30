@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=14.12" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=14.14" rel="stylesheet">
   <style>
     body {
       margin-top: 2rem;
@@ -32,60 +32,65 @@
   </style>
 </head>
 <body>
-  <p class="panel-controls">
-    <label for="modeswitch">Word: </label>
-    <select name="word" id="modeswitch">
-      <option selected value="">Select a word</option>
-    </select>
-  </p>
-  <div id="menu" class="panel">
-    <h1>Anagrams</h1>
-    <p>Spell as many words as you can with the letters of another word.</p>
-    <div class="loader">Loading...</div>
-    <button class="big-red btn disabled" id="start" style="display:none">Go</button>
-    <div class="options" style="margin-top: 1em">
-      <button class="btn action-leaderboard disabled">View leaderboard</button>
-      <a class="btn" href="/">More games</a>
-    </div>
-  </div>
-  <div id="game" class="panel" style="display:none;">
-    <h1 id="question">Question</h1>
-    <p id="input">_</p>
-    <p id="found"></p>
-    <br>
-    <div class="options">
-      <button class="btn confirm-action action-cancel">Menu</button>
-      <button class="btn action-finish">Finish</button>
-    </div>
-  </div>
-  <div id="results" class="panel" style="display:none;">
-    <h1>Results</h1>
-    <p>
-      You managed to find <span id="finalscore">0</span> words that can be spelt with the
-      letters of <span id="word">word</span>, <attr id="anagrams">0</attr> of which
-      were anagrams!
+  <div class="panel">
+    <p class="panel-controls">
+      <label for="modeswitch">Word: </label>
+      <select name="word" id="modeswitch">
+        <option selected value="">Select a word</option>
+      </select>
     </p>
-    <div class="options">
-      <button class="btn action-cancel">Menu</button>
-      <button class="btn action-leaderboard">View leaderboard</button>
+    <div id="menu" class="passthrough">
+      <h1>Anagrams</h1>
+      <p>Spell as many words as you can with the letters of another word.</p>
+      <div class="loader">Loading...</div>
+      <button class="big-red btn disabled" id="start" style="display:none">Go</button>
+      <div class="options" style="margin-top: 1em">
+        <div class="options">
+          <button class="btn action-startrandom" title="Start with a randomly selected word">🔀</button>
+          <button class="btn action-leaderboard disabled">View leaderboard</button>
+          <a class="btn" href="/">More games</a>
+        </div>
+      </div>
     </div>
-  </div>
-  <div id="leaderboard" class="panel" style="display:none;">
-    <h1>Leaderboard</h1>
-    <p id="leaderboard-word">
-      WORD
-    </p>
-    <table id="board" width="100%">
-      <thead>
-        <th>Place</th><th>Name</th><th>Score</th>
-      </thead>
-      <tbody>
-        <td>--</td><td>-----</td><td>---</td>
-      </tbody>
-    </table>
-    <br>
-    <div class="options">
-      <button class="btn action-cancel">Back</button>
+    <div id="game" class="passthrough" style="display:none;">
+      <h1 id="question">Question</h1>
+      <p id="input">_</p>
+      <p id="found"></p>
+      <br>
+      <div class="options">
+        <button class="btn confirm-action action-cancel">Menu</button>
+        <button class="btn action-finish">Finish</button>
+      </div>
+    </div>
+    <div id="results" class="passthrough" style="display:none;">
+      <h1>Results</h1>
+      <p>
+        You managed to find <span id="finalscore">0</span> words that can be spelt with the
+        letters of <span id="word">word</span>, <attr id="anagrams">0</attr> of which
+        were anagrams!
+      </p>
+      <div class="options">
+        <button class="btn action-cancel">Menu</button>
+        <button class="btn action-leaderboard">View leaderboard</button>
+      </div>
+    </div>
+    <div id="leaderboard" class="passthrough" style="display:none;">
+      <h1>Leaderboard</h1>
+      <p id="leaderboard-word">
+        WORD
+      </p>
+      <table id="board" width="100%">
+        <thead>
+          <th>Place</th><th>Name</th><th>Score</th>
+        </thead>
+        <tbody>
+          <td>--</td><td>-----</td><td>---</td>
+        </tbody>
+      </table>
+      <br>
+      <div class="options">
+        <button class="btn action-cancel">Back</button>
+      </div>
     </div>
   </div>
   <div id="keyboard" style="display:none;">
@@ -171,6 +176,8 @@
 
       $('#modeswitch').on('change', (e) => {word=e.target.value; on_modechange()});
 
+      $('.action-startrandom').on('click', startrandom);
+
       $('#start').on('click', newgame);
 
       $('.action-toggle-keyboard').on('click', toggle_keyboard);
@@ -201,10 +208,16 @@
       }
     });
 
+    function startrandom() {
+      word = words[Math.floor(Math.random() * words.length)]
+      on_modechange()
+      newgame()
+    }
+
     function on_modechange() {
       if(word === undefined || words.indexOf(word) == -1) {
         $('#start,.action-leaderboard').addClass('disabled');
-        if($('#leaderboard').is(':visible')) menu();
+        if($('#leaderboard>h1').is(':visible')) menu();
         if('word' in urlParams)
           window.history.pushState({}, '', document.location.href.split('?')[0]);
         if($('#modeswitch').val())
@@ -212,7 +225,7 @@
       }
       else {
         $('#start,.action-leaderboard').removeClass('disabled');
-        if($('#leaderboard').is(':visible')) showleaderboard();
+        if($('#leaderboard>h1').is(':visible')) showleaderboard();
         if(!('word' in urlParams) || urlParams.word != word)
           window.history.pushState({}, '', document.location.href.split('?')[0]+`?word=${word}`);
         if($('#modeswitch').val() != word)

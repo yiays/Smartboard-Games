@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=14.12" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=14.14" rel="stylesheet">
   <style>
     #game {
       perspective: 1000px;
@@ -60,13 +60,13 @@
   </style>
 </head>
 <body>
-  <p class="panel-controls">
-    <label for="modeswitch">Word: </label>
-    <select name="set" id="modeswitch">
-      <option selected value="">Select a set</option>
-    </select>
-  </p>
   <div id="menu" class="panel">
+    <p class="panel-controls">
+      <label for="modeswitch">Word: </label>
+      <select name="set" id="modeswitch">
+        <option selected value="">Select a set</option>
+      </select>
+    </p>
     <h1>Flashcards</h1>
     <p>
       Train your memory with a variety of pre-made flashcards for learning languages
@@ -117,7 +117,7 @@
       Promise.all(promises).then((_) => load_complete());
 
       $('#start').on('click', (e) => {
-        $('#menu,.panel-controls').hide();
+        $('#menu').hide();
         $('#game').show();
         mode = $('#modeswitch').val();
         norepeat = [];
@@ -183,7 +183,7 @@
 
     function menu() {
       $('#game').hide();
-      $('#menu,.panel-controls').show();
+      $('#menu').show();
     }
 
     function on_modechange() {

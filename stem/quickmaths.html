@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=14.12" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=14.14" rel="stylesheet">
   <style>
     body {
       margin-top: 2rem;
@@ -35,18 +35,8 @@
   </style>
 </head>
 <body>
-  <div class="panel-controls" id="modeswitch">
-    <button onclick="mode=0;on_modechange();" title="Switch to Quick Addition">+</button>
-    <button onclick="mode=1;on_modechange();" title="Switch to Quick Subtraction">–</button>
-    <button onclick="mode=2;on_modechange();" title="Switch to Quick Multiplication">×</button>
-    <button onclick="mode=3;on_modechange();" title="Switch to Quick Division">÷</button>
-  </div>
-  <div id="menu" class="panel">
-    <h1><u>Quick Maths</u></h1>
-    <p>
-      Quickfire maths questions with multiple choice answers
-    </p>
-    <p>
+  <div class="panel">
+    <div class="panel-controls">
       <label for="difficulty">Difficulty: </label>
       <select id="difficulty" autofocus>
         <option value="easy" selected>Easy</option>
@@ -54,69 +44,79 @@
         <option value="hard">Hard</option>
         <option value="harder">Harder</option>
       </select>
-    </p>
-    <button class="big-red btn" id="start">Go</button>
-    <div class="options" style="margin-top: 1em">
-      <button class="btn action-leaderboard">View leaderboard</button>
-      <a class="btn" href="/">More games</a>
+      <button onclick="mode=0;on_modechange();" title="Switch to Quick Addition">+</button>
+      <button onclick="mode=1;on_modechange();" title="Switch to Quick Subtraction">–</button>
+      <button onclick="mode=2;on_modechange();" title="Switch to Quick Multiplication">×</button>
+      <button onclick="mode=3;on_modechange();" title="Switch to Quick Division">÷</button>
     </div>
-  </div>
-  <div id="leaderboard" class="panel" style="display:none;">
-    <h1>Quickest Maths</h1>
-    <p id="leaderboard-diff">
-      (Easy difficulty)
-    </p>
-    <table id="board" width="100%">
-      <thead>
-        <th>Place</th><th>Name</th><th>Score</th>
-      </thead>
-      <tbody>
-        <td>--</td><td>-----</td><td>---</td>
-      </tbody>
-    </table>
-    <br>
-    <div class="options">
-      <button class="btn action-cancel">Back</button>
-    </div>
-  </div>
-  <div id="game" class="panel" style="display:none;">
-    <h1 id="question">Question</h1>
-    <div>
-      Current time: <span class="timer" id="timer-current">00:00.00</span>
-    </div>
-    <div>
-      Total time: <span class="timer" id="timer-total">00:00.00</span>
-    </div>
-    <br>
-    <div class="play">
-      <div class="multichoice">
-        <button class="btn action-answer">1</button>
-        <button class="btn action-answer">2</button>
-        <button class="btn action-answer">3</button>
-        <button class="btn action-answer">4</button>
-      </div>
-      <div class="options" style="position:relative;top:3.7rem;">
-        <button class="btn action-cancel">Menu</button>
+    <div id="menu" class="passthrough">
+      <h1><u>Quick Maths</u></h1>
+      <p>
+        Quickfire maths questions with multiple choice answers
+      </p>
+      <button class="big-red btn" id="start">Go</button>
+      <div class="options" style="margin-top: 1em">
+        <button class="btn action-leaderboard">View leaderboard</button>
+        <a class="btn" href="/">More games</a>
       </div>
     </div>
-    <div class="results">
-      <ul id="answers">
-        
-      </ul>
+    <div id="leaderboard" class="passthrough" style="display:none;">
+      <h1>Quickest Maths</h1>
+      <p id="leaderboard-diff">
+        (difficulty)
+      </p>
+      <table id="board" width="100%">
+        <thead>
+          <th>Place</th><th>Name</th><th>Score</th>
+        </thead>
+        <tbody>
+          <td>--</td><td>-----</td><td>---</td>
+        </tbody>
+      </table>
+      <br>
       <div class="options">
-        <button class="btn action-end">Score</button>
+        <button class="btn action-cancel">Back</button>
       </div>
     </div>
-    <div class="end">
-      <b>Answers: </b> <span id="correctans">0</span>/<span id="totalans">0</span>.
-      <hr><b>Your score: <span id="score">0 in 0 seconds</span></b>
-      <br><br>
-      <div class="options">
-        <button class="btn confirm-action action-cancel">Menu</button>
-        <button class="btn action-results">Results</button>
-        <button class="btn action-submit">Submit highscore</button>
+    <div id="game" class="passthrough" style="display:none;">
+      <h1 id="question">Question</h1>
+      <div>
+        Current time: <span class="timer" id="timer-current">00:00.00</span>
+      </div>
+      <div>
+        Total time: <span class="timer" id="timer-total">00:00.00</span>
       </div>
       <br>
+      <div class="play">
+        <div class="multichoice">
+          <button class="btn action-answer">1</button>
+          <button class="btn action-answer">2</button>
+          <button class="btn action-answer">3</button>
+          <button class="btn action-answer">4</button>
+        </div>
+        <div class="options" style="position:relative;top:3.7rem;">
+          <button class="btn action-cancel">Menu</button>
+        </div>
+      </div>
+      <div class="results">
+        <ul id="answers">
+          
+        </ul>
+        <div class="options">
+          <button class="btn action-end">Score</button>
+        </div>
+      </div>
+      <div class="end">
+        <b>Answers: </b> <span id="correctans">0</span>/<span id="totalans">0</span>.
+        <hr><b>Your score: <span id="score">0 in 0 seconds</span></b>
+        <br><br>
+        <div class="options">
+          <button class="btn confirm-action action-cancel">Menu</button>
+          <button class="btn action-results">Results</button>
+          <button class="btn action-submit">Submit highscore</button>
+        </div>
+        <br>
+      </div>
     </div>
   </div>
 
@@ -152,7 +152,8 @@
       3: (a, b) => a / b
     }
     let mode = 2;
-    let difficulty, norepeat, tested;
+    let difficulty = 'easy';
+    let norepeat, tested;
     let q;
     let correctAnswer;
     let timerCurrent, totalTime, totalRight, slowDown, score;
@@ -173,6 +174,8 @@
 
       $('.action-leaderboard').on('click', showleaderboard);
 
+      $('#difficulty').on('change', (e) => {difficulty=e.target.value; on_modechange()});
+
       $('#start').on('click', newgame);
 
       if('mode' in urlParams) {
@@ -182,7 +185,7 @@
     });
 
     function newgame() {
-      $('#menu,#leaderboard,#modeswitch').hide();
+      $('#menu,#leaderboard,.panel-controls').hide();
       $('#game').show();
       difficulty = $('#difficulty').val();
       norepeat = [];
@@ -297,7 +300,7 @@
 
     function menu() {
       $('#game,#leaderboard').hide();
-      $('#menu,#modeswitch').show();
+      $('#menu,.panel-controls').show();
       clearInterval(intTimer);
     }
 
@@ -308,9 +311,7 @@
 
     function showleaderboard() {
       $('#game,#menu').hide();
-      $('#leaderboard,#modeswitch').show();
-
-      difficulty = $('#difficulty').val();
+      $('#leaderboard,.panel-controls').show();
 
       $('#leaderboard-diff').text(`(${difficulty.charAt(0).toUpperCase()+difficulty.slice(1)} difficulty)`);
 
@@ -334,28 +335,29 @@
     function on_modechange() {
       if(mode == 0){
         document.title = "Quick Addition";
-        $('#menu>h1').text("Quick Addition");
+        $('#menu>h1').text(`Quick Addition (${difficulty})`);
         $('#leaderboard>h1').text("Quickest Addition");
       }else if(mode == 1){
         document.title = "Quick Subtraction";
-        $('#menu>h1').text("Quick Subtraction");
+        $('#menu>h1').text(`Quick Subtraction (${difficulty})`);
         $('#leaderboard>h1').text("Quickest Subtraction");
       }else if(mode == 2){
         document.title = "Quick Multiplication";
-        $('#menu>h1').text("Quick Multiplication");
+        $('#menu>h1').text(`Quick Multiplication (${difficulty})`);
         $('#leaderboard>h1').text("Quickest Multiplication");
       }else if(mode == 3){
         document.title = "Quick Division";
-        $('#menu>h1').text("Quick Division");
+        $('#menu>h1').text(`Quick Division (${difficulty})`);
         $('#leaderboard>h1').text("Quickest Division");
       }
       else{
         console.error(`Unknown game mode ${mode} requested!`);
       }
-      if(!('mode' in urlParams) || urlParams.mode != mode)
-        window.history.pushState({}, '', document.location.href.split('?')[0]+`?mode=${mode}`);
+      $('#difficulty').val(difficulty);
+      if(!('mode' in urlParams) || urlParams.mode != mode || !('difficulty' in urlParams) || urlParams.difficulty != difficulty)
+        window.history.pushState({}, '', document.location.href.split('?')[0]+`?mode=${mode}&difficulty=${difficulty}`);
 
-      if($('#leaderboard').is(':visible')) {
+      if($('#leaderboard>h1').is(':visible')) {
         showleaderboard();
       }
     }
@@ -372,13 +374,20 @@
       while (match = search.exec(query))
         urlParams[decode(match[1])] = decode(match[2]);
       
-      if('mode' in urlParams && urlParams.mode != mode) {
+      let oldmode = mode;
+      let olddiff = difficulty;
+      if('mode' in urlParams) {
         mode = Number(urlParams.mode);
-        on_modechange();
       } else if (mode != 0) {
         mode = 0;
-        on_modechange();
       }
+      if('difficulty' in urlParams) {
+        difficulty = urlParams.difficulty;
+      } else if (mode != 0) {
+        difficulty = 0;
+      }
+      if(difficulty != olddiff || mod != oldmode)
+        on_modechange();
     }
     window.onpopstate();
   </script>

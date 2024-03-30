@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=14.12" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=14.14" rel="stylesheet">
   <style>
     body>.panel {
       height: 25em;
@@ -37,7 +37,8 @@
     <p>
       <label for="difficulty">Difficulty: </label>
       <select id="difficulty" autofocus>
-        <option value="easy" selected>Easy</option>
+        <option value="baby" selected>Baby</option>
+        <option value="easy">Easy</option>
         <option value="medium">Medium</option>
         <option value="hard">Hard</option>
         <option value="harder">Harder</option>
@@ -75,14 +76,14 @@
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
   <script src="/common.js?v=15.2"></script>
   <script>
-    const difficulties = ['easy', 'medium', 'hard', 'harder'];
+    const difficulties = ['baby', 'easy', 'medium', 'hard', 'harder'];
     let capitals, isocodes, difficulty, gamedifficulties, norepeat;
     let q = -1;
     let mode = 0;
 
     $().ready(() => {
       let promises = [];
-      promises.push($.getJSON('capitals.json', (data) => {capitals = data;}));
+      promises.push($.getJSON('capitals.json?v=2.1', (data) => {capitals = data;}));
       promises.push($.getJSON('isocodes.json', (data) => {isocodes = data;}));
       Promise.all(promises).then((_) => load_complete());
 
