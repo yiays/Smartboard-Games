@@ -11,11 +11,11 @@ const c_schemes = {
     '34495e'
   ],
   'alice': [
-    '805f94',
-    '9c5d3a',
-    'd199b1',
-    '46628c',
-    '86bd8d'
+    '8f55fa',
+    '59ff00',
+    'b3ff8a',
+    'ff8af7',
+    'ff00ee'
   ],
   'roses': [
     'a31212',
