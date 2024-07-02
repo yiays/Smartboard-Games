@@ -132,7 +132,7 @@
   </div>
 
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
-  <script src="/common.js?v=15.2"></script>
+  <script src="/common.js?v=15.4"></script>
   <script>
     const words = [
       "truest",
@@ -166,7 +166,7 @@
     const animparams = {distance: 5, speed: 50, times: 2}
 
     $().ready(() => {
-      $.get('dictionary.txt?v=5.3')
+      $.get('dictionary.txt?v=5.4')
       .done((data) => {dictionary = data.split(/\r?\n/);load_complete()})
       .fail(() => {toasty("Failed to get the dictionary! Try reloading the page...", 20, true)});
 
