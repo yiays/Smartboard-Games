@@ -293,7 +293,7 @@ function toggle_keyboard() {
 // Takes input from the physical keyboard and sends it to type() and untype()
 function init_keyboard_capture(charset=/[A-Za-z]/i) {
   $(document).on('keydown', (e) => {
-    if($('#game').is(':hidden') || e.ctrlKey || e.altKey || e.metaKey) return;
+    if($('#game').css('display') == 'none' || e.ctrlKey || e.altKey || e.metaKey) return;
     if(e.key.length === 1 && e.key.match(charset)) {
       e.stopImmediatePropagation();
       type(e.key.toUpperCase());
