@@ -130,52 +130,53 @@
   </div>
 
   <script src="//cdn.yiays.com/jquery-3.6.0.min.js"></script>
-  <script src="/common.js?v=15.2"></script>
+  <script src="/common.js?v=15.4"></script>
   <script>
     const words = {
       0: {
-        'answer': ["A response to a question", "https://api.dictionaryapi.dev/media/pronunciations/en/answer-uk.mp3"],
-        'brother': ["A male sibling", "https://api.dictionaryapi.dev/media/pronunciations/en/brother-uk.mp3"],
-        'chocolate': ["A sweet made of cocoa, butter, and milk", "https://api.dictionaryapi.dev/media/pronunciations/en/chocolate-au.mp3"],
-        'couple': ["A group of two", "https://api.dictionaryapi.dev/media/pronunciations/en/couple-uk.mp3"],
-        'greed': ["Selfish desire for something", "https://api.dictionaryapi.dev/media/pronunciations/en/greed-uk.mp3"],
-        'knit': ["Creating clothing and other objects out of wool", "https://api.dictionaryapi.dev/media/pronunciations/en/knit-uk.mp3"],
-        'maximum': ["The most it can possibly be", "https://api.dictionaryapi.dev/media/pronunciations/en/maximum-uk.mp3"],
-        'medal': ["A form of badge that marks an achievement", "https://api.dictionaryapi.dev/media/pronunciations/en/medal-uk.mp3"],
-        'million': ["The number 1,000,000", "https://api.dictionaryapi.dev/media/pronunciations/en/million-uk.mp3"],
-        'sparkle': ["To emit a rapidly changing light", "https://api.dictionaryapi.dev/media/pronunciations/en/sparkle-uk.mp3"],
-        'especially': ["Directs your attention to one over the rest", "https://api.dictionaryapi.dev/media/pronunciations/en/especially-us.mp3"],
-        'lunar': ["Related to the moon or moon-like", "https://api.dictionaryapi.dev/media/pronunciations/en/lunar-us.mp3"],
-        'robust': ["Built well, sturdy, will not easily break", "https://api.dictionaryapi.dev/media/pronunciations/en/robust-uk.mp3"]
-        
+        'answer': ["A response to a question", "/audio/voice-answer.ogg", "/audio/altvoice-answer.ogg"],
+        'brother': ["A male sibling", "/audio/voice-brother.ogg"],
+        'chocolate': ["A sweet made of cocoa, butter, and milk", "/audio/voice-chocolate.ogg"],
+        'couple': ["A group of two", "/audio/voice-couple.ogg"],
+        'greed': ["Selfish desire for something", "/audio/voice-greed.ogg"],
+        'knit': ["Creating clothing and other objects out of wool", "/audio/voice-knit.ogg", "/audio/altvoice-knit.ogg"],
+        'maximum': ["The most it can possibly be", "/audio/voice-maximum.ogg"],
+        'medal': ["A form of badge that marks an achievement", "/audio/voice-medal.ogg"],
+        'million': ["The number 1,000,000", "/audio/voice-million.ogg", "/audio/altvoice-million.ogg"],
+        'sparkle': ["To emit a rapidly changing light", "/audio/voice-sparkle.ogg", "/audio/altvoice-sparkle.ogg"],
+        'especially': ["Directs your attention to one over the rest", "/audio/voice-especially.ogg"],
+        'lunar': ["Related to the moon or moon-like", "/audio/voice-lunar.ogg"],
+        'robust': ["Built well, sturdy, will not easily break", "/audio/voice-robust.ogg"],
       },
       1: {
-        'acronym': ["A sentence where the first letter of each word can spell a sentence", "https://api.dictionaryapi.dev/media/pronunciations/en/acronym-uk.mp3"],
-        'apricot': ["An orange fruit with a core", "https://api.dictionaryapi.dev/media/pronunciations/en/apricot-uk.mp3"],
-        'autumn': ["The season in which trees lose their leaves", "https://api.dictionaryapi.dev/media/pronunciations/en/autumn-uk.mp3"],
-        'congratulate': ["To praise somebody who has made an achievement", "https://api.dictionaryapi.dev/media/pronunciations/en/congratulate-uk.mp3"],
-        'determined': ["Possessing or displaying resolve", "https://api.dictionaryapi.dev/media/pronunciations/en/determined-uk.mp3"],
-        'hackable': ["Easily exploited and broken open", "https://api.dictionaryapi.dev/media/pronunciations/en/hackable-uk.mp3"],
-        'labour': ["Work that is often physically straining", "https://api.dictionaryapi.dev/media/pronunciations/en/labour-uk.mp3"],
-        'maroon': ["A shade of purple and a ship stuck on land", "https://api.dictionaryapi.dev/media/pronunciations/en/maroon-uk.mp3"],
-        'tendency': ["Favouring one way over another", "https://api.dictionaryapi.dev/media/pronunciations/en/tendency-us.mp3"],
-        'recognise': ["To notice something that you've seen before", "https://api.dictionaryapi.dev/media/pronunciations/en/recognize-uk.mp3"],
-        'consideration': ["Thinking, taking multiple factors into account", "https://api.dictionaryapi.dev/media/pronunciations/en/consideration-us.mp3"],
-        'discrete': ["Keeping something private and separate", "https://api.dictionaryapi.dev/media/pronunciations/en/discrete-us.mp3"],
-        'explicit': ["Detailed, clear, and potentially offensive", "https://api.dictionaryapi.dev/media/pronunciations/en/explicit-us.mp3"],
-        'treatment': ["A planned process to remedy a problem or illness", "https://api.dictionaryapi.dev/media/pronunciations/en/treatment-us.mp3"]
+        'acronym': ["A sentence where the first letter of each word can spell a sentence", "/audio/voice-acronym.ogg"],
+        'apricot': ["An orange fruit with a core", "/audio/voice-apricot.ogg", "/audio/altvoice-apricot.ogg"],
+        'autumn': ["The season in which trees lose their leaves", "/audio/voice-autumn.ogg"],
+        'congratulate': ["To praise somebody who has made an achievement", "/audio/voice-congratulate.ogg", "/audio/altvoice-congratulate.ogg"],
+        'determined': ["Possessing or displaying resolve", "/audio/voice-determined.ogg", "/audio/altvoice-determined.ogg"],
+        'hackable': ["Easily exploited and broken open", "/audio/voice-hackable.ogg", "/audio/altvoice-hackable.ogg"],
+        'labour': ["Work that is often physically straining", "/audio/voice-labour.ogg"],
+        'maroon': ["A shade of purple and a ship stuck on land", "/audio/voice-maroon.ogg"],
+        'tendency': ["Favouring one way over another", "/audio/voice-tendency.ogg", "/audio/altvoice-tendency.ogg"],
+        'recognise': ["To notice something that you've seen before", "/audio/voice-recognise.ogg"],
+        'consideration': ["Thinking, taking multiple factors into account", "/audio/voice-consideration.ogg", "/audio/altvoice-consideration.ogg"],
+        'discrete': ["Keeping something private and separate", "/audio/voice-discrete.ogg"],
+        'explicit': ["Detailed, clear, and potentially offensive", "/audio/voice-explicit.ogg", "/audio/altvoice-explicit.ogg"],
+        'treatment': ["A planned process to remedy a problem or illness", "/audio/voice-treatment.ogg", "/audio/altvoice-treatment.ogg"],
+        'independant': ["Being alone without any need for support", "/audio/voice-independant.ogg", "/audio/altvoice-independant.ogg"],
       },
       2: {
-        'communal': ["Objects which anyone in a community can share", "https://api.dictionaryapi.dev/media/pronunciations/en/communal-ca.mp3"],
-        'congratulations': ["To praise somebody who has made an achievement", "https://api.dictionaryapi.dev/media/pronunciations/en/congratulations-uk.mp3"],
-        'millennium': ["A one thousand year anniversary", "https://api.dictionaryapi.dev/media/pronunciations/en/millennium-uk.mp3"],
-        'miscellaneous': ["Anything that doesn't fit in other categories", "https://api.dictionaryapi.dev/media/pronunciations/en/miscellaneous-us.mp3"],
-        'oligarchy': ["A small group of people that maintain control over a country", "https://api.dictionaryapi.dev/media/pronunciations/en/oligarchy-uk.mp3"],
-        'phenomenon': ["An unusual happening", "https://api.dictionaryapi.dev/media/pronunciations/en/phenomenon-uk.mp3"],
-        'spontaneity': ["To be unpredictable and make decisions on a whim", "https://api.dictionaryapi.dev/media/pronunciations/en/spontaneity-uk.mp3"], // TODO: replace the audio
-        'onomatopoeia': ["A word which is spelt to read the way it sounds", "https://api.dictionaryapi.dev/media/pronunciations/en/onomatopoeia-uk.mp3"],
-        'anachronysm': ["Something which appears to be in the wrong time", "https://api.dictionaryapi.dev/media/pronunciations/en/anachronism-au.mp3"],
-        // plasticine
+        'communal': ["Objects which anyone in a community can share", "/audio/voice-communal.ogg"],
+        'congratulations': ["To praise somebody who has made an achievement", "/audio/voice-congratulations.ogg"],
+        'millennium': ["A one thousand year anniversary", "/audio/voice-millennium.ogg"],
+        'miscellaneous': ["Anything that doesn't fit in other categories", "/audio/voice-miscellaneous.ogg"],
+        'oligarchy': ["A small group of people that maintain control over a country", "/audio/voice-oligarchy.ogg"],
+        'phenomenon': ["An unusual happening", "/audio/voice-phenomenon.ogg"],
+        'spontaneity': ["To be unpredictable and make decisions on a whim", "/audio/voice-spontaneity.ogg"],
+        'onomatopoeia': ["A word which is spelt to read the way it sounds", "/audio/voice-onomatopoeia.ogg"],
+        'anachronism': ["Something which appears to be in the wrong time", "/audio/voice-anachronism.ogg"],
+        'plasticine': ["A type of modelling clay-like material", "/audio/voice-plasticine.ogg"],
+        'sanctimonious': ["Making a show of being morally superior", "/audio/voice-sanctimonious.ogg"],
       }
     }
     let word, wordorder, input, answers, score, scores;
@@ -253,7 +254,7 @@
       $('.action-check').addClass('disabled');
 
       word = wordorder[answers.length];
-      $('#audio').attr('src', words[difficulty][word][1]);
+      $('#audio').attr('src', words[difficulty][word][1]); //TODO: add support for alternative readings
       $('.media-loader').removeClass('loaded');
       $('#definition').text(`Definition: ${words[difficulty][word][0]}`);
     }
