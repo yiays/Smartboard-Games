@@ -17,6 +17,7 @@ html {
   --theme: #1a547a;
   display: flex;
   font-family: 'Roboto', sans-serif;
+  font-weight: 900;
   min-height: 100lvh;
   background: #1e1e1e;
   background: radial-gradient(circle at center, var(--theme) 0%, var(--bg) 60%);

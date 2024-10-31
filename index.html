@@ -10,8 +10,8 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=14.14" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=15" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.yiays.com/yiaycons/yiaycons.css">
   <style>
     a {
@@ -61,6 +61,7 @@
       font-size: 0.2em;
       position: absolute;
       font-style: italic;
+      font-weight: 400;
       top: 0.6em;
       right: 1em;
       width: max-content;
@@ -144,20 +145,33 @@
       position: relative;
       flex-direction: column;
       width: 19em;
-      min-height: 5em;
+      min-height: 5.8em;
       max-height: 12em;
       margin: 1em;
+      padding: 3em 0.5em;
       font-size: 1em;
       transition: font-size 250ms;
+    }
+    .game::after {
+      content: attr(data-note);
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      text-align: center;
+      margin: 0.5rem;
+      font-size: 0.8em;
+      font-weight: 400;
     }
     .game.hidden {
       font-size: 0em;
     }
     .game .badges {
-      width: 100%;
+      position: absolute;
+      top: 0;
+      right: 0;
       text-align: right;
-      margin: 0;
-      margin-bottom: 0.5em;
+      margin: 0.5em;
     }
     .game h1, .game p {
       flex-grow: 1;
@@ -169,7 +183,7 @@
 </head>
 <body>
   <div class="hero">
-    <a href="/profile.html" class="profile" data-username="not logged in" data-note="Your secret can now be saved to browser - 31/10/2024">
+    <a href="/profile.html" class="profile" data-username="not logged in" data-note="Your secret can now be saved to browser, improved badge names - 31/10/2024">
       <i class="pfp">
         <span class="icon icon-">user</span>
       </i>
@@ -191,95 +205,91 @@
   </nav>
   <main>
     <div class="row games">
-      <a href="trivia/5secondrule.html" class="btn game c-trivia" data-filter="trivia team">
+      <a href="trivia/5secondrule.html" class="btn game c-trivia" data-filter="trivia team" data-note="">
         <p class="badges">
-          <span class="icon icon-users"></span>
+          <span class="icon icon-users" title="Team game"></span>
         </p>
         <h1>5 Second Rule</h1>
         <p>Quickfire questions with a 5 second time limit</p>
       </a>
-      <a href="geography/capitals.html" class="btn game c-geography" data-filter="geography team">
+      <a href="geography/capitals.html" class="btn game c-geography" data-filter="geography team" data-note="">
         <p class="badges">
-          <span class="icon icon-users"></span>
+          <span class="icon icon-users" title="Team game"></span>
         </p>
         <h1>Capital Cities</h1>
         <p>Guess the capital for each country</p>
       </a>
-      <a href="geography/capitals.html?mode=1" class="btn game c-geography" data-filter="geography team">
+      <a href="geography/capitals.html?mode=1" class="btn game c-geography" data-filter="geography team" data-note="">
         <p class="badges">
-          <span class="icon icon-users"></span>
+          <span class="icon icon-users" title="Team game"></span>
         </p>
         <h1>Countries</h1>
         <p>Guess the country for each capital</p>
       </a>
-      <a href="geography/capitals.html?mode=2" class="btn game c-geography" data-filter="geography team">
+      <a href="geography/capitals.html?mode=2" class="btn game c-geography" data-filter="geography team" data-note="">
         <p class="badges">
-          <span class="icon icon-users"></span>
+          <span class="icon icon-users" title="Team game"></span>
         </p>
         <h1>Flags</h1>
         <p>Guess the country for each flag</p>
       </a>
-      <a href="stem/quickmaths.html?mode=0&difficulty=easy" class="btn game c-stem" data-filter="stem leaderboard" data-scope="quickmaths_0_*">
+      <a href="stem/quickmaths.html?mode=0&difficulty=easy" class="btn game c-stem" data-filter="stem leaderboard" data-scope="quickmaths_0_*" data-note="">
         <p class="badges">
-          <span class="icon icon-stats-bars2"></span>
+          <span class="icon icon-stats-bars2" title="Leaderboard game"></span>
         </p>
         <h1>Quick Addition</h1>
         <p>Quickfire maths questions with multiple choice answers</p>
       </a>
-      <a href="stem/quickmaths.html?mode=1&difficulty=easy" class="btn game c-stem" data-filter="stem leaderboard" data-scope="quickmaths_1_*">
+      <a href="stem/quickmaths.html?mode=1&difficulty=easy" class="btn game c-stem" data-filter="stem leaderboard" data-scope="quickmaths_1_*" data-note="">
         <p class="badges">
-          <span class="icon icon-stats-bars2"></span>
+          <span class="icon icon-stats-bars2" title="Leaderboard game"></span>
         </p>
         <h1>Quick Subtraction</h1>
         <p>Quickfire maths questions with multiple choice answers</p>
       </a>
-      <a href="stem/quickmaths.html?mode=2&difficulty=easy" class="btn game c-stem" data-filter="stem leaderboard" data-scope="quickmaths_2_*">
+      <a href="stem/quickmaths.html?mode=2&difficulty=easy" class="btn game c-stem" data-filter="stem leaderboard" data-scope="quickmaths_2_*" data-note="">
         <p class="badges">
-          <span class="icon icon-stats-bars2"></span>
+          <span class="icon icon-stats-bars2" title="Leaderboard game"></span>
         </p>
         <h1>Quick Multiplication</h1>
         <p>Quickfire maths questions with multiple choice answers</p>
       </a>
-      <a href="stem/quickmaths.html?mode=3&difficulty=easy" class="btn game c-stem" data-filter="stem leaderboard" data-scope="quickmaths_3_*">
+      <a href="stem/quickmaths.html?mode=3&difficulty=easy" class="btn game c-stem" data-filter="stem leaderboard" data-scope="quickmaths_3_*" data-note="">
         <p class="badges">
-          <span class="icon icon-stats-bars2"></span>
+          <span class="icon icon-stats-bars2" title="Leaderboard game"></span>
         </p>
         <h1>Quick Division</h1>
         <p>Quickfire maths questions with multiple choice answers</p>
       </a>
-      <a href="english/anagrams.html" class="btn game c-english" data-filter="english leaderboard" data-scope="anagrams_*">
+      <a href="english/anagrams.html" class="btn game c-english" data-filter="english leaderboard" data-scope="anagrams_*" data-note="Physical keyboard support fixed - 3/07/2024">
         <p class="badges">
-          <span class="icon icon-stats-bars2"></span>
+          <span class="icon icon-stats-bars2" title="Leaderboard game"></span>
         </p>
         <h1>Anagrams</h1>
         <p>Spell as many words as you can with the letters of another word</p>
-        •
-        <sub>Physical keyboard support fixed - 3/07/2024</sub>
       </a>
-      <a href="english/storyshuffle.html" class="btn game c-english" data-filter="english tool">
+      <a href="english/storyshuffle.html" class="btn game c-english" data-filter="english tool" data-note="All around polish - 31/10/2024">
         <p class="badges">
-          <span class="icon icon-cog"></span>
+          <span class="icon icon-cog" title="Utility"></span>
         </p>
         <h1>Story Shuffle</h1>
         <p>Interpret a set of 3 random images to inspire your next story</p>
       </a>
-      <a href="stem/magicsquares.html" class="btn game c-stem" data-filter="stem">
+      <a href="stem/magicsquares.html" class="btn game c-stem" data-filter="stem" data-note="">
         <p class="badges"></p>
         <h1>Magic Squares</h1>
         <p>Solve randomly generated magic square maths puzzles</p>
       </a>
-      <a href="english/spelling.html" class="btn game c-english" data-filter="english" data-scope="spelling_*">
+      <a href="english/spelling.html" class="btn game c-english" data-filter="english" data-scope="spelling_*" data-note="Added more words, improved voice readings, physical keyboard support fixed - 3/07/2024">
         <p class="badges">
-          <span class="icon icon-stats-bars2"></span>
+          <span class="icon icon-stats-bars2" title="Leaderboard game"></span>
         </p>
         <h1>Spelling 🐝</h1>
         <p>Hear a word, see the definition, and try your best to spell it!</p>
-        •
-        <sub>Added more words, improved voice readings, physical keyboard support fixed - 3/07/2024</sub>
       </a>
-      <a href="trivia/flashcards.html" class="btn game c-trivia" data-filter="trivia tool">
+      <a href="trivia/flashcards.html" class="btn game c-trivia" data-filter="trivia tool" data-note="">
         <p class="badges">
-          <span class="icon icon-cog"></span>
+          <span class="icon icon-cog" title="Utility"></span>
         </p>
         <h1>Flashcards</h1>
         <p>Train your memory with a variety of pre-made flashcards for learning languages</p>
@@ -359,15 +369,16 @@
       }
     }
 
+    const placeName = {1:'1st', 2:'2nd', 3:'3rd'};
     const placeEmoji = {1:'🥇', 2:'🥈', 3:'🥉'};
     function addLeaderboardBadges(el, data) {
       let badgeContainer = $(el).find('.badges');
       var sorted = diffsorter(Object.entries(data));
       sorted.forEach((place) => {
         if(place[1] <= 3)
-          badgeContainer.append(`<span class="placement" title="${place[0]}">${placeEmoji[place[1]]}</span>`);
+          badgeContainer.append(`<span class="placement" title="You placed ${placeName[place[1]]} in ${place[0]} mode">${placeEmoji[place[1]]}</span>`);
         else
-        badgeContainer.append(`<span class="placement" title="${place[0]}">✅</span>`);
+        badgeContainer.append(`<span class="placement" title="You placed ${place[1]}th in ${place[0]} mode">✅</span>`);
       });
     }
     function clearLeaderboardBadges() {
