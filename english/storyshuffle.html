@@ -76,6 +76,7 @@
   <div id="game" class="panel" style="display:none;">
     <h1>Story Shuffle</h1>
     <span class="countdown">3</span>
+    <p class="prompt" style="display:none;">Write a story involving the following three items</p>
     <div class="carousel" style="display:none;">
       <button class="fullscreen icon-enlarge"></button>
       <div>
@@ -90,7 +91,7 @@
     </div>
     <div class="options">
       <button class="btn action-cancel">Menu</button>
-      <button class="btn action-advance">Shuffle again</button>
+      <button class="btn action-advance" style="display:none;">Shuffle again</button>
     </div>
   </div>
 
@@ -141,7 +142,7 @@
       }
 
       function starttimer() {
-        $('#game .carousel').hide();
+        $('#game .carousel, #game .prompt, #game .action-advance').hide();
         $('#game .countdown').show();
         $('#game .countdown').text(3);
         timer = setInterval(() => {
@@ -152,7 +153,7 @@
           }else{
             clearInterval(timer);
             $('#game .countdown').hide();
-            $('#game .carousel').show();
+            $('#game .carousel, #game .prompt, #game .action-advance').show();
           }
         }, 1000);
       }
