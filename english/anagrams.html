@@ -279,6 +279,10 @@
     function checkanswer() {
       let check = input.toLowerCase();
 
+      if(check.length < 1) {
+        shake($('.panel'));
+        return;
+      }
       if(check == word) {
         shake($('#game'), animparams);
         return;
