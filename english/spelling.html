@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=15" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=16" rel="stylesheet">
   <style>
     audio {
       width: 15em;
@@ -128,7 +128,7 @@
   </div>
 
   <script src="//cdn.yiays.com/jquery-3.7.1.min.js"></script>
-  <script src="/common.js?v=15.4"></script>
+  <script src="/common.js?v=16"></script>
   <script>
     const words = {
       0: {
@@ -180,7 +180,6 @@
     let word, wordorder, input, answers, score, scores;
     let difficulty = 0;
     const diffname = ['Easy', 'Medium', 'Hard'];
-    const animparams = {distance: 5, speed: 50, times: 2};
 
     $().ready(() => {
       $('#modeswitch').on('change', on_modechange);
@@ -318,7 +317,7 @@
           // Too many differences, just show a comparison instead
           out=`<span class="incorrect">${check.toUpperCase()}</span><br><span class="correct">${word.toUpperCase()}</span>`;
         }
-        shake($('#game'), animparams);
+        shake($('.panel'));
         $('#results>h1').text('Incorrect');
         $('#worddiff').html(out).removeClass('correct');;//+`<br><span class="correct">${word.toUpperCase()}</span>`).removeClass('correct');
       }
@@ -360,7 +359,7 @@
         input = input.slice(0, -1);
         $('#input').text(input + '_');
       } else {
-        shake($('#game'), animparams);
+        shake($('.panel'));
       }
       if(input.length == 0)
         $('.action-check').addClass('disabled');

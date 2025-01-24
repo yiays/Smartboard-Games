@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=15" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css?v=16" rel="stylesheet">
   <style>
     body {
       margin-top: 2rem;
@@ -132,7 +132,7 @@
   </div>
 
   <script src="//cdn.yiays.com/jquery-3.7.1.min.js"></script>
-  <script src="/common.js?v=15.4"></script>
+  <script src="/common.js?v=16"></script>
   <script>
     const words = [
       "truest",
@@ -163,7 +163,6 @@
     ];
     let dictionary = [];
     let word, keys, input, answers;
-    const animparams = {distance: 5, speed: 50, times: 2}
 
     $().ready(() => {
       $.get('dictionary.txt?v=5.4')
@@ -284,15 +283,15 @@
         return;
       }
       if(check == word) {
-        shake($('#game'), animparams);
+        shake($('.panel'));
         return;
       }
       if(answers.indexOf(check) >= 0) {
-        shake($('#game'), animparams);
+        shake($('.panel'));
         return;
       }
       if(dictionary.indexOf(check) == -1) {
-        shake($('#game'), animparams);
+        shake($('.panel'));
         return;
       }
       answers.push(check);
@@ -341,7 +340,7 @@
           $(`.action-type:contains('${letter}')`).addClass('disabled');
         }
       }else{
-        shake($('#game'), animparams);
+        shake($('.panel'));
       }
     }
     function untype() {
@@ -353,7 +352,7 @@
         $(`.action-type:contains('${letter}')`).removeClass('disabled');
         $('#input').text(input + '_');
       } else {
-        shake($('#game'), animparams);
+        shake($('.panel'));
       }
     }
     
