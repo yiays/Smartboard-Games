@@ -18,9 +18,6 @@
       height: 2em;
       margin: 0;
     }
-    .media-loader {
-      height: 2em;
-    }
   </style>
 </head>
 <body>
@@ -46,6 +43,7 @@
       <h1 id="question">Word 1</h1>
       <div class="media-loader">
         <audio id="audio" autoplay="true" controls src=""></audio>
+        <audio id="audio-2" controls src="" style="display:none;"></audio>
       </div>
       <p id="definition">Definition: </p>
       <p id="input">_</p>
@@ -254,7 +252,12 @@
       $('.action-check').addClass('disabled');
 
       word = wordorder[answers.length];
-      $('#audio').attr('src', words[difficulty][word][1]); //TODO: add support for alternative readings
+      $('#audio').attr('src', words[difficulty][word][1]);
+      // Show a second audio track if there is an alternative reading available
+      if(words[difficulty][word][2])
+        $('#audio-2').show().attr('src', words[difficulty][word][2]);
+      else
+        $('#audio-2').hide();
       $('.media-loader').removeClass('loaded');
       $('#definition').text(`Definition: ${words[difficulty][word][0]}`);
     }
