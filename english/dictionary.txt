@@ -3771,6 +3771,7 @@ areaway
 areaways
 arena
 arenas
+aren't
 areolar
 areopagus
 arere
@@ -9779,6 +9780,7 @@ byword
 bywords
 byzantine
 byzantium
+c'mon
 cab
 cabal
 cabala
@@ -10190,6 +10192,7 @@ camshaft
 camshafts
 camus
 can
+can't
 canada
 canadian
 canadians
@@ -16221,6 +16224,7 @@ coughed
 coughing
 coughs
 could
+could've
 coulee
 coulees
 couleur
@@ -20457,6 +20461,7 @@ diddled
 diddles
 diddling
 didgeridoo
+didn't
 didsbury
 didymium
 die
@@ -22086,6 +22091,7 @@ doers
 does
 doeskin
 doeskins
+doesn't
 doff
 doffed
 doffing
@@ -25817,8 +25823,10 @@ everybody
 everyday
 everyman
 everyone
+everyone's
 everyplace
 everything
+everything's
 everywhere
 everywoman
 everywomen
@@ -32949,6 +32957,7 @@ hacksaw
 hacksaws
 hackwork
 had
+had've
 haddington
 haddock
 haddocks
@@ -32956,6 +32965,7 @@ haddon
 hades
 hadley
 hadrian
+hadn't
 haec
 haematologist
 haematologists
@@ -33530,6 +33540,7 @@ hasidim
 hasidism
 haskins
 haslemere
+hasn't
 hasp
 hasps
 hassid
@@ -33708,6 +33719,9 @@ haziness
 hazing
 hazy
 he
+he'd
+he'll
+he's
 head
 headache
 headaches
@@ -34183,6 +34197,7 @@ herds
 herdsman
 herdsmen
 here
+here's
 hereabout
 hereabouts
 hereafter
@@ -35259,6 +35274,9 @@ hovered
 hovering
 hovers
 how
+how'll
+how're
+how's
 howarth
 howdah
 howdy
@@ -35859,6 +35877,10 @@ hysterotomy
 hythe
 hyundai
 i
+i'd
+i'll
+i'm
+i've
 iamb
 iambic
 iambs
@@ -39227,6 +39249,7 @@ islet
 islets
 isleworth
 islington
+isn't
 isobar
 isobaric
 isobars
@@ -39285,6 +39308,9 @@ isthmian
 isthmus
 isthmuses
 it
+it'd
+it'll
+it's
 ital
 italian
 italians
@@ -41731,6 +41757,7 @@ lessor
 lessors
 lest
 let
+let's
 letchworth
 letdown
 lethal
@@ -43154,6 +43181,7 @@ lysergic
 lysine
 lysol
 lytham
+ma'am
 maastricht
 mablethorpe
 mac
@@ -44451,6 +44479,7 @@ maximums
 maxis
 maxwell
 may
+may've
 maya
 mayan
 mayans
@@ -44909,7 +44938,6 @@ menstruates
 menstruating
 menstruation
 menswear
-ment
 mental
 mentalities
 mentality
@@ -45430,10 +45458,12 @@ miffing
 mifflin
 miffs
 might
+might've
 mightier
 mightiest
 mightily
 mightiness
+mightn't
 mighty
 mignonette
 mignonettes
@@ -45646,6 +45676,7 @@ mindlessly
 mindlessness
 minds
 mine
+mine's
 mined
 minefield
 minefields
@@ -47506,6 +47537,7 @@ musses
 mussing
 mussolini
 must
+must've
 mustache
 mustached
 mustaches
@@ -47524,6 +47556,7 @@ musters
 mustier
 mustiest
 mustiness
+mustn't
 musts
 musty
 mutability
@@ -48045,6 +48078,7 @@ needless
 needlessly
 needlework
 needling
+needn't
 needs
 needy
 nefarious
@@ -48802,6 +48836,7 @@ notepads
 notes
 noteworthy
 nothing
+nothing's
 nothingness
 nothings
 notice
@@ -49087,6 +49122,7 @@ nymphomania
 nymphomaniac
 nymphomaniacs
 nymphs
+o'clock
 oaf
 oafish
 oafs
@@ -49745,6 +49781,7 @@ oncologists
 oncology
 oncoming
 one
+one's
 oneness
 onere
 onerous
@@ -50278,6 +50315,8 @@ oubliettes
 ouch
 ouches
 ought
+ought'nt
+ought've
 ouija
 ounce
 ounces
@@ -58269,6 +58308,7 @@ racquet
 racquetball
 racquets
 racy
+rad
 radar
 radarscope
 radarscopes
@@ -65450,6 +65490,7 @@ shamrocks
 shams
 shamus
 shamuses
+shan't
 shandies
 shanghai
 shanghaied
@@ -65532,6 +65573,9 @@ shawls
 shawnees
 shays
 she
+she'd
+she'll
+she's
 shea
 sheaf
 shear
@@ -65879,10 +65923,12 @@ shotgun
 shotguns
 shots
 should
+should've
 shoulder
 shouldered
 shouldering
 shoulders
+shouldn't
 shout
 shouted
 shouter
@@ -67915,9 +67961,11 @@ sombrero
 sombreros
 some
 somebody
+somebody's
 someday
 somehow
 someone
+someone's
 someplace
 somersault
 somersaulted
@@ -67928,6 +67976,7 @@ somersett
 somerton
 somerville
 something
+something's
 sometime
 sometimes
 someway
@@ -73288,6 +73337,9 @@ thanks
 thanksgiving
 thanksgivings
 that
+that'd
+that'll
+that's
 thatch
 thatched
 thatcher
@@ -73395,6 +73447,10 @@ therapist
 therapists
 therapy
 there
+there'd
+there'll
+there're
+there's
 thereabout
 thereabouts
 thereafter
@@ -73450,6 +73506,8 @@ therms
 thesaurus
 thesauruses
 these
+these're
+these've
 theses
 thesis
 thespian
@@ -73459,6 +73517,10 @@ theta
 thetas
 thetford
 they
+they'd
+they're
+they'll
+they've
 thiamin
 thiamine
 thick
@@ -73535,6 +73597,7 @@ thirtieth
 thirtieths
 thirty
 this
+this's
 thistle
 thistles
 thither
@@ -80353,6 +80416,7 @@ wangles
 wangling
 waning
 wanly
+wanna
 wanner
 wanstead
 want
@@ -80507,6 +80571,7 @@ washroom
 washrooms
 washtub
 washy
+wasn't
 wasp
 waspish
 waspishly
@@ -80661,6 +80726,10 @@ wayward
 waywardens
 waywardly
 we
+we'd
+we'll
+we're
+we've
 weak
 weaken
 weakened
@@ -80880,6 +80949,7 @@ went
 wentworth
 wept
 were
+weren't
 werewolf
 werewolves
 wergild
@@ -80960,6 +81030,12 @@ wharfingers
 wharfs
 wharves
 what
+what'd
+what's
+what've
+what're
+what'll
+whatcha
 whatever
 whatnot
 whatnots
@@ -81003,10 +81079,17 @@ whelped
 whelping
 whelps
 when
+when'd
+when's
 whence
 whenever
 whensoever
 where
+where'd
+where'll
+where're
+where's
+where've
 whereabouts
 whereafter
 whereas
@@ -81038,6 +81121,7 @@ whetting
 whew
 whey
 which
+which've
 whichever
 whichsoever
 whicker
@@ -81199,6 +81283,11 @@ whizzed
 whizzes
 whizzing
 who
+who'd
+who'll
+who're
+who's
+who've
 whoa
 whodunit
 whodunits
@@ -81252,6 +81341,9 @@ whortleberry
 whose
 whosoever
 why
+why'd
+why're
+why's
 wichita
 wick
 wicked
@@ -81709,6 +81801,7 @@ wombs
 women
 womenfolk
 won
+won't
 wonder
 wondered
 wonderful
@@ -81941,6 +82034,8 @@ worthlessness
 worthwhile
 worthy
 would
+would've
+wouldn't
 wound
 wounded
 wounding
@@ -82109,6 +82204,7 @@ xylophone
 xylophones
 xylophonist
 xylophonists
+y'know
 yacht
 yachted
 yachter
@@ -82286,6 +82382,10 @@ yorkshire
 yoruba
 yosemite
 you
+you'd
+you'll
+you're
+you've
 young
 younger
 youngest
