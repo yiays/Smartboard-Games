@@ -165,7 +165,7 @@
     let word, keys, input, answers;
 
     $().ready(() => {
-      $.get('dictionary.txt?v=6')
+      $.get('dictionary.txt?v=6.1')
       .done((data) => {dictionary = data.replaceAll("'",'').split(/\r?\n/);load_complete()})
       .fail(() => {toasty("Failed to get the dictionary! Try reloading the page...", 20, true)});
 
