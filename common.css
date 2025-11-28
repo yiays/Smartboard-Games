@@ -61,6 +61,13 @@ h1 {
   display: contents;
 }
 
+body.offline .online {
+  /* Disable button in the event the app is offline */
+  pointer-events: none;
+  opacity: 0.5;
+  filter: grayscale();
+}
+
 /* Text decorators */
 .correct {
   color: #2ecc71;

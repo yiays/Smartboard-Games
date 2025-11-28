@@ -7,11 +7,13 @@
   <title>Smartboard Games</title>
   <meta name="description" content="A collection of simple educational games designed to run on smartboards, tablets, and phones.">
   <meta name="tags" content="educational, games, smartboard, whiteboard, classroom, student, interactive">
+  
+  <link rel="manifest" href="/manifest.json">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/common.css?v=16" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.yiays.com/yiaycons/yiaycons.css">
   <style>
     a {
@@ -183,7 +185,7 @@
 </head>
 <body>
   <div class="hero">
-    <a href="/profile.html" class="profile" data-username="not logged in" data-note="Improved login and sign up flow - 28/11/2025">
+    <a href="/profile.html" class="profile online" data-username="not logged in" data-note="Improved login and sign up flow - 28/11/2025">
       <i class="pfp">
         <span class="icon icon-">user</span>
       </i>
@@ -202,92 +204,93 @@
     <a href="#tool" class="btn category c-other" data-filter="tool"><span class="icon icon-cog"></span> Tool</a>
     <a href="#leaderboard" class="btn category c-other" data-filter="leaderboard"><span class="icon icon-stats-bars2"></span> Leaderboard</a>
     <a href="#group" class="btn category c-other" data-filter="group"><span class="icon icon-users"></span> Group</a>
+    <a href="#offline" class="btn category c-other" data-filter="offline"><span class="icon icon-floppy-disk"></span> Works offline</a>
   </nav>
   <main>
     <div class="row games">
-      <a href="trivia/5secondrule.html" class="btn game c-trivia" data-filter="trivia group" data-note="">
+      <a href="trivia/5secondrule.html" class="btn game c-trivia" data-filter="trivia group offline" data-note="">
         <p class="badges">
           <span class="icon icon-users" title="Group game"></span>
         </p>
         <h1>5 Second Rule</h1>
         <p>Quickfire questions with a 5 second time limit</p>
       </a>
-      <a href="geography/capitals.html" class="btn game c-geography" data-filter="geography group" data-note="">
+      <a href="geography/capitals.html" class="btn game c-geography online" data-filter="geography group" data-note="">
         <p class="badges">
           <span class="icon icon-users" title="Group game"></span>
         </p>
         <h1>Capital Cities</h1>
         <p>Guess the capital for each country</p>
       </a>
-      <a href="geography/capitals.html?mode=1" class="btn game c-geography" data-filter="geography group" data-note="">
+      <a href="geography/capitals.html?mode=1" class="btn game c-geography online" data-filter="geography group" data-note="">
         <p class="badges">
           <span class="icon icon-users" title="Group game"></span>
         </p>
         <h1>Countries</h1>
         <p>Guess the country for each capital</p>
       </a>
-      <a href="geography/capitals.html?mode=2" class="btn game c-geography" data-filter="geography group" data-note="">
+      <a href="geography/capitals.html?mode=2" class="btn game c-geography online" data-filter="geography group" data-note="">
         <p class="badges">
           <span class="icon icon-users" title="Group game"></span>
         </p>
         <h1>Flags</h1>
         <p>Guess the country for each flag</p>
       </a>
-      <a href="stem/quickmaths.html?mode=0&difficulty=easy" class="btn game c-stem" data-filter="stem leaderboard" data-scope="quickmaths_0_*" data-note="">
+      <a href="stem/quickmaths.html?mode=0&difficulty=easy" class="btn game c-stem" data-filter="stem leaderboard offline" data-scope="quickmaths_0_*" data-note="">
         <p class="badges">
           <span class="icon icon-stats-bars2" title="Leaderboard game"></span>
         </p>
         <h1>Quick Addition</h1>
         <p>Quickfire maths questions with multiple choice answers</p>
       </a>
-      <a href="stem/quickmaths.html?mode=1&difficulty=easy" class="btn game c-stem" data-filter="stem leaderboard" data-scope="quickmaths_1_*" data-note="">
+      <a href="stem/quickmaths.html?mode=1&difficulty=easy" class="btn game c-stem" data-filter="stem leaderboard offline" data-scope="quickmaths_1_*" data-note="">
         <p class="badges">
           <span class="icon icon-stats-bars2" title="Leaderboard game"></span>
         </p>
         <h1>Quick Subtraction</h1>
         <p>Quickfire maths questions with multiple choice answers</p>
       </a>
-      <a href="stem/quickmaths.html?mode=2&difficulty=easy" class="btn game c-stem" data-filter="stem leaderboard" data-scope="quickmaths_2_*" data-note="">
+      <a href="stem/quickmaths.html?mode=2&difficulty=easy" class="btn game c-stem" data-filter="stem leaderboard offline" data-scope="quickmaths_2_*" data-note="">
         <p class="badges">
           <span class="icon icon-stats-bars2" title="Leaderboard game"></span>
         </p>
         <h1>Quick Multiplication</h1>
         <p>Quickfire maths questions with multiple choice answers</p>
       </a>
-      <a href="stem/quickmaths.html?mode=3&difficulty=easy" class="btn game c-stem" data-filter="stem leaderboard" data-scope="quickmaths_3_*" data-note="">
+      <a href="stem/quickmaths.html?mode=3&difficulty=easy" class="btn game c-stem" data-filter="stem leaderboard offline" data-scope="quickmaths_3_*" data-note="">
         <p class="badges">
           <span class="icon icon-stats-bars2" title="Leaderboard game"></span>
         </p>
         <h1>Quick Division</h1>
         <p>Quickfire maths questions with multiple choice answers</p>
       </a>
-      <a href="english/anagrams.html" class="btn game c-english" data-filter="english leaderboard" data-scope="anagrams_*" data-note="Contractions now supported (apostrophies ignored) - 11/10/2025">
+      <a href="english/anagrams.html" class="btn game c-english" data-filter="english leaderboard offline" data-scope="anagrams_*" data-note="Contractions now supported (apostrophies ignored) - 11/10/2025">
         <p class="badges">
           <span class="icon icon-stats-bars2" title="Leaderboard game"></span>
         </p>
         <h1>Anagrams</h1>
         <p>Spell as many words as you can with the letters of another word</p>
       </a>
-      <a href="english/storyshuffle.html" class="btn game c-english" data-filter="english tool" data-note="">
+      <a href="english/storyshuffle.html" class="btn game c-english online" data-filter="english tool" data-note="">
         <p class="badges">
           <span class="icon icon-cog" title="Utility"></span>
         </p>
         <h1>Story Shuffle</h1>
         <p>Interpret a set of 3 random images to inspire your next story</p>
       </a>
-      <a href="stem/magicsquares.html" class="btn game c-stem" data-filter="stem" data-note="">
+      <a href="stem/magicsquares.html" class="btn game c-stem" data-filter="stem offline" data-note="">
         <p class="badges"></p>
         <h1>Magic Squares</h1>
         <p>Solve randomly generated magic square maths puzzles</p>
       </a>
-      <a href="english/spelling.html" class="btn game c-english" data-filter="english" data-scope="spelling_*" data-note="">
+      <a href="english/spelling.html" class="btn game c-english online" data-filter="english" data-scope="spelling_*" data-note="">
         <p class="badges">
           <span class="icon icon-stats-bars2" title="Leaderboard game"></span>
         </p>
         <h1>Spelling 🐝</h1>
         <p>Hear a word, see the definition, and try your best to spell it!</p>
       </a>
-      <a href="trivia/flashcards.html" class="btn game c-trivia" data-filter="trivia tool" data-note="">
+      <a href="trivia/flashcards.html" class="btn game c-trivia" data-filter="trivia tool offline" data-note="">
         <p class="badges">
           <span class="icon icon-cog" title="Utility"></span>
         </p>
@@ -304,7 +307,7 @@
   </footer>
   
   <script src="//cdn.yiays.com/jquery-3.7.1.min.js"></script>
-  <script src="/common.js?v=16.1"></script>
+  <script src="/common.js"></script>
   <script>
     let badgeCache;
     if(localStorage.getItem('badges')) {

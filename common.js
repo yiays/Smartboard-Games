@@ -53,6 +53,15 @@ bc.onmessage = (e) => {
   }
 };
 
+// Service Worker Registration
+if (navigator.serviceWorker) {
+  navigator.serviceWorker
+  .register('/service-worker.js', {scope: '/'})
+  .catch(console.error)
+} else {
+  console.warn('Service Worker is not supported in this browser.');
+}
+
 $().ready(() => {
   if(username && secret) {
     if(themeExpired)
@@ -60,6 +69,20 @@ $().ready(() => {
     else
       complete_login(username, secret, theme);
   }
+
+  if(!navigator.onLine) {
+    document.body.classList.add('offline');
+  }
+
+  window.addEventListener('online', (e) => {
+    document.body.classList.remove('offline');
+    if(username && secret && themeExpired)
+      log_in(username, secret);
+  });
+
+  window.addEventListener('offline', (e) => {
+    document.body.classList.add('offline');
+  });
 
   $('.media-loader>*').on('load', (e)=>{
     $(e.target).parent().addClass('loaded');

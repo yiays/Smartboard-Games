@@ -1,0 +1,9 @@
+{
+  "name": "Smartboard Games",
+  "start_url": "/",
+  "background_color": "#2d3c4a",
+  "display": "fullscreen",
+  "scope": "/",
+  "theme_color": "#34495e",
+  "description": "A collection of simple web games designed to be compatible with smartboards, tablets, and phones"
+}
