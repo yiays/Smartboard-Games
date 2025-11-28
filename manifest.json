@@ -1,5 +1,23 @@
 {
+  "id": "com.yiays.games",
   "name": "Smartboard Games",
+  "short_name": "Games",
+  "icons": [
+    {
+      "src": "/icon/64.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon/256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon.svg",
+      "type": "image/svg+xml"
+    }
+  ],
   "start_url": "/",
   "background_color": "#2d3c4a",
   "display": "fullscreen",

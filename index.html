@@ -9,6 +9,8 @@
   <meta name="tags" content="educational, games, smartboard, whiteboard, classroom, student, interactive">
   
   <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" sizes="64x64" href="/icon/64.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -83,6 +85,7 @@
     }
     main {
       display: flex;
+      flex-direction: column;
       flex-grow: 1;
       align-items: center;
       justify-content: center;
@@ -95,6 +98,19 @@
     }
     footer > * {
       margin: 0 2rem;
+    }
+    .subhero {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .subhero > h1, .subhero > h2, .subhero > h3 {
+      margin:0.5em 3em;
+    }
+    .subhero > .close {
+      position: absolute;
+      top: 0.5em;
+      right: 0.5em;
     }
     .row {
       display: flex;
@@ -207,6 +223,12 @@
     <a href="#offline" class="btn category c-other" data-filter="offline"><span class="icon icon-floppy-disk"></span> Works offline</a>
   </nav>
   <main>
+    <section class="subhero" id="about-offline" hidden>
+      <h2>Smartboard Games: now available offline</h2>
+      <button id="hide-offline" class="close icon icon-cross nobtn" title="Close"></button>
+      <p>Install the Smartboard Games web app for easy access to Smartboard Games on the go.</p>
+      <button class="btn" id="install-offline">Install Smartboard Games</button>
+    </section>
     <div class="row games">
       <a href="trivia/5secondrule.html" class="btn game c-trivia" data-filter="trivia group offline" data-note="">
         <p class="badges">
@@ -309,6 +331,23 @@
   <script src="//cdn.yiays.com/jquery-3.7.1.min.js"></script>
   <script src="/common.js"></script>
   <script>
+    let installprompt = null;
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      installprompt = e;
+      document.getElementById('about-offline').removeAttribute('hidden');
+    });
+
+    document.getElementById('hide-offline').addEventListener('click', (e) => {
+      document.getElementById('about-offline').setAttribute('hidden', '');
+    });
+
+    document.getElementById('install-offline').addEventListener('click', (e) => {
+      installprompt.prompt();
+      document.getElementById('about-offline').setAttribute('hidden', '');
+    });
+
     let badgeCache;
     if(localStorage.getItem('badges')) {
       badgeCache = JSON.parse(localStorage.getItem('badges'));
