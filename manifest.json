@@ -4,12 +4,12 @@
   "short_name": "Games",
   "icons": [
     {
-      "src": "/icon/64.png",
+      "src": "/icons/64.png",
       "sizes": "64x64",
       "type": "image/png"
     },
     {
-      "src": "/icon/256.png",
+      "src": "/icons/256.png",
       "sizes": "256x256",
       "type": "image/png"
     },

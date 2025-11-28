@@ -1,9 +1,8 @@
-const CACHE_VER = 'v0.0.1'; //TODO: increment before publishing
+const CACHE_VER = 'v0.0.2'; //TODO: increment before publishing
 const CACHE_FILES = [
   '/',
   '/common.js',
   '/common.css',
-  '/manifest.json',
   '//cdn.yiays.com/jquery-3.7.1.min.js',
   '//cdn.yiays.com/yiaycons/yiaycons.css',
   '//fonts.googleapis.com/css2?family=Roboto:wght@400;900&display=swap',
