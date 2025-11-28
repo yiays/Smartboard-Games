@@ -20,9 +20,9 @@
       Enter your details below
     </p>
     <label for="username">Username:</label>
-    <input type="username" id="username" placeholder="username" required>
+    <input type="username" id="username" placeholder="username" required minlength="3" maxlength="15">
     <label for="secret">Secret:</label>
-    <input type="password" id="secret" placeholder="secret">
+    <input type="password" id="secret" placeholder="secret" pattern="[\w\d]{5}" minlength="5" maxlength="5">
     <br>
     <sub>Leave secret blank for a new account, otherwise, find your secret on the profile page of a device you're signed in on</sub>
     <br>
@@ -54,7 +54,7 @@
   </d>
 
   <script src="//cdn.yiays.com/jquery-3.7.1.min.js"></script>
-  <script src="/common.js?v=16"></script>
+  <script src="/common.js?v=16.1"></script>
   <script>
     let original_theme = theme;
 

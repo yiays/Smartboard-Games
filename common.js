@@ -145,6 +145,9 @@ function log_in(pusername=null, psecret=null, callback=null) {
   if(psecret==null) psecret = prompt('Secret (check account page on signed in device for secret)');
   if(!psecret) return false;
 
+  pusername = encodeURIComponent(pusername);
+  psecret = encodeURIComponent(psecret);
+
   $.get(`https://highscore.yiays.com/?secret=${psecret}&username=${pusername}`)
   .done((data) => complete_login(pusername, data.secret, data.theme, callback, true))
   .fail((error) => {
