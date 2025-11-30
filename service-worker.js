@@ -1,4 +1,4 @@
-const CACHE_VER = 'v0.0.2'; //TODO: increment before publishing
+const CACHE_VER = 'v0.0.3'; //TODO: increment before publishing
 const CACHE_FILES = [
   '/',
   '/common.js',
