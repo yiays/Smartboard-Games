@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marbles</title>
+  <meta name="description" content="Untangle a jumble of marbles into colour groups">
+  <meta name="tags" content="colour, sorting, puzzle, challenge">
+
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" sizes="64x64" href="/icons/64.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/common.css" rel="stylesheet">
+  <style>
+    :root {
+      --ball1: #73d0f6;
+      --ball2: #95daf6;
+      --ball3: #99bbe3;
+      --ball4: #85a7d8;
+      --ball5: #807dbb;
+      --ball6: #948dc4;
+      --ball7: #ab9fce;
+      --ball8: #bcafd6;
+      --ball9: #cdbfdd;
+      --ball10: #e3d7ea;
+    }
+    .row{
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+    }
+    .flask{
+      position: relative;
+    }
+    .flask > * {
+      pointer-events: none;
+    }
+    .marbles{
+      display: flex;
+      flex-direction: column-reverse;
+      gap: 5px;
+      position: absolute;
+      bottom: 18px;
+      left: 25px;
+    }
+    .marbles > svg {
+      transform: translateY(0);
+      opacity: 1;
+      transition: transform 250ms, opacity 250ms;
+      animation: dropin 250ms;
+    }
+    .flask.focus > .marbles > svg:last-child {
+      transform: translateY(-10px);
+      opacity: 0.6;
+    }
+    @keyframes dropin {
+      0% {
+        transform: translateY(-10px);
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="menu" class="panel" style="display:none;">
+    <h1>Marbles</h1>
+    <p>Untangle a jumble of marbles into colour groups</p>
+    <button class="big-red btn action-start">Go</button>
+    <div class="options" style="margin-top: 1em">
+      <a class="btn" href="/">More games</a>
+    </div>
+  </div>
+
+  <div id="game" class="panel" style="background:#6d6368;">
+    <div class="row">
+      <button class="flask nobtn" title="Flask">
+        <svg width="81" height="160"><use href="#icon-tube"></use></svg>
+        <span class="marbles">
+          <svg width="31" height="31"><use href="#icon-hex"></use></svg>
+          <svg width="31" height="31"><use href="#icon-plain"></use></svg>
+        </span>
+      </button>
+      <button class="flask nobtn" title="Flask">
+        <svg width="81" height="160"><use href="#icon-tube"></use></svg>
+        <span class="marbles"></span>
+      </button>
+      <button class="flask nobtn" title="Flask">
+        <svg width="81" height="160"><use href="#icon-tube"></use></svg>
+        <span class="marbles"></span>
+      </button>
+      <button class="flask nobtn" title="Flask">
+        <svg width="81" height="160"><use href="#icon-tube"></use></svg>
+        <span class="marbles"></span>
+      </button>
+    </div>
+    <div class="row">
+      <button class="flask nobtn" title="Flask">
+        <svg width="81" height="160"><use href="#icon-tube"></use></svg>
+        <span class="marbles"></span>
+      </button>
+      <button class="flask nobtn" title="Flask">
+        <svg width="81" height="160"><use href="#icon-tube"></use></svg>
+        <span class="marbles"></span>
+      </button>
+      <button class="flask nobtn" title="Flask">
+        <svg width="81" height="160"><use href="#icon-tube"></use></svg>
+        <span class="marbles"></span>
+      </button>
+      <button class="flask nobtn" title="Flask">
+        <svg width="81" height="160"><use href="#icon-tube"></use></svg>
+        <span class="marbles"></span>
+      </button>
+    </div>
+    <div class="options" style="margin-top: 1em">
+      <button class="btn action-cancel">Give up</button>
+    </div>
+  </div>
+
+  <!-- Symbols for all SVG sprites in this game
+    Spritesheet generated from https://codeshack.io/svg-sprite-generator
+  -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+    <defs>
+      <style>
+        .cls-1,.cls-2 {
+          stroke:#4c4245;
+          stroke-miterlimit:10;
+        }
+        .cls-1 {
+          stroke-width:3.82px;
+        }
+        .cls-2 {
+          fill:none;
+          stroke-width:2px;
+        }
+        #Tube > .cls-1 {
+          fill: none;
+        }
+      </style>
+    </defs>
+    <symbol id="icon-jasper" viewBox="0 0 30.82 30.82">
+    <g id="Layer_2" data-name="Layer 2"><g id="Marbles"><g id="Jasper"><circle style="fill:var(--ball1);" class="cls-1" cx="15.41" cy="15.41" r="13.5"/><polygon class="cls-2" points="12.41 16.91 15.41 10.91 18.41 16.91 15.41 19.91 12.41 16.91"/></g></g></g>
+    </symbol>
+    <symbol id="icon-plain" viewBox="0 0 30.82 30.82">
+    <g id="Layer_2" data-name="Layer 2"><g id="Marbles"><g id="Plain"><circle style="fill:var(--ball2);" class="cls-1" cx="15.41" cy="15.41" r="13.5"/></g></g></g>
+    </symbol>
+    <symbol id="icon-trapezoid" viewBox="0 0 30.82 30.82">
+    <g id="Layer_2" data-name="Layer 2"><g id="Marbles"><g id="Trapezoid"><circle style="fill:var(--ball3);" class="cls-1" cx="15.41" cy="15.41" r="13.5"/><polygon class="cls-2" points="10.91 19.91 13.91 10.91 16.91 10.91 19.91 19.91 10.91 19.91"/></g></g></g>
+    </symbol>
+    <symbol id="icon-hex" viewBox="0 0 30.82 30.82">
+    <g id="Layer_2" data-name="Layer 2"><g id="Marbles"><g id="Hex"><circle style="fill:var(--ball4);" class="cls-1" cx="15.41" cy="15.41" r="13.5"/><polygon class="cls-2" points="13.35 10.91 17.48 10.91 21.6 15.41 17.48 19.91 13.35 19.91 9.22 15.41 13.35 10.91"/></g></g></g>
+    </symbol>
+    <symbol id="icon-diamond" viewBox="0 0 30.82 30.82">
+    <g id="Layer_2" data-name="Layer 2"><g id="Marbles"><g id="Diamond"><circle style="fill:var(--ball5);" class="cls-1" cx="15.41" cy="15.41" r="13.5"/><rect class="cls-2" x="12.23" y="12.23" width="6.36" height="6.36" transform="translate(-6.38 15.41) rotate(-45)"/></g></g></g>
+    </symbol>
+    <symbol id="icon-square" viewBox="0 0 30.82 30.82">
+    <g id="Layer_2" data-name="Layer 2"><g id="Marbles"><g id="Square"><circle style="fill:var(--ball6);" class="cls-1" cx="15.41" cy="15.41" r="13.5"/><rect class="cls-2" x="10.91" y="10.91" width="9" height="9"/></g></g></g>
+    </symbol>
+    <symbol id="icon-widow" viewBox="0 0 30.82 30.82">
+    <g id="Layer_2" data-name="Layer 2"><g id="Marbles"><g id="Widow"><circle style="fill:var(--ball7);" class="cls-1" cx="15.41" cy="15.41" r="13.5"/><polygon class="cls-2" points="10.91 19.91 19.91 10.91 19.91 19.91 10.91 10.91 10.91 19.91"/></g></g></g>
+    </symbol>
+    <symbol id="icon-circle" viewBox="0 0 30.82 30.82">
+    <g id="Layer_2" data-name="Layer 2"><g id="Marbles"><g id="Circle"><circle style="fill:var(--ball8);" class="cls-1" cx="15.41" cy="15.41" r="13.5"/><circle class="cls-2" cx="15.12" cy="15.12" r="4.21"/></g></g></g>
+    </symbol>
+    <symbol id="icon-triangle" viewBox="0 0 30.82 30.82">
+    <g id="Layer_2" data-name="Layer 2"><g id="Marbles"><g id="Triangle"><circle style="fill:var(--ball9);" class="cls-1" cx="15.41" cy="15.41" r="13.5"/><polygon class="cls-2" points="15.41 10.91 10.91 19.91 19.91 19.91 15.41 10.91"/></g></g></g>
+    </symbol>
+    <symbol id="icon-cross" viewBox="0 0 30.82 30.82">
+    <g id="Layer_2" data-name="Layer 2"><g id="Marbles"><g id="Cross"><circle style="fill:var(--ball10);" class="cls-1" cx="15.41" cy="15.41" r="13.5"/><polygon class="cls-2" points="13.91 13.91 13.91 10.91 16.91 10.91 16.91 13.91 19.91 13.91 19.91 16.91 16.91 16.91 16.91 19.91 13.91 19.91 13.91 16.91 10.91 16.91 10.91 13.91 13.91 13.91"/></g></g></g>
+    </symbol>
+    <symbol id="icon-tube" viewBox="0 0 81 158.87">
+    <g id="Layer_2" data-name="Layer 2"><g id="Tube"><polyline id="Tube-2" data-name="Tube" class="cls-1" points="0 2.93 16.2 2.93 16.2 155.93 64.8 155.93 64.8 2.93 81 2.93"/></g></g>
+    </symbol>
+  </svg>
+
+  <script src="//cdn.yiays.com/jquery-3.7.1.min.js"></script>
+  <script src="/common.js"></script>
+  <script>
+    const balls = [
+      'plain',
+      'hex',
+      'jasper',
+      'cross',
+      'trapezoid',
+      'widow',
+      'diamond',
+      'triangle',
+      'square',
+      'circle'
+    ];
+
+    const schemes = {
+      'vivid': ['f15758','f5845c','fcb958','fee256','bbd75c','7bc35e','7bcaae','6599d1','6861ab','da61a4'],
+      'neutral': ['f2707f','f69375','efb670','f0ca6f','c2db71','91ca69','89cbb5','77abdc','766eb2','ed70a4'],
+      'pastel': ['e5adac','f4c7a5','f4d2a4','f2e3a4','d6e6a4','acd79c','addbc3','a5d7f4','bfa4ce','eca5c9'],
+      'girlatsea': ['015259','026d77','42999b','82c5be','b8dedc','eef8fa','daf0f2','fdddd3','f5c2b1','e39678'],
+      'bayside': ['13293d','1c526f','173e56','fdf7b8','e5d177','13709a','f9e384','3096d3','83c5e8','e9f1f2'],
+      'purpleplanet': ['73d0f6','95daf6','99bbe3','85a7d8','807dbb','948dc4','ab9fce','bcafd6','cdbfdd','e3d7ea'],
+      'blisteringsun': ['fff26e','efe136','edbe35','d7a928','faa32c','d88328','ec6236','bf4727','a21d21','681219']
+    };
+
+    $().ready(() => {
+      $('.action-start').on('click', () => {
+        $('#menu').hide();
+        $('#game').show();
+      });
+
+      $('.action-cancel').on('click', menu);
+
+      $('.flask').on('click', (e) => {
+        const lasttube = $('.flask.focus').get();
+        if(lasttube.length) {
+          $(lasttube).toggleClass('focus');
+          const movemarble = $(lasttube).find('.marbles > svg:last-child');
+          const newflaskcontainer = $(e.target).find('.marbles');
+          const belowmarble = newflaskcontainer.find('svg:last-child');
+          if(belowmarble.length == 0 || belowmarble.children().first().attr('href') == movemarble.children().first().attr('href'))
+            movemarble.appendTo(newflaskcontainer);
+          else
+            $(e.target).toggleClass('focus');
+        }else{
+          $(e.target).toggleClass('focus');
+        }
+      });
+    });
+
+    function menu() {
+      $('#game').hide();
+      $('#menu').show();
+    }
+  </script>
+</body>
+</html>
