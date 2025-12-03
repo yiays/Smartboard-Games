@@ -29,13 +29,19 @@
       --ball9: #cdbfdd;
       --ball10: #e3d7ea;
     }
-    .row{
+    #flasks{
       display: flex;
       flex-direction: row;
-      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1em;
     }
     .flask{
       position: relative;
+    }
+    .flask > svg {
+      width: 5em;
+      height: 10em;
     }
     .flask > * {
       pointer-events: none;
@@ -43,12 +49,14 @@
     .marbles{
       display: flex;
       flex-direction: column-reverse;
-      gap: 5px;
+      gap: 0.1em;
       position: absolute;
-      bottom: 18px;
-      left: 25px;
+      bottom: 1em;
+      left: 1.5em;
     }
     .marbles > svg {
+      width: 2em;
+      height: 2em;
       transform: translateY(0);
       opacity: 1;
       transition: transform 250ms, opacity 250ms;
@@ -71,7 +79,7 @@
   </style>
 </head>
 <body>
-  <div id="menu" class="panel" style="display:none;">
+  <div id="menu" class="panel">
     <h1>Marbles</h1>
     <p>Untangle a jumble of marbles into colour groups</p>
     <button class="big-red btn action-start">Go</button>
@@ -80,48 +88,12 @@
     </div>
   </div>
 
-  <div id="game" class="panel" style="background:#6d6368;">
-    <div class="row">
-      <button class="flask nobtn" title="Flask">
-        <svg width="81" height="160"><use href="#icon-tube"></use></svg>
-        <span class="marbles">
-          <svg width="31" height="31"><use href="#icon-hex"></use></svg>
-          <svg width="31" height="31"><use href="#icon-plain"></use></svg>
-        </span>
-      </button>
-      <button class="flask nobtn" title="Flask">
-        <svg width="81" height="160"><use href="#icon-tube"></use></svg>
-        <span class="marbles"></span>
-      </button>
-      <button class="flask nobtn" title="Flask">
-        <svg width="81" height="160"><use href="#icon-tube"></use></svg>
-        <span class="marbles"></span>
-      </button>
-      <button class="flask nobtn" title="Flask">
-        <svg width="81" height="160"><use href="#icon-tube"></use></svg>
-        <span class="marbles"></span>
-      </button>
-    </div>
-    <div class="row">
-      <button class="flask nobtn" title="Flask">
-        <svg width="81" height="160"><use href="#icon-tube"></use></svg>
-        <span class="marbles"></span>
-      </button>
-      <button class="flask nobtn" title="Flask">
-        <svg width="81" height="160"><use href="#icon-tube"></use></svg>
-        <span class="marbles"></span>
-      </button>
-      <button class="flask nobtn" title="Flask">
-        <svg width="81" height="160"><use href="#icon-tube"></use></svg>
-        <span class="marbles"></span>
-      </button>
-      <button class="flask nobtn" title="Flask">
-        <svg width="81" height="160"><use href="#icon-tube"></use></svg>
-        <span class="marbles"></span>
-      </button>
+  <div id="game" class="panel" style="background:rgba(124,114,119,0.6);display:none;">
+    <div id="flasks">
     </div>
     <div class="options" style="margin-top: 1em">
-      <button class="btn action-cancel">Give up</button>
+      <button class="btn action-retry">Retry</button>
+      <button class="btn action-cancel">Return to menu</button>
     </div>
   </div>
 
@@ -208,30 +180,92 @@
       'blisteringsun': ['fff26e','efe136','edbe35','d7a928','faa32c','d88328','ec6236','bf4727','a21d21','681219']
     };
 
+    var template;
+
     $().ready(() => {
-      $('.action-start').on('click', () => {
-        $('#menu').hide();
-        $('#game').show();
-      });
-
+      $('.action-start').on('click', newgame);
+      $('.action-retry').on('click', present_template);
       $('.action-cancel').on('click', menu);
-
-      $('.flask').on('click', (e) => {
-        const lasttube = $('.flask.focus').get();
-        if(lasttube.length) {
-          $(lasttube).toggleClass('focus');
-          const movemarble = $(lasttube).find('.marbles > svg:last-child');
-          const newflaskcontainer = $(e.target).find('.marbles');
-          const belowmarble = newflaskcontainer.find('svg:last-child');
-          if(belowmarble.length == 0 || belowmarble.children().first().attr('href') == movemarble.children().first().attr('href'))
-            movemarble.appendTo(newflaskcontainer);
-          else
-            $(e.target).toggleClass('focus');
-        }else{
-          $(e.target).toggleClass('focus');
-        }
-      });
     });
+
+    function newgame() {
+      const ballsinplay = shuffle(balls).slice(-6);
+      const flasks = 8;
+      const moves = 50;
+
+      template = ballsinplay.map(a => Array(4).fill(a));
+      template = template.concat(Array(flasks - template.length).fill(Array()));
+
+      // Try random moves until a legal one is found, then play it
+      for (let i=0; i<moves; i++) {
+        while(true) {
+          let sourceflask = randint(flasks - 1);
+          let targetflask = randint(flasks - 1);
+          if(sourceflask!=targetflask && [sourceflask].length > 0 && template[targetflask].length < 4) {
+            template[targetflask].push(template[sourceflask].pop());
+            break;
+          }
+        }
+      }
+
+      // Fill marbles to the left until each flask is full again
+      for(let i=0; i<ballsinplay.length; i++) {
+        while(template[i].length < 4) {
+          let popped = undefined;
+          for(let j=flasks-1; j>ballsinplay.length-1; j--) {
+            popped = template[j].pop();
+            if(popped) {
+              template[i].push(popped);
+              break;
+            }
+          }
+        }
+      }
+
+      present_template();
+      
+      $('#menu').hide();
+      $('#game').show();
+    }
+
+    function present_template() {
+      // Display the template in the game
+      $('#flasks').empty();
+
+      let out = '';
+      template.forEach(flask => {
+        out += `
+          <button type="button" class="flask nobtn" title="Flask">
+            <svg width="81" height="160"><use href="#icon-tube"></use></svg>
+            <span class="marbles">`;
+        flask.forEach(marble => {
+          out += `
+              <svg width="31" height="31"><use href="#icon-${marble}"></use></svg>`;
+        })
+        out += `
+            </span>
+          </button>`;
+      });
+
+      $('#flasks').html(out);
+      $('.flask').on('click', flask_click);
+    }
+
+    function flask_click(e) {
+      const lasttube = $('.flask.focus').get();
+      if(lasttube.length) {
+        $(lasttube).toggleClass('focus');
+        const movemarble = $(lasttube).find('.marbles > svg:last-child');
+        const newflaskcontainer = $(e.target).find('.marbles');
+        const belowmarble = newflaskcontainer.find('svg:last-child');
+        if(belowmarble.length == 0 || belowmarble.children().first().attr('href') == movemarble.children().first().attr('href'))
+          movemarble.appendTo(newflaskcontainer);
+        else
+          $(e.target).toggleClass('focus');
+      }else{
+        $(e.target).toggleClass('focus');
+      }
+    }
 
     function menu() {
       $('#game').hide();
