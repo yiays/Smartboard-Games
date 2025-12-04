@@ -38,10 +38,15 @@
     }
     .flask{
       position: relative;
+      --done: rgba(0, 0, 0, 0);
     }
     .flask > svg {
       width: 5em;
       height: 10em;
+    }
+    .flask.done {
+      --done: #2ecc71;
+      pointer-events: none;
     }
     .flask > * {
       pointer-events: none;
@@ -116,7 +121,7 @@
           stroke-width:2px;
         }
         #Tube > .cls-1 {
-          fill: none;
+          fill: var(--done);
         }
       </style>
     </defs>
@@ -181,7 +186,7 @@
       'blisteringsun': ['fff26e','efe136','edbe35','d7a928','faa32c','d88328','ec6236','bf4727','a21d21','681219']
     };
 
-    var template, state, undoLog, selectedTube;
+    var template, state, undoLog, selectedTube, errorToast;
 
     $().ready(() => {
       $('.action-start').on('click', newgame);
@@ -274,6 +279,9 @@
       $('.flask').on('click', flask_click);
       selectedTube = undefined;
       state = rstate.map(i => i.slice());
+      for(let i=0; i<state.length; i++) {
+        if(fullcheck(state[i])) $('#flasks').children().eq(i).addClass('done');
+      }
     }
 
     function gameRules(from, to) {
@@ -299,6 +307,16 @@
       return flask.length == 4 && flask.every(m => m == flask[0]);
     }
 
+    function remainingMoves() {
+      // Counts all possible moves right now
+      let total=0;
+      for(let i=0; i<state.length; i++) {
+        for(let j=0; j<state.length; j++) {
+          total += gameRules(i,j)? 1: 0;
+        }
+      }
+      return total;
+    }
 
     function flask_click(e) {
       const lastTube = selectedTube;
@@ -325,10 +343,21 @@
         movemarble.appendTo(newflaskcontainer);
         state[selectedTube].push(state[lastTube].pop());
       }
+      if(fullcheck(state[selectedTube]))
+        $(e.target).addClass('done');
       selectedTube = undefined;
       
       // Save previous state into the undoLog
       undoLog.push(previousState);
+      let moveCount = remainingMoves();
+      if(moveCount > 0)
+        toasty(`Available moves: ${moveCount}`, 2);
+      else {
+        if(state.every(f => f.length == 0 || fullcheck(f)))
+          toasty("Level complete!", 10);
+        else
+          errorToast = toasty("No remaining moves - Undo or Retry", 0, true);
+      }
       $('.action-undo').removeClass('disabled');
     }
 

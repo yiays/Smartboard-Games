@@ -268,25 +268,30 @@ function get_leaderboard(scope,
 // Toasty
 let toastyId = 0;
 function toasty(msg, expiry=5, error=false) {
-  var myToasty = toastyId++;
+  var id = toastyId++;
   // Create toasty
   $(document.body).append(`
-    <div class="toasty ${expiry>0?'finite':''} ${error?'error':''}" id="toasty-${myToasty}" style="--expiry:${expiry}s;--id:${myToasty};">
+    <div class="toasty ${expiry>0?'finite':''} ${error?'error':''}" id="toasty-${id}" style="--expiry:${expiry}s;--id:${id};">
       ${msg}
       <a class="close">×</a>
     </div>`);
   // Add event listener for close button
-  $(`#toasty-${myToasty}>.close`).on('click', () => {
-    $(`#toasty-${myToasty}`).addClass('finite').css('--expiry', '250ms');
+  $(`#toasty-${id}>.close`).on('click', () => {
+    $(`#toasty-${id}`).addClass('finite').css('--expiry', '250ms');
     setTimeout(() => {
-      $(`#toasty-${myToasty}`).remove();
+      $(`#toasty-${id}`).remove();
     }, 250);
   });
   // Schedule deletion
   if(expiry > 0)
     setTimeout(() => {
-      $(`#toasty-${myToasty}`).remove();
+      $(`#toasty-${id}`).remove();
     }, expiry*1000);
+  return id;
+}
+
+function clearToasty(id) {
+  $(`#toasty-${id}`).remove();
 }
 
 // Update view when loading is complete
