@@ -92,6 +92,7 @@
     <div id="flasks">
     </div>
     <div class="options" style="margin-top: 1em">
+      <button class="btn action-undo">Undo</button>
       <button class="btn action-retry">Retry</button>
       <button class="btn action-cancel">Return to menu</button>
     </div>
@@ -184,7 +185,8 @@
 
     $().ready(() => {
       $('.action-start').on('click', newgame);
-      $('.action-retry').on('click', present_template);
+      $('.action-undo').on('click', undo);
+      $('.action-retry').on('click', retry);
       $('.action-cancel').on('click', menu);
     });
 
@@ -224,18 +226,37 @@
         }
       }
 
-      present_template();
+      render(template);
+      undoLog = [];
       
       $('#menu').hide();
+      $('.action-undo').addClass('disabled');
       $('#game').show();
     }
 
-    function present_template() {
-      // Reinit the game with the template
+    function undo() {
+      let newstate = undoLog.pop();
+      render(newstate);
+      if(undoLog.length == 0)
+        $('.action-undo').addClass('disabled');
+      if(errorToast !== undefined)
+        clearToasty(errorToast);
+    }
+
+    function retry() {
+      render(template);
+      undoLog = [];
+      $('.action-undo').addClass('disabled');
+      if(errorToast !== undefined)
+        clearToasty(errorToast);
+    }
+
+    function render(rstate) {
+      // Clear the board and render a defined state
       $('#flasks').empty();
 
       let out = '';
-      template.forEach(flask => {
+      rstate.forEach(flask => {
         out += `
           <button type="button" class="flask nobtn" title="Flask">
             <svg width="81" height="160"><use href="#icon-tube"></use></svg>
@@ -251,21 +272,33 @@
 
       $('#flasks').html(out);
       $('.flask').on('click', flask_click);
-      state = template.map(i => i.slice());
-      undoLog = [];
       selectedTube = undefined;
+      state = rstate.map(i => i.slice());
     }
 
     function gameRules(from, to) {
+      // Verifies a move is legal without changing any state
+
+      // Start and end point can't be the same
+      if(from == to) return false;
+      // There must be a marble in the from flask
       if(state[from].length <= 0) return false;
+      // Completed sets cannot move
+      if(fullcheck(state[from])) return false;
+      // Only matching marbles may be added to a flask
       if(state[to].length > 0) {
-        if(state[to][state[to].length - 1] != state[from][state[from].length - 1])
-          return false;
-        if(state[to].length >= 4)
-          return false;
+        if(state[to][state[to].length - 1] != state[from][state[from].length - 1]) return false;
+        // No marbles may be added to a full flask
+        if(state[to].length >= 4) return false;
       }
       return true;
     }
+
+    function fullcheck(flask) {
+      // Verify a flask is full of four of the same marbles
+      return flask.length == 4 && flask.every(m => m == flask[0]);
+    }
+
 
     function flask_click(e) {
       const lastTube = selectedTube;
@@ -283,15 +316,20 @@
       }
       $('#flasks').children().eq(lastTube).removeClass('focus');
 
+      // Move all matching marbles into the selected tube
+      let previousState = state.map(i => i.slice());
       while(gameRules(lastTube, selectedTube)) {
         const movemarble = $('#flasks').children().eq(lastTube).find('.marbles > svg:last-child');
         const newflaskcontainer = $(e.target).find('.marbles');
         const belowmarble = newflaskcontainer.find('svg:last-child');
         movemarble.appendTo(newflaskcontainer);
         state[selectedTube].push(state[lastTube].pop());
-        undoLog.push(state.map(i => i.slice()));
       }
       selectedTube = undefined;
+      
+      // Save previous state into the undoLog
+      undoLog.push(previousState);
+      $('.action-undo').removeClass('disabled');
     }
 
     function menu() {
