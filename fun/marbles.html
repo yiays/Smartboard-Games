@@ -180,7 +180,7 @@
       'blisteringsun': ['fff26e','efe136','edbe35','d7a928','faa32c','d88328','ec6236','bf4727','a21d21','681219']
     };
 
-    var template;
+    var template, state, undoLog, selectedTube;
 
     $().ready(() => {
       $('.action-start').on('click', newgame);
@@ -194,14 +194,16 @@
       const moves = 50;
 
       template = ballsinplay.map(a => Array(4).fill(a));
-      template = template.concat(Array(flasks - template.length).fill(Array()));
+      template = template.concat(Array.from({length: flasks - template.length}, () => []));
 
       // Try random moves until a legal one is found, then play it
       for (let i=0; i<moves; i++) {
         while(true) {
           let sourceflask = randint(flasks - 1);
           let targetflask = randint(flasks - 1);
-          if(sourceflask!=targetflask && [sourceflask].length > 0 && template[targetflask].length < 4) {
+          if(sourceflask!=targetflask && template[sourceflask].length > 0 && template[targetflask].length < 4) {
+            if(template[sourceflask].at(-1) === undefined)
+              console.error("Undefined marble encountered!");
             template[targetflask].push(template[sourceflask].pop());
             break;
           }
@@ -229,7 +231,7 @@
     }
 
     function present_template() {
-      // Display the template in the game
+      // Reinit the game with the template
       $('#flasks').empty();
 
       let out = '';
@@ -249,22 +251,47 @@
 
       $('#flasks').html(out);
       $('.flask').on('click', flask_click);
+      state = template.map(i => i.slice());
+      undoLog = [];
+      selectedTube = undefined;
+    }
+
+    function gameRules(from, to) {
+      if(state[from].length <= 0) return false;
+      if(state[to].length > 0) {
+        if(state[to][state[to].length - 1] != state[from][state[from].length - 1])
+          return false;
+        if(state[to].length >= 4)
+          return false;
+      }
+      return true;
     }
 
     function flask_click(e) {
-      const lasttube = $('.flask.focus').get();
-      if(lasttube.length) {
-        $(lasttube).toggleClass('focus');
-        const movemarble = $(lasttube).find('.marbles > svg:last-child');
+      const lastTube = selectedTube;
+      selectedTube = $(e.target).index();
+
+      if(lastTube == selectedTube || lastTube === undefined) {
+        if(state[selectedTube].length > 0) {
+          $(e.target).toggleClass('focus');
+          if(!e.target.classList.contains('focus'))
+            selectedTube = undefined;
+        }
+        else
+          selectedTube = undefined;
+        return;
+      }
+      $('#flasks').children().eq(lastTube).removeClass('focus');
+
+      while(gameRules(lastTube, selectedTube)) {
+        const movemarble = $('#flasks').children().eq(lastTube).find('.marbles > svg:last-child');
         const newflaskcontainer = $(e.target).find('.marbles');
         const belowmarble = newflaskcontainer.find('svg:last-child');
-        if(belowmarble.length == 0 || belowmarble.children().first().attr('href') == movemarble.children().first().attr('href'))
-          movemarble.appendTo(newflaskcontainer);
-        else
-          $(e.target).toggleClass('focus');
-      }else{
-        $(e.target).toggleClass('focus');
+        movemarble.appendTo(newflaskcontainer);
+        state[selectedTube].push(state[lastTube].pop());
+        undoLog.push(state.map(i => i.slice()));
       }
+      selectedTube = undefined;
     }
 
     function menu() {
