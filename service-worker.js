@@ -1,4 +1,4 @@
-const CACHE_VER = 'v0.0.3'; //TODO: increment before publishing
+const CACHE_VER = 'v0.0.6'; //TODO: increment before publishing
 const CACHE_FILES = [
   '/',
   '/common.js',
@@ -13,6 +13,7 @@ const CACHE_FILES = [
   '/stem/quickmaths.html',
   '/english/anagrams.html',
   '/english/dictionary.txt',
+  '/fun/marbles.html'
 ];
 
 // Install procedure
