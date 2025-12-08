@@ -29,6 +29,7 @@
       --ball8: #bcafd6;
       --ball9: #cdbfdd;
       --ball10: #e3d7ea;
+      --symbols: visible;
     }
     .gridlist {
       display: flex;
@@ -140,6 +141,8 @@
     <div class="options" style="margin-top: 1em">
       <button class="btn action-undo" title="Undo"><svg width="48" height="32"><use href="#Undo"></use></svg></button>
       <button class="btn action-retry" title="Retry"><svg width="48" height="32"><use href="#Restart"></use></svg></button>
+      <button class="btn action-symbol-toggle" title="Hide symbols"><svg width="48" height="32"><use href="#Hide"></use></svg></button>
+      <button class="btn action-share" title="Share" style="display:none;"><svg width="48" height="32"><use href="#Share"></use></svg></button>
       <button class="btn action-level-select" title="Level select"><span class="icon icon-select-none"></span></button>
     </div>
   </div>
@@ -160,6 +163,7 @@
         .cls-2 {
           fill:none;
           stroke-width:2px;
+          visibility: var(--symbols);
         }
         #Tube > .cls-1 {
           fill: var(--done);
@@ -248,10 +252,22 @@
       'blisteringsun': ['fff26e','efe136','edbe35','d7a928','faa32c','d88328','ec6236','bf4727','a21d21','681219']
     };
 
+    let userPrefs = {
+      symbols: true
+    };
 
     let prng, level, template, state, undoLog, selectedTube, errorToast;
 
     $().ready(() => {
+      if(localStorage.getItem('marbles_data')) {
+        let decoded = JSON.parse(localStorage.getItem('marbles_data'));
+        userPrefs = {...userPrefs, ...decoded};
+      }
+      if(!userPrefs.symbols) {
+        $('#game').addClass('nosymbols');
+        $('.action-symbol-toggle').attr('title', 'Show symbols');
+        $('.action-symbol-toggle>svg>use').attr('href', '#Show');
+      }
       $('.action-cancel').on('click', menu);
       $('.action-start').on('click', newgame);
       $('.action-level-select').on('click', levelSelect);
@@ -335,6 +351,19 @@
       $('.action-retry').addClass('disabled');
       if(errorToast !== undefined)
         clearToasty(errorToast);
+    }
+
+    function toggleSymbols() {
+      if($('#game').toggleClass('nosymbols').hasClass('nosymbols')) {
+        $('.action-symbol-toggle').attr('title', 'Show symbols');
+        $('.action-symbol-toggle>svg>use').attr('href', '#Show');
+        userPrefs.symbols = false;
+      } else {
+        $('.action-symbol-toggle').attr('title', 'Hide symbols');
+        $('.action-symbol-toggle>svg>use').attr('href', '#Hide');
+        userPrefs.symbols = true;
+      }
+      localStorage.setItem('marbles_data', JSON.stringify(userPrefs));
     }
 
     function render(rstate) {
