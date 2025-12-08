@@ -16,6 +16,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/common.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.yiays.com/yiaycons/yiaycons.css">
   <style>
     :root {
       --ball1: #73d0f6;
@@ -81,6 +82,19 @@
         opacity: 1;
       }
     }
+    #game .options {
+      width: 100%;
+    }
+    #game .btn {
+      width: 4em;
+      background: #75757a;
+      color: #000;
+      color: var(--antitext);
+      font-weight: 400;
+    }
+    #game .btn>.icon {
+      font-size: 1.3em;
+    }
   </style>
 </head>
 <body>
@@ -97,9 +111,8 @@
     <div id="flasks">
     </div>
     <div class="options" style="margin-top: 1em">
-      <button class="btn action-undo">Undo</button>
-      <button class="btn action-retry">Retry</button>
-      <button class="btn action-cancel">Return to menu</button>
+      <button class="btn action-undo" title="Undo"><svg width="48" height="32"><use href="#Undo"></use></svg></button>
+      <button class="btn action-retry" title="Retry"><svg width="48" height="32"><use href="#Restart"></use></svg></button>
     </div>
   </div>
 
@@ -122,6 +135,12 @@
         }
         #Tube > .cls-1 {
           fill: var(--done);
+        }
+        .acls-1,.acls-2{
+          fill:none;
+          stroke:#231f20;
+          stroke-miterlimit:10;
+          stroke-width:3px;
         }
       </style>
     </defs>
@@ -157,6 +176,21 @@
     </symbol>
     <symbol id="icon-tube" viewBox="0 0 81 158.87">
     <g id="Layer_2" data-name="Layer 2"><g id="Tube"><polyline id="Tube-2" data-name="Tube" class="cls-1" points="0 2.93 16.2 2.93 16.2 155.93 64.8 155.93 64.8 2.93 81 2.93"/></g></g>
+    </symbol>
+    <symbol viewBox="0 0 67.53 34.14" id="Undo">
+      <g id="aLayer_2" data-name="Layer 2"><g id="aPalettes"><path class="acls-1" d="M2.48 13.36h63.55v20.78"/><path class="acls-1" d="M18.49 1.19 2.48 13.36l16.01 12.17"/></g></g>
+    </symbol>
+    <symbol viewBox="0 0 62.75 39.5" id="Show">
+      <g id="aLayer_2" data-name="Layer 2"><g id="aPalettes"><path class="acls-1" d="M60.58 23.6c-1.32 1.66-11.54 14-29 14.18C13.21 38 2.51 24.43 1.37 22.93"/><path class="acls-1" d="M2.17 24.43c1.32-1.65 11.57-14 29-14.11 18.39-.13 29.05 13.41 30.2 14.92M31.39 9.36l-.3-9.3M15.85 13.3l-3.63-8.57M47.67 13.17l3.07-8.78"/><circle cx="31.89" cy="24.08" r="11.9" style="stroke-width:4.01px;fill:none;stroke:#231f20;stroke-miterlimit:10"/></g></g>
+    </symbol>
+    <symbol viewBox="0 0 48.94 45" id="Share">
+      <g id="aLayer_2" data-name="Layer 2"><g id="aPalettes"><circle class="acls-1" cx="41.05" cy="7.89" r="6.39"/><circle class="acls-1" cx="41.05" cy="37.11" r="6.39"/><circle class="acls-1" cx="7.89" cy="22.87" r="6.39"/><path class="acls-2" d="m35.06 34.9-21.22-9.69M35.2 10.46 14.28 20.74"/></g></g>
+    </symbol>
+    <symbol viewBox="0 0 55.97 49.9" id="Restart">
+      <g id="aLayer_2" data-name="Layer 2"><g id="aPalettes"><path class="acls-1" d="M2.17 18.1c1.18-1.42 10.3-12 25.49-11.86 16 .16 25.12 12.12 26.09 13.45"/><path class="acls-1" d="m52.13.16 2.14 19.99-19.84-3.29M53.75 32.36c-1.19 1.4-10.42 11.89-25.61 11.58-16-.33-25-12.39-25.95-13.72"/><path class="acls-1" d="M3.6 49.76 1.68 29.75l19.8 3.5"/></g></g>
+    </symbol>
+    <symbol viewBox="0 0 62.16 38.47" id="Hide">
+      <g id="aLayer_2" data-name="Layer 2"><g id="aPalettes"><path class="acls-1" d="M60.81 13.12c-1.33 1.67-11.57 14.08-29.07 14.27C13.28 27.59 2.52 14 1.37 12.52M31.67 29.07l.33 9.34M47.25 25.06l3.67 8.6M15.31 25.29l-3.05 8.83"/><path d="M1.43 14.15C2.75 12.49 13 .15 30.42 0 48.81-.16 59.5 13.37 60.64 14.88" style="fill:none"/></g></g>
     </symbol>
   </svg>
 
@@ -236,14 +270,17 @@
       
       $('#menu').hide();
       $('.action-undo').addClass('disabled');
+      $('.action-retry').addClass('disabled');
       $('#game').show();
     }
 
     function undo() {
       let newstate = undoLog.pop();
       render(newstate);
-      if(undoLog.length == 0)
+      if(undoLog.length == 0) {
         $('.action-undo').addClass('disabled');
+        $('.action-retry').addClass('disabled');
+      }
       if(errorToast !== undefined)
         clearToasty(errorToast);
     }
@@ -252,6 +289,7 @@
       render(template);
       undoLog = [];
       $('.action-undo').addClass('disabled');
+      $('.action-retry').addClass('disabled');
       if(errorToast !== undefined)
         clearToasty(errorToast);
     }
@@ -359,6 +397,7 @@
           errorToast = toasty("No remaining moves - Undo or Retry", 0, true);
       }
       $('.action-undo').removeClass('disabled');
+      $('.action-retry').removeClass('disabled');
     }
 
     function menu() {
