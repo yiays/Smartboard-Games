@@ -31,6 +31,21 @@
       --ball10: #e3d7ea;
       --symbols: visible;
     }
+    .btn.complete {
+      background: #2ecc71;
+    }
+    #levels > .gridlist > .btn {
+      opacity: 0.5;
+      cursor: default;
+      pointer-events: none;
+      box-shadow: none;
+    }
+    #levels > .gridlist > .btn:first-child, #levels > .gridlist > .btn.complete, #levels > .gridlist > .btn.complete + .btn {
+      opacity: 1;
+      cursor: pointer;
+      pointer-events: initial;
+      box-shadow: rgba(0,0,0,0.25) 0.25rem 0.25rem 0.25rem 0;
+    }
     .gridlist {
       display: flex;
       flex-direction: row;
@@ -253,7 +268,8 @@
     };
 
     let userPrefs = {
-      symbols: true
+      symbols: true,
+      completedLevels: []
     };
 
     let prng, level, template, state, undoLog, selectedTube, errorToast;
@@ -278,6 +294,9 @@
 
     function levelSelect() {
       $('#menu,#game').hide();
+      $('#levels>.gridlist>.btn').each((i,e) => {
+        if(userPrefs.completedLevels.includes(i+1)) e.classList.add('complete');
+      })
       $('#levels').show();
     }
 
@@ -478,9 +497,13 @@
       if(moveCount > 0)
         toasty(`Available moves: ${moveCount}`, 2);
       else {
-        if(state.every(f => f.length == 0 || fullcheck(f)))
+        if(state.every(f => f.length == 0 || fullcheck(f))) {
           toasty("Level complete!", 10);
-        else
+          if(!userPrefs.completedLevels.includes(level)) {
+            userPrefs.completedLevels.push(level);
+            localStorage.setItem('marbles_data', JSON.stringify(userPrefs));
+          }
+        } else
           errorToast = toasty("No remaining moves - Undo or Retry", 0, true);
       }
       $('.action-undo').removeClass('disabled');
