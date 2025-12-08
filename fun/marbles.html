@@ -30,6 +30,19 @@
       --ball9: #cdbfdd;
       --ball10: #e3d7ea;
     }
+    .gridlist {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 0.5em;
+    }
+    .gridlist > .btn {
+      width: 2em;
+      height: 2em;
+    }
+    #game.nosymbols {
+      --symbols: hidden;
+    }
     #flasks{
       display: flex;
       flex-direction: row;
@@ -101,10 +114,24 @@
   <div id="menu" class="panel">
     <h1>Marbles</h1>
     <p>Untangle a jumble of marbles into colour groups</p>
-    <button class="big-red btn action-start">Go</button>
+    <button class="big-red btn action-level-select">Go</button>
     <div class="options" style="margin-top: 1em">
       <a class="btn" href="/">More games</a>
     </div>
+  </div>
+
+  <div id="levels" class="panel" style="display:none;">
+    <div class="gridlist">
+      <button class="btn action-start" data-flasks="3" data-colours="2" data-diff="1">1</button>
+      <button class="btn action-start" data-flasks="3" data-colours="2" data-diff="2">2</button>
+      <button class="btn action-start" data-flasks="3" data-colours="2" data-diff="2">3</button>
+      <button class="btn action-start" data-flasks="3" data-colours="2" data-diff="2">4</button>
+      <button class="btn action-start" data-flasks="4" data-colours="3" data-diff="3">5</button>
+    </div>
+    <div class="options" style="margin-top: 1em">
+      <button class="btn action-cancel" title="Menu">Menu</button>
+    </div>
+    
   </div>
 
   <div id="game" class="panel" style="background:rgba(124,114,119,0.6);display:none;">
@@ -113,6 +140,7 @@
     <div class="options" style="margin-top: 1em">
       <button class="btn action-undo" title="Undo"><svg width="48" height="32"><use href="#Undo"></use></svg></button>
       <button class="btn action-retry" title="Retry"><svg width="48" height="32"><use href="#Restart"></use></svg></button>
+      <button class="btn action-level-select" title="Level select"><span class="icon icon-select-none"></span></button>
     </div>
   </div>
 
@@ -220,35 +248,50 @@
       'blisteringsun': ['fff26e','efe136','edbe35','d7a928','faa32c','d88328','ec6236','bf4727','a21d21','681219']
     };
 
-    var template, state, undoLog, selectedTube, errorToast;
+
+    let prng, level, template, state, undoLog, selectedTube, errorToast;
 
     $().ready(() => {
+      $('.action-cancel').on('click', menu);
       $('.action-start').on('click', newgame);
+      $('.action-level-select').on('click', levelSelect);
       $('.action-undo').on('click', undo);
       $('.action-retry').on('click', retry);
-      $('.action-cancel').on('click', menu);
+      $('.action-symbol-toggle').on('click', toggleSymbols);
     });
 
-    function newgame() {
-      const ballsinplay = shuffle(balls).slice(-6);
-      const flasks = 8;
-      const moves = 50;
+    function levelSelect() {
+      $('#menu,#game').hide();
+      $('#levels').show();
+    }
+
+    function newgame(e) {
+      level = Number(e.target.innerText);
+      // Create a new predictable random number generator for shuffling the level
+      prng = mulberry32((level + 1337) >>> 0);
+      const ballsinplay = shuffle(balls).slice(-Number(e.target.dataset.colours));
+      const flasks = Number(e.target.dataset.flasks);
+      let moves = Number(e.target.dataset.diff) * 10;
 
       template = ballsinplay.map(a => Array(4).fill(a));
       template = template.concat(Array.from({length: flasks - template.length}, () => []));
 
       // Try random moves until a legal one is found, then play it
+      let lastsource, lasttarget = -1;
       for (let i=0; i<moves; i++) {
         while(true) {
-          let sourceflask = randint(flasks - 1);
-          let targetflask = randint(flasks - 1);
-          if(sourceflask!=targetflask && template[sourceflask].length > 0 && template[targetflask].length < 4) {
-            if(template[sourceflask].at(-1) === undefined)
-              console.error("Undefined marble encountered!");
+          let sourceflask = randint(flasks - 1, 0, prng);
+          let targetflask = randint(flasks - 1, 0, prng);
+          if(shuffleRules(lastsource, lasttarget, sourceflask, targetflask)) {
             template[targetflask].push(template[sourceflask].pop());
+            lastsource = sourceflask;
+            lasttarget = targetflask;
             break;
           }
         }
+        // Ensure none of the flasks are pre-filled
+        if(i == moves - 1 && template.some(f => fullcheck(f)))
+          moves++;
       }
 
       // Fill marbles to the left until each flask is full again
@@ -268,7 +311,7 @@
       render(template);
       undoLog = [];
       
-      $('#menu').hide();
+      $('#menu,#levels').hide();
       $('.action-undo').addClass('disabled');
       $('.action-retry').addClass('disabled');
       $('#game').show();
@@ -320,6 +363,21 @@
       for(let i=0; i<state.length; i++) {
         if(fullcheck(state[i])) $('#flasks').children().eq(i).addClass('done');
       }
+    }
+
+    function shuffleRules(oldFrom, oldTo, from, to) {
+      // Rules to ensure shuffling is efficient and effective
+
+      // No reverse moves
+      if(oldFrom == to && oldTo == from) return false;
+      // No moving to yourself
+      if(from==to) return false;
+      // The from flask must have a marble
+      if(template[from].length <= 0) return false;
+      // The to flask must have room
+      if(template[to].length >= 4) return false;
+      // No issues found
+      return true;
     }
 
     function gameRules(from, to) {
@@ -401,7 +459,7 @@
     }
 
     function menu() {
-      $('#game').hide();
+      $('#game,#levels').hide();
       $('#menu').show();
     }
   </script>
