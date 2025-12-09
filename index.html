@@ -99,6 +99,15 @@
     footer > * {
       margin: 0 2rem;
     }
+    .hero h1 {
+      position: relative;
+    }
+    .hero h1 > span {
+      position: absolute;
+      font-size: 0.8rem;
+      color: #aaa;
+      color: var(--secondary);
+    }
     .subhero {
       display: flex;
       flex-direction: column;
@@ -195,7 +204,11 @@
       text-align: right;
       margin: 0.5em;
     }
-    .game h1, .game p {
+    .game h3 {
+      font-size: 2em;
+      margin: 0;
+    }
+    .game h3, .game p {
       flex-grow: 1;
     }
     .game sub {
@@ -210,7 +223,7 @@
         <span class="icon icon-">user</span>
       </i>
     </a>
-    <h1>Smartboard Games</h1>
+    <h1>Smartboard Games<span class="ver"></span></h1>
     <p>
       A collection of simple educational games (and some tools), designed to be compatible with smartboards, tablets, and phones.
     </p>
@@ -240,96 +253,96 @@
     <div class="row games">
       <a href="fun/marbles.html" class="btn game c-fun" data-filter="fun offline" data-note="First five levels now available - 8/12/2025">
         <p class="badges"></p>
-        <h1>Marbles</h1>
+        <h3>Marbles</h3>
         <p>Untangle a jumble of marbles into colour groups</p>
       </a>
       <a href="trivia/5secondrule.html" class="btn game c-trivia" data-filter="trivia group offline" data-note="">
         <p class="badges">
           <span class="icon icon-users" title="Group game"></span>
         </p>
-        <h1>5 Second Rule</h1>
+        <h3>5 Second Rule</h3>
         <p>Quickfire questions with a 5 second time limit</p>
       </a>
       <a href="geography/capitals.html" class="btn game c-geography online" data-filter="geography group" data-note="">
         <p class="badges">
           <span class="icon icon-users" title="Group game"></span>
         </p>
-        <h1>Capital Cities</h1>
+        <h3>Capital Cities</h3>
         <p>Guess the capital for each country</p>
       </a>
       <a href="geography/capitals.html?mode=1" class="btn game c-geography online" data-filter="geography group" data-note="">
         <p class="badges">
           <span class="icon icon-users" title="Group game"></span>
         </p>
-        <h1>Countries</h1>
+        <h3>Countries</h3>
         <p>Guess the country for each capital</p>
       </a>
       <a href="geography/capitals.html?mode=2" class="btn game c-geography online" data-filter="geography group" data-note="">
         <p class="badges">
           <span class="icon icon-users" title="Group game"></span>
         </p>
-        <h1>Flags</h1>
+        <h3>Flags</h3>
         <p>Guess the country for each flag</p>
       </a>
       <a href="stem/quickmaths.html?mode=0&difficulty=easy" class="btn game c-stem" data-filter="stem leaderboard offline" data-scope="quickmaths_0_*" data-note="">
         <p class="badges">
           <span class="icon icon-stats-bars2" title="Leaderboard game"></span>
         </p>
-        <h1>Quick Addition</h1>
+        <h3>Quick Addition</h3>
         <p>Quickfire maths questions with multiple choice answers</p>
       </a>
       <a href="stem/quickmaths.html?mode=1&difficulty=easy" class="btn game c-stem" data-filter="stem leaderboard offline" data-scope="quickmaths_1_*" data-note="">
         <p class="badges">
           <span class="icon icon-stats-bars2" title="Leaderboard game"></span>
         </p>
-        <h1>Quick Subtraction</h1>
+        <h3>Quick Subtraction</h3>
         <p>Quickfire maths questions with multiple choice answers</p>
       </a>
       <a href="stem/quickmaths.html?mode=2&difficulty=easy" class="btn game c-stem" data-filter="stem leaderboard offline" data-scope="quickmaths_2_*" data-note="">
         <p class="badges">
           <span class="icon icon-stats-bars2" title="Leaderboard game"></span>
         </p>
-        <h1>Quick Multiplication</h1>
+        <h3>Quick Multiplication</h3>
         <p>Quickfire maths questions with multiple choice answers</p>
       </a>
       <a href="stem/quickmaths.html?mode=3&difficulty=easy" class="btn game c-stem" data-filter="stem leaderboard offline" data-scope="quickmaths_3_*" data-note="">
         <p class="badges">
           <span class="icon icon-stats-bars2" title="Leaderboard game"></span>
         </p>
-        <h1>Quick Division</h1>
+        <h3>Quick Division</h3>
         <p>Quickfire maths questions with multiple choice answers</p>
       </a>
       <a href="english/anagrams.html" class="btn game c-english" data-filter="english leaderboard offline" data-scope="anagrams_*" data-note="Contractions now supported (apostrophies ignored) - 11/10/2025">
         <p class="badges">
           <span class="icon icon-stats-bars2" title="Leaderboard game"></span>
         </p>
-        <h1>Anagrams</h1>
+        <h3>Anagrams</h3>
         <p>Spell as many words as you can with the letters of another word</p>
       </a>
       <a href="english/storyshuffle.html" class="btn game c-english online" data-filter="english tool" data-note="">
         <p class="badges">
           <span class="icon icon-cog" title="Utility"></span>
         </p>
-        <h1>Story Shuffle</h1>
+        <h3>Story Shuffle</h3>
         <p>Interpret a set of 3 random images to inspire your next story</p>
       </a>
       <a href="stem/magicsquares.html" class="btn game c-stem" data-filter="stem offline" data-note="">
         <p class="badges"></p>
-        <h1>Magic Squares</h1>
+        <h3>Magic Squares</h3>
         <p>Solve randomly generated magic square maths puzzles</p>
       </a>
       <a href="english/spelling.html" class="btn game c-english online" data-filter="english" data-scope="spelling_*" data-note="">
         <p class="badges">
           <span class="icon icon-stats-bars2" title="Leaderboard game"></span>
         </p>
-        <h1>Spelling 🐝</h1>
+        <h3>Spelling 🐝</h3>
         <p>Hear a word, see the definition, and try your best to spell it!</p>
       </a>
       <a href="trivia/flashcards.html" class="btn game c-trivia" data-filter="trivia tool offline" data-note="">
         <p class="badges">
           <span class="icon icon-cog" title="Utility"></span>
         </p>
-        <h1>Flashcards</h1>
+        <h3>Flashcards</h3>
         <p>Train your memory with a variety of pre-made flashcards for learning languages</p>
       </a>
     </div>

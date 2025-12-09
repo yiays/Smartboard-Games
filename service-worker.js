@@ -1,4 +1,4 @@
-const CACHE_VER = 'v0.0.7';
+const CACHE_VER = 'v0.0.8';
 const CACHE_FILES = [
   '/',
   '/common.js',
@@ -21,7 +21,16 @@ self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(CACHE_VER)
     .then((cache) => {
-      cache.addAll(CACHE_FILES);
+      return cache.addAll(CACHE_FILES);
+    })
+    .then(() => {
+      // Notify all open clients that a new service worker was installed and is waiting
+      return self.clients.matchAll({ type: 'window', includeUncontrolled: true })
+      .then((clients) => {
+        clients.forEach((client) => {
+          client.postMessage({ type: 'NEW_SW_WAITING', version: CACHE_VER });
+        });
+      });
     })
   )
 });
@@ -77,7 +86,17 @@ self.addEventListener('activate', (e) => {
         if(key !== CACHE_VER){
           return caches.delete(keys[i]);
         }
+        return Promise.resolve();
       }));
     })
   );
+});
+
+// Listen for client messages (e.g., ask the waiting SW to skipWaiting)
+self.addEventListener('message', (event) => {
+  if(event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }else if(event.data && event.data.type == 'GET_VER') {
+    event.ports[0].postMessage({version: CACHE_VER});
+  }
 });

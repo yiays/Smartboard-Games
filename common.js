@@ -53,13 +53,55 @@ bc.onmessage = (e) => {
   }
 };
 
+let myService, newService;
 // Service Worker Registration
-if (navigator.serviceWorker) {
-  navigator.serviceWorker
-  .register('/service-worker.js', {scope: '/'})
-  .catch(console.error)
+if('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/service-worker.js', {scope: '/'})
+  .then(reg => {
+    myService = reg.active;
+    // Get the current version, show it in any .ver elements
+    const channel = new MessageChannel();
+    channel.port1.onmessage = (e) => {
+      document.querySelectorAll('.ver').forEach(el => {
+        el.textContent = e.data.version;
+      })
+    };
+    reg.active.postMessage(
+      {type: 'GET_VER'},
+      [channel.port2]
+    );
+
+    // Detect pending update
+    if(reg.waiting) {
+      console.log("SWReload is already wating");
+      toasty("An update is available!", 0, false, "Install", 'applyUpdate()');
+    }
+    // Detect update as it's being downloaded
+    reg.addEventListener('updatefound', () => {
+      newService = reg.installing;
+      newService.addEventListener('statechange', () => {
+        if(newService.state == 'installed') {
+          console.log("SWReload is waiting now after being installed");
+          toasty("An update is available!", 0, false, "Install", 'applyUpdate()');
+        }
+      });
+    });
+    // Handle when the service worker itself has indicated an update is waiting
+    navigator.serviceWorker.addEventListener('message', (e) => {
+      if(e.data && e.data.type == 'NEW_SW_WAITING') {
+        console.log("Update detected because serviceWorker announced it");
+        toasty("An update is available!", 0, false, "Install", 'applyUpdate()');
+      }
+    })
+  });
 } else {
   console.warn('Service Worker is not supported in this browser.');
+}
+
+// Apply update and reload logic
+function applyUpdate() {
+  (newService?newService:myService).postMessage({type: 'SKIP_WAITING'});
+  location.reload();
 }
 
 $().ready(() => {
@@ -281,12 +323,13 @@ function get_leaderboard(scope,
 
 // Toasty
 let toastyId = 0;
-function toasty(msg, expiry=5, error=false) {
+function toasty(msg, expiry=5, error=false, btnLabel=false, btnAction=false) {
   var id = toastyId++;
   // Create toasty
   $(document.body).append(`
     <div class="toasty ${expiry>0?'finite':''} ${error?'error':''}" id="toasty-${id}" style="--expiry:${expiry}s;--id:${id};">
       ${msg}
+      ${btnLabel?`<button type="button" class="btn" onClick="${btnAction}">${btnLabel}</button>`:''}
       <a class="close">×</a>
     </div>`);
   // Add event listener for close button

@@ -185,9 +185,6 @@ body.offline .online {
   border: 0.3rem solid var(--antitext);
   border-radius: 50%;
 }
-.btn h1 {
-  margin: 0;
-}
 .btn p {
   margin-bottom: 0;
 }
@@ -206,6 +203,10 @@ body.offline .online {
 /* Toasty */
 .toasty {
   position: fixed;
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+  align-items: center;
   bottom: 0;
   left: 0;
   right: 0;
@@ -246,6 +247,12 @@ body.offline .online {
   right: 0.5em;
 }
 .toasty.error .close {
+  color: var(--antitext);
+}
+.toasty .btn {
+  background: #aaa;
+  background: var(--secondary);
+  color: #000;
   color: var(--antitext);
 }
 @keyframes toast-popin {
