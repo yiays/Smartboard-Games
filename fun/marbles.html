@@ -64,7 +64,7 @@
       flex-direction: row;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 1em;
+      gap: 0.5em;
     }
     .flask{
       position: relative;
@@ -111,6 +111,14 @@
         opacity: 1;
       }
     }
+    #game {
+      width: 30em;
+      height: auto;
+      max-height: 40em;
+    }
+    #game>h2 {
+      margin-top: 0;
+    }
     #game .options {
       width: 100%;
     }
@@ -143,6 +151,31 @@
       <button class="btn action-start" data-flasks="3" data-colours="2" data-diff="2">3</button>
       <button class="btn action-start" data-flasks="3" data-colours="2" data-diff="2">4</button>
       <button class="btn action-start" data-flasks="4" data-colours="3" data-diff="3">5</button>
+      <button class="btn action-start" data-flasks="4" data-colours="3" data-diff="4">6</button>
+      <button class="btn action-start" data-flasks="4" data-colours="3" data-diff="4" data-shuffle="1">7</button>
+      <button class="btn action-start" data-flasks="4" data-colours="3" data-diff="5">8</button>
+      <button class="btn action-start" data-flasks="6" data-colours="4" data-diff="5">9</button>
+      <button class="btn action-start" data-flasks="8" data-colours="6" data-diff="5">10</button>
+      <button class="btn action-start" data-flasks="6" data-colours="4" data-diff="6">11</button>
+      <button class="btn action-start" data-flasks="6" data-colours="4" data-diff="6">12</button>
+      <button class="btn action-start" data-flasks="7" data-colours="5" data-diff="6">13</button>
+      <button class="btn action-start" data-flasks="7" data-colours="5" data-diff="6">14</button>
+      <button class="btn action-start" data-flasks="7" data-colours="5" data-diff="7">15</button>
+      <button class="btn action-start" data-flasks="7" data-colours="5" data-diff="7">16</button>
+      <button class="btn action-start" data-flasks="7" data-colours="5" data-diff="7">17</button>
+      <button class="btn action-start" data-flasks="7" data-colours="5" data-diff="7">18</button>
+      <button class="btn action-start" data-flasks="7" data-colours="5" data-diff="8">19</button>
+      <button class="btn action-start" data-flasks="8" data-colours="6" data-diff="8">20</button>
+      <button class="btn action-start" data-flasks="8" data-colours="6" data-diff="8">21</button>
+      <button class="btn action-start" data-flasks="8" data-colours="6" data-diff="8">22</button>
+      <button class="btn action-start" data-flasks="8" data-colours="6" data-diff="8">23</button>
+      <button class="btn action-start" data-flasks="8" data-colours="6" data-diff="8">24</button>
+      <button class="btn action-start" data-flasks="8" data-colours="6" data-diff="8">25</button>
+      <button class="btn action-start" data-flasks="8" data-colours="6" data-diff="9">26</button>
+      <button class="btn action-start" data-flasks="8" data-colours="6" data-diff="9">27</button>
+      <button class="btn action-start" data-flasks="8" data-colours="6" data-diff="9">28</button>
+      <button class="btn action-start" data-flasks="8" data-colours="6" data-diff="9">29</button>
+      <button class="btn action-start" data-flasks="8" data-colours="7" data-diff="2">30</button>
     </div>
     <div class="options" style="margin-top: 1em">
       <button class="btn action-cancel" title="Menu">Menu</button>
@@ -151,6 +184,10 @@
   </div>
 
   <div id="game" class="panel" style="background:rgba(124,114,119,0.6);display:none;">
+    <div class="panel-controls">
+      Possible moves: <span id="moveCounter"></span>
+    </div>
+    <h2>Level <span id="levelno"></span></h2>
     <div id="flasks">
     </div>
     <div class="options" style="margin-top: 1em">
@@ -272,7 +309,7 @@
       completedLevels: []
     };
 
-    let prng, level, template, state, undoLog, selectedTube, errorToast;
+    let prng, level, template, state, undoLog, selectedTube, undoMove, errorToast;
 
     $().ready(() => {
       if(localStorage.getItem('marbles_data')) {
@@ -303,7 +340,8 @@
     function newgame(e) {
       level = Number(e.target.innerText);
       // Create a new predictable random number generator for shuffling the level
-      prng = mulberry32((level + 1337) >>> 0);
+      const rngShuffle = 'shuffle' in e.target.dataset? Number(e.target.dataset.shuffle): 0;
+      prng = mulberry32((level + 1337 + rngShuffle) >>> 0);
       const ballsinplay = shuffle(balls).slice(-Number(e.target.dataset.colours));
       const flasks = Number(e.target.dataset.flasks);
       let moves = Number(e.target.dataset.diff) * 10;
@@ -345,16 +383,24 @@
 
       render(template);
       undoLog = [];
-      
+
+      moveCount = remainingMoves();
+      $('#moveCounter').text(moveCount);
+
+      $('#levelno').text(level);
       $('#menu,#levels').hide();
       $('.action-undo').addClass('disabled');
       $('.action-retry').addClass('disabled');
+      advance_colour();
       $('#game').show();
     }
 
     function undo() {
       let newstate = undoLog.pop();
       render(newstate);
+      undoMove = undefined;
+      moveCount = remainingMoves();
+      $('#moveCounter').text(moveCount);
       if(undoLog.length == 0) {
         $('.action-undo').addClass('disabled');
         $('.action-retry').addClass('disabled');
@@ -365,6 +411,9 @@
 
     function retry() {
       render(template);
+      undoMove = undefined;
+      moveCount = remainingMoves();
+      $('#moveCounter').text(moveCount);
       undoLog = [];
       $('.action-undo').addClass('disabled');
       $('.action-retry').addClass('disabled');
@@ -456,7 +505,12 @@
       let total=0;
       for(let i=0; i<state.length; i++) {
         for(let j=0; j<state.length; j++) {
-          total += gameRules(i,j)? 1: 0;
+          if(gameRules(i, j)) {
+            total++;
+            // Don't count the reverse of the last move as a valid move
+            if(undoMove !== undefined && i==undoMove[0] && j==undoMove[1])
+              total--;
+          }
         }
       }
       return total;
@@ -487,6 +541,12 @@
         movemarble.appendTo(newflaskcontainer);
         state[selectedTube].push(state[lastTube].pop());
       }
+      if(previousState[lastTube].length == state[lastTube].length) {
+        // No legal moves were found, exit early
+        $(e.target).addClass('focus');
+        return;
+      }
+      undoMove = [selectedTube, lastTube];
       if(fullcheck(state[selectedTube]))
         $(e.target).addClass('done');
       selectedTube = undefined;
@@ -494,9 +554,8 @@
       // Save previous state into the undoLog
       undoLog.push(previousState);
       let moveCount = remainingMoves();
-      if(moveCount > 0)
-        toasty(`Available moves: ${moveCount}`, 2);
-      else {
+      $('#moveCounter').text(moveCount);
+      if(moveCount <= 0) {
         if(state.every(f => f.length == 0 || fullcheck(f))) {
           toasty("Level complete!", 10);
           if(!userPrefs.completedLevels.includes(level)) {
