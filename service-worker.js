@@ -1,4 +1,4 @@
-const CACHE_VER = 'v0.0.8';
+const CACHE_VER = 'v0.0.9';
 const CACHE_FILES = [
   '/',
   '/common.js',
