@@ -101,7 +101,7 @@ if('serviceWorker' in navigator) {
 // Apply update and reload logic
 function applyUpdate() {
   (newService?newService:myService).postMessage({type: 'SKIP_WAITING'});
-  location.reload();
+  setTimeout(() => location.reload(), 100);
 }
 
 $().ready(() => {
