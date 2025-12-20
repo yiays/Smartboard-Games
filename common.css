@@ -82,6 +82,14 @@ body.offline .online {
   color: #e74c3c;
   color: var(--incorrect);
 }
+.btn.correct {
+  background: #2ecc71;
+  background: var(--correct);
+}
+.btn.incorrect {
+  background: #e74c3c;
+  background: var(--incorrect);
+}
 .squiggle {
   display: inline-block;
   position: relative;
@@ -143,6 +151,7 @@ body.offline .online {
   top: 1rem;
   right: 1rem;
   margin: 0;
+  text-align: right;
 }
 .nobtn {
   background: none;

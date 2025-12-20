@@ -17,6 +17,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/common.css" rel="stylesheet">
   <style>
+    body:not(.quiz) .onquiz {
+      display: none!important;
+    }
+    body.quiz .noquiz {
+      display: none!important;
+    }
     #game {
       perspective: 1000px;
     }
@@ -61,20 +67,33 @@
         --b-visibility: visible;
       }
     }
+    #answers {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 0.5em;
+      justify-content: center;
+      margin-bottom: 1em;
+    }
   </style>
 </head>
 <body>
   <div id="menu" class="panel">
     <p class="panel-controls">
-      <label for="modeswitch">Word: </label>
-      <select name="set" id="modeswitch">
-        <option selected value="">Select a set</option>
-      </select>
+      <input type="checkbox" name="quiz" id="quiztoggle">
+      <label for="quiztoggle">Quiz mode</label>
     </p>
-    <h1>Flashcards</h1>
-    <p>
+    <h1 class="noquiz">Flashcards</h1>
+    <p class="noquiz">
       Train your memory with a variety of pre-made flashcards for learning languages
     </p>
+    <h1 class="onquiz">Flashcards Quiz</h1>
+    <p class="onquiz">
+      Choose the answer to flashcards with multiple choice questions
+    </p>
+    <select name="set" id="setselect" style="margin-bottom: 0.5em; margin-top: -0.5em;">
+      <option selected value="">Select a set</option>
+    </select>
     <div class="loader">Loading...</div>
     <button class="big-red btn disabled" id="start" style="display:none;">Go</button>
     <div class="options" style="margin-top: 1em">
@@ -82,6 +101,10 @@
     </div>
   </div>
   <div id="game" class="panel" style="display:none;">
+    <div class="panel-controls onquiz">
+      Score: <span class="score">0</span>
+    </div>
+
     <h1 id="question">Card 0/0</h1>
     <div class="flashcard">
       <div class="side-a">
@@ -93,10 +116,17 @@
     </div>
     <br>
 
+    <div id="answers" class="onquiz">
+      <button type="button" class="btn action-answer">1</button>
+      <button type="button" class="btn action-answer">2</button>
+      <button type="button" class="btn action-answer">3</button>
+      <button type="button" class="btn action-answer">4</button>
+    </div>
+
     <div class="pre">
       <div class="options">
         <button class="btn action-cancel">Menu</button>
-        <button class="btn action-answer">Show answer</button>
+        <button class="btn action-answer noquiz">Show answer</button>
       </div>
     </div>
     <div class="post">
@@ -112,18 +142,21 @@
   <script>
     let norepeat = [];
     let flashcards = {};
-    let mode = '';
+    let set = '';
+    let quizmode = false;
     let number = -1;
+    let answer;
+    let score = 0;
 
     $().ready(() => {
       let promises = [];
-      promises.push($.getJSON('flashcards.json', (data) => {populate_modelist(data)}));
+      promises.push($.getJSON('flashcards.json', (data) => {populate_setlist(data)}));
       Promise.all(promises).then((_) => load_complete());
 
       $('#start').on('click', (e) => {
         $('#menu').hide();
         $('#game').show();
-        mode = $('#modeswitch').val();
+        set = $('#setselect').val();
         norepeat = [];
         
         newquestion();
@@ -131,7 +164,9 @@
         return false;
       });
 
-      $('#modeswitch').on('change', (e) => {mode = e.target.value;on_modechange()});
+      $('#setselect').on('change', e => {set = e.target.value;on_setchange()});
+
+      $('#quiztoggle').on('change', e => {quizmode = e.target.checked;on_modechange();});
 
       $('.action-cancel').on('click', menu);
 
@@ -140,26 +175,26 @@
       $('.action-answer').on('click', showanswer);
     });
 
-    function populate_modelist(data) {
+    function populate_setlist(data) {
       Object.keys(data).forEach((set) => {
         let keyname = set.toLowerCase().replace(/ - .*/, '').replace(' ','_') + '_' + data[set].length;
         flashcards[keyname] = data[set];
-        $('#modeswitch').append(`<option value="${keyname}">${set}</option>`);
+        $('#setselect').append(`<option value="${keyname}">${set}</option>`);
       });
 
-      if('mode' in urlParams) {
-        mode = urlParams.mode;
-        on_modechange();
+      if('set' in urlParams) {
+        set = urlParams.set;
+        on_setchange();
       }
     }
 
     function newquestion() {
       while(true) {
-        number = randint(flashcards[mode].length - 1);
+        number = randint(flashcards[set].length - 1);
 
         if(norepeat.indexOf(number) >= 0) {
-          if(norepeat.length >= flashcards[mode].length) {
-            toasty("Out of cards!", 10, true);
+          if(norepeat.length >= flashcards[set].length) {
+            toasty("Out of cards!" + (quizmode? ` Your final score: ${score}/${flashcards[set].length}`: ''), 10, true);
             menu();
             return;
           }
@@ -169,20 +204,51 @@
         break;
       }
 
-      $('#question').text(`Card ${norepeat.length} / ${flashcards[mode].length}`);
-      let [question, answer] = Object.entries(flashcards[mode][number])[0]
+      $('#question').text(`Card ${norepeat.length} / ${flashcards[set].length}`);
+      let question;
+      [question, answer] = Object.entries(flashcards[set][number])[0]
       $('#game>.flashcard>.side-a').text(question);
       $('#game>.flashcard>.side-b').text(answer);
+
+      if(quizmode) {
+        $('.score').text(score);
+        $('#answers .disabled').removeClass('disabled');
+        $('#answers .correct').removeClass('correct');
+        $('#answers .incorrect').removeClass('incorrect');
+
+        let answers = [answer];
+        while(answers.length < 4) {
+          const i = randint(flashcards[set].length - 1);
+          const v = Object.values(flashcards[set][i])[0];
+          if(answers.includes(v)) continue;
+          answers.push(v);
+        }
+        shuffle(answers);
+        $('#answers > button').each(function(i) {
+          this.innerText = answers[i];
+          this.style.fontSize = `${1 - Math.min((Math.max(answers[i].length - 12, 0) / 30), 0.3)}em`;
+        });
+      }
 
       $('#game>.flashcard').removeClass('flipped');
       $('#game .post').hide();
       $('#game .pre').show();
     }
 
-    function showanswer() {
+    function showanswer(e) {
       $('#game>.flashcard').addClass('flipped');
       $('#game .pre').hide();
       $('#game .post').show();
+
+      if(quizmode) {
+      $('#answers .btn').addClass('disabled');
+        if(e.target.innerText == answer) {
+          e.target.classList.add('correct');
+          score++;
+          $('.score').text(score);
+        } else
+          e.target.classList.add('incorrect');
+      }
     }
 
     function menu() {
@@ -190,36 +256,67 @@
       $('#menu').show();
     }
 
-    function on_modechange() {
-      $('#modeswitch').val(mode);
-      if(mode == '') {
+    function updateUrl() {
+      if(!('set' in urlParams) || urlParams.set != set || (quizmode && !('quiz' in urlParams)) || (!quizmode && ('quiz' in urlParams))) {
+        window.history.pushState({}, '', document.location.href.split('?')[0]+`?set=${set}${quizmode?'&quiz':''}`);
+        updateUrlParams();
+      }
+    }
+
+    function on_setchange(bubble=true) {
+      $('#setselect').val(set);
+      if(set == '') {
         $('#start').addClass('disabled');
       } else {
         $('#start').removeClass('disabled');
       }
-      if(!('mode' in urlParams) || urlParams.mode != mode)
-        window.history.pushState({}, '', document.location.href.split('?')[0]+`?mode=${mode}`);
+      if(bubble) updateUrl();
+      menu();
+    }
+
+    function on_modechange(bubble=true) {
+      $('#quiztoggle').attr('checked', quizmode);
+      if(quizmode) {
+        score = 0;
+        document.body.classList.add('quiz');
+        document.title = "Flashcards Quiz";
+      }else{
+        document.body.classList.remove('quiz');
+        document.title = "Flashcards";
+      }
+      if(bubble) updateUrl();
       menu();
     }
 
     var urlParams;
-    window.onpopstate = function() {
+    function updateUrlParams() {
       var match,
         pl     = /\+/g,  // Regex for replacing addition symbol with a space
         search = /([^&=]+)=?([^&]*)/g,
         decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
         query  = window.location.search.substring(1);
-    
+
       urlParams = {};
       while (match = search.exec(query))
         urlParams[decode(match[1])] = decode(match[2]);
+    }
+
+    window.onpopstate = function() {
+      updateUrlParams();
       
-      if('mode' in urlParams && urlParams.mode != mode) {
-        mode = urlParams.mode;
-        on_modechange();
-      } else if (mode != '') {
-        mode = '';
-        on_modechange();
+      if('set' in urlParams && urlParams.set != set) {
+        set = urlParams.set;
+        on_setchange(false);
+      } else if (set != '') {
+        set = '';
+        on_setchange(false);
+      }
+      if('quiz' in urlParams && !quizmode) {
+        quizmode = true;
+        on_modechange(false);
+      }else if(!('quiz' in urlParams) && quizmode) {
+        quizmode = false;
+        on_modechange(false);
       }
     };
     window.onpopstate();
