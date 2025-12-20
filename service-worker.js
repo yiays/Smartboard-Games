@@ -16,13 +16,16 @@ const CACHE_FILES = [
   '/fun/marbles.html'
 ];
 
+let online = navigator.onLine;
+
 // Install procedure
 self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(CACHE_VER)
-    .then((cache) => {
+    .then(cache => {
       return cache.addAll(CACHE_FILES);
     })
+    .catch(e => console.error)
     .then(() => {
       // Notify all open clients that a new service worker was installed and is waiting
       return self.clients.matchAll({ type: 'window', includeUncontrolled: true })
@@ -50,32 +53,52 @@ function normalizeCacheKey(requestOrUrl) {
 self.addEventListener('fetch', (e) => {
   const cacheKey = normalizeCacheKey(e.request);
 
+  if(self.location.host.startsWith("127.0.0.1")) {
+    // This is a development environment, update local files instantly
+    if(new URL(e.request.url).origin == self.location.origin) {
+      e.respondWith(fetchAndCache(cacheKey, e.request.clone()));
+      return;
+    }
+  }
+  else if(navigator.onLine) {
+    // Always fetch fresh files when online
+    e.respondWith(fetchAndCache(cacheKey, e.request.clone()));
+    return;
+  }
+
+  // In any other case, attempt to load from cache first, then fetch
   e.respondWith(
-    caches.match(cacheKey)
-    .then((res) => {
+    caches.match(cacheKey).then((res) => {
       if(res) return res; // Cache hit
 
       // Cache miss
-      var url = e.request.clone();
-      return fetch(url).then((nres) => {
-        if(!nres || nres.status !== 200 || nres.type !== 'basic')
-          return nres;
-        
-        if(cacheKey in CACHE_FILES) {
-          // Cache the result now
-          var newfile = nres.clone();
-
-          caches.open(CACHE_VER)
-          .then((cache) => {
-            cache.put(cacheKey, newfile);
-          });
-        }
-
-        return nres;
-      })
+      return fetchAndCache(cacheKey, e.request.clone());
     })
-  )
+  );
 });
+
+async function fetchAndCache(cacheKey, url) {
+  try {
+    const res = await fetch(url);
+    if (res && res.status == 200 && res.type !== 'basic' && cacheKey in CACHE_FILES) {
+      // Cache the result now
+      var newfile = res.clone();
+
+      caches.open(CACHE_VER)
+        .then((cache) => {
+          cache.put(cacheKey, newfile);
+        });
+    }
+    return res;
+  } catch (e) {
+    online = false;
+    console.error(e);
+    let res = await caches.match(cacheKey);
+    if(res) return res;
+    console.error(`Failed to fetch ${cacheKey}, additionally, could not retrieve from cache.`);
+    return new Response(null);
+  }
+}
 
 // Deleting old cache versions on update
 self.addEventListener('activate', (e) => {
