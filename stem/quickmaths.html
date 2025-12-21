@@ -60,7 +60,7 @@
       </p>
       <button class="big-red btn" id="start">Go</button>
       <div class="options" style="margin-top: 1em">
-        <button class="btn action-leaderboard">View leaderboard</button>
+        <button class="btn action-leaderboard online">View leaderboard</button>
         <a class="btn" href="/">More games</a>
       </div>
     </div>
@@ -117,7 +117,6 @@
         <div class="options">
           <button class="btn confirm-action action-cancel">Menu</button>
           <button class="btn action-results">Results</button>
-          <button class="btn action-submit">Submit highscore</button>
         </div>
         <br>
       </div>
@@ -171,10 +170,6 @@
       $('.action-answer').on('click', checkanswer);
 
       $('.action-results').on('click', showanswers);
-
-      $('.action-submit').on('click', () => {
-        submit_highscore(`quickmaths_${mode}_${difficulty}`, score);
-      });
 
       $('.action-leaderboard').on('click', showleaderboard);
 
@@ -294,12 +289,14 @@
       $('#game .play').hide();
       $('#game .results').hide();
       $('#game .end').show();
-
+      
       $('#correctans').text(totalRight);
       $('#totalans').text(tested.length);
       let seconds = (totalTime / 1000) % 60;
       score = totalRight / seconds;
       $('#score').text(`${Math.round(score * 100) / 100} correct answers per second`);
+      
+      submit_highscore(`quickmaths_${mode}_${difficulty}`, score);
     }
 
     function menu() {

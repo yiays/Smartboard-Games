@@ -43,6 +43,7 @@
         <option selected value="">Select a word</option>
       </select>
     </p>
+
     <div id="menu" class="passthrough">
       <h1>Anagrams</h1>
       <p>Spell as many words as you can with the letters of another word.</p>
@@ -51,11 +52,12 @@
       <div class="options" style="margin-top: 1em">
         <div class="options">
           <button class="btn action-startrandom" title="Start with a randomly selected word">🔀</button>
-          <button class="btn action-leaderboard disabled">View leaderboard</button>
+          <button class="btn action-leaderboard disabled online">View leaderboard</button>
           <a class="btn" href="/">More games</a>
         </div>
       </div>
     </div>
+
     <div id="game" class="passthrough" style="display:none;">
       <h1 id="question">Question</h1>
       <p id="input">_</p>
@@ -66,6 +68,7 @@
         <button class="btn action-finish">Finish</button>
       </div>
     </div>
+
     <div id="results" class="passthrough" style="display:none;">
       <h1>Results</h1>
       <p>
@@ -75,9 +78,10 @@
       </p>
       <div class="options">
         <button class="btn action-cancel">Menu</button>
-        <button class="btn action-leaderboard">View leaderboard</button>
+        <button class="btn action-leaderboard online">View leaderboard</button>
       </div>
     </div>
+
     <div id="leaderboard" class="passthrough" style="display:none;">
       <h1>Leaderboard</h1>
       <p id="leaderboard-word">
@@ -97,6 +101,7 @@
       </div>
     </div>
   </div>
+
   <div id="keyboard" style="display:none;">
     <button class="btn action-toggle-keyboard">⌨️</button>
     <div class="row">
@@ -169,7 +174,7 @@
     let word, keys, input, answers;
 
     $().ready(() => {
-      $.get('dictionary.txt?v=6.1')
+      $.get('dictionary.txt')
       .done((data) => {dictionary = data.replaceAll("'",'').split(/\r?\n/);load_complete()})
       .fail(() => {toasty("Failed to get the dictionary! Try reloading the page...", 20, true)});
 

@@ -2,7 +2,7 @@
   "id": "com.yiays.games",
   "name": "Smartboard Games",
   "short_name": "Games",
-  "version": "0.0.7",
+  "version": "0.1.0",
   "icons": [
     {
       "src": "/ico/64.png",

@@ -103,9 +103,10 @@ async function fetchAndCache(cacheKey, url) {
   try {
     const res = await fetch(url);
     if (res && res.status == 200 && res.type == 'basic') {
-      if(!new URL(res.url).host.startsWith('127.0.0.1')) {
+      let resUrl = new URL(res.url);
+      if(!resUrl.host.startsWith('127.0.0.1') && resUrl.protocol.startsWith('http')) {
         state.online = true;
-        console(`Online because ${res.url} loaded successfully`);
+        console.log(`Online because ${res.url} loaded successfully`);
       }
       
       if (cacheKey in CACHE_FILES) {

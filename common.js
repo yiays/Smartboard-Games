@@ -298,7 +298,7 @@ function log_out() {
 
 function submit_highscore(scope, score, silent=false) {
   if(username === null || secret === null) {
-    if(confirm("You need to make an account first! Continue?"))
+    if(confirm("Would you like to create an account to submit highscores?"))
       window.open("/profile.html", '_blank');
     return false;
   }

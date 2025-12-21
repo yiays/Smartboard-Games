@@ -97,6 +97,7 @@
     <div class="loader">Loading...</div>
     <button class="big-red btn disabled" id="start" style="display:none;">Go</button>
     <div class="options" style="margin-top: 1em">
+      <button class="btn action-leaderboard disabled online">View leaderboard</button>
       <a class="btn" href="/">More games</a>
     </div>
   </div>
@@ -137,11 +138,44 @@
     </div>
   </div>
 
+  <div id="results" class="panel" style="display:none">
+      <h1>Results</h1>
+      <p>
+        You correctly matched <span id="score">0</span>/<span class="total">0</span> flashcards
+        with the correct answers.
+      </p>
+      <div class="options">
+        <button class="btn action-cancel">Menu</button>
+        <button class="btn action-leaderboard online">View leaderboard</button>
+      </div>
+  </div>
+
+  <div id="leaderboard" class="panel" style="display:none">
+    <h1>Leaderboard</h1>
+      <p id="leaderboard-set">
+        SET
+      </p>
+      <table id="board" width="100%">
+        <thead>
+          <th>Place</th><th>Name</th><th>Score</th>
+        </thead>
+        <tbody>
+          <td>--</td><td>-----</td><td>---</td>
+        </tbody>
+      </table>
+      <br>
+      <div class="options">
+        <button class="btn action-cancel">Menu</button>
+      </div>
+    </div>
+  </div>
+
   <script src="//cdn.yiays.com/jquery-3.7.1.min.js"></script>
   <script src="/common.js"></script>
   <script>
     let norepeat = [];
     let flashcards = {};
+    let setnames = {};
     let set = '';
     let quizmode = false;
     let number = -1;
@@ -173,12 +207,15 @@
       $('.action-advance').on('click', newquestion);
 
       $('.action-answer').on('click', showanswer);
+
+      $('.action-leaderboard').on('click', showleaderboard);
     });
 
     function populate_setlist(data) {
       Object.keys(data).forEach((set) => {
         let keyname = set.toLowerCase().replace(/ - .*/, '').replace(' ','_') + '_' + data[set].length;
         flashcards[keyname] = data[set];
+        setnames[keyname] = set;
         $('#setselect').append(`<option value="${keyname}">${set}</option>`);
       });
 
@@ -194,8 +231,7 @@
 
         if(norepeat.indexOf(number) >= 0) {
           if(norepeat.length >= flashcards[set].length) {
-            toasty("Out of cards!" + (quizmode? ` Your final score: ${score}/${flashcards[set].length}`: ''), 10, true);
-            menu();
+            endgame();
             return;
           }
           continue;
@@ -212,9 +248,7 @@
 
       if(quizmode) {
         $('.score').text(score);
-        $('#answers .disabled').removeClass('disabled');
-        $('#answers .correct').removeClass('correct');
-        $('#answers .incorrect').removeClass('incorrect');
+        $('#answers .btn').removeClass('disabled').removeClass('correct').removeClass('incorrect');
 
         let answers = [answer];
         while(answers.length < 4) {
@@ -251,8 +285,25 @@
       }
     }
 
+    function endgame() {
+      $('#game,#menu').hide();
+      $('.score').text(score);
+      $('.total').text(flashcards[set].length);
+
+      submit_highscore(`flashcards_quiz_${set}`, `${score}`);
+    }
+    
+    function showleaderboard() {
+      $('#results,#menu').hide();
+      $('#leaderboard').show();
+
+      $('#leaderboard-set').text(`(${setnames[set].toUpperCase()})`);
+
+      get_leaderboard(`flashcards_quiz_${set}`);
+    }
+
     function menu() {
-      $('#game').hide();
+      $('#game,#leaderboard').hide();
       $('#menu').show();
     }
 
@@ -266,9 +317,9 @@
     function on_setchange(bubble=true) {
       $('#setselect').val(set);
       if(set == '') {
-        $('#start').addClass('disabled');
+        $('#start,.action-leaderboard').addClass('disabled');
       } else {
-        $('#start').removeClass('disabled');
+        $('#start,.action-leaderboard').removeClass('disabled');
       }
       if(bubble) updateUrl();
       menu();
