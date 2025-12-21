@@ -146,7 +146,7 @@
       </p>
       <div class="options">
         <button class="btn action-cancel">Menu</button>
-        <button class="btn action-leaderboard online">View leaderboard</button>
+        <button class="btn action-leaderboard online onquiz">View leaderboard</button>
       </div>
   </div>
 
@@ -231,7 +231,10 @@
 
         if(norepeat.indexOf(number) >= 0) {
           if(norepeat.length >= flashcards[set].length) {
-            endgame();
+            if(quizmode)
+              endgame();
+            else
+              toasty("Out of cards!", 10, true);
             return;
           }
           continue;
