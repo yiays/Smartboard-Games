@@ -5,7 +5,7 @@ const CACHE_FILES = [
   '/common.css',
   '//cdn.yiays.com/jquery-3.7.1.min.js',
   '//cdn.yiays.com/yiaycons/yiaycons.css',
-  '//fonts.googleapis.com/css2?family=Roboto:wght@400;900&display=swap',
+  '//cdn.yiays.com/yiaycons/fonts/yiaycons.woff?xmc8zi',
   '/trivia/5secondrule.html',
   '/trivia/flashcards.html',
   '/trivia/flashcards.json',
@@ -16,7 +16,29 @@ const CACHE_FILES = [
   '/fun/marbles.html'
 ];
 
-let online = navigator.onLine;
+let state = {
+  _online: navigator.onLine,
+  set online(value) {
+    if(this._online == value) return;
+    this._online = value;
+    // Notify all open clients that the online state has changed
+    return self.clients.matchAll({ type: 'window', includeUncontrolled: true })
+    .then((clients) => {
+      clients.forEach((client) => {
+        client.postMessage({ type: 'NEW_STATE', online: value });
+      });
+    });
+  },
+  get online() {
+    return this._online;
+  }
+};
+
+// Update online variable as status changes
+self.addEventListener('online', () => state.online=true);
+self.addEventListener('offline', () => state.online=false);
+
+
 
 // Install procedure
 self.addEventListener('install', (e) => {
@@ -60,7 +82,7 @@ self.addEventListener('fetch', (e) => {
       return;
     }
   }
-  else if(navigator.onLine) {
+  else if(state.online) {
     // Always fetch fresh files when online
     e.respondWith(fetchAndCache(cacheKey, e.request.clone()));
     return;
@@ -80,18 +102,25 @@ self.addEventListener('fetch', (e) => {
 async function fetchAndCache(cacheKey, url) {
   try {
     const res = await fetch(url);
-    if (res && res.status == 200 && res.type !== 'basic' && cacheKey in CACHE_FILES) {
-      // Cache the result now
-      var newfile = res.clone();
+    if (res && res.status == 200 && res.type == 'basic') {
+      if(!new URL(res.url).host.startsWith('127.0.0.1')) {
+        state.online = true;
+        console(`Online because ${res.url} loaded successfully`);
+      }
+      
+      if (cacheKey in CACHE_FILES) {
+        // Cache the result now
+        var newfile = res.clone();
 
-      caches.open(CACHE_VER)
+        caches.open(CACHE_VER)
         .then((cache) => {
           cache.put(cacheKey, newfile);
         });
+      }
     }
     return res;
   } catch (e) {
-    online = false;
+    state.online = false;
     console.error(e);
     let res = await caches.match(cacheKey);
     if(res) return res;
@@ -121,5 +150,7 @@ self.addEventListener('message', (event) => {
     self.skipWaiting();
   }else if(event.data && event.data.type == 'GET_VER') {
     event.ports[0].postMessage({version: CACHE_VER});
+  }else if(event.data && event.data.type == 'GET_STATE') {
+    event.ports[0].postMessage({online: state.online});
   }
 });

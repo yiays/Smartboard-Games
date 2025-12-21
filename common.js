@@ -60,16 +60,24 @@ if('serviceWorker' in navigator) {
   .then(reg => {
     myService = reg.active;
     // Get the current version, show it in any .ver elements
-    const channel = new MessageChannel();
-    channel.port1.onmessage = (e) => {
+    const verchannel = new MessageChannel();
+    verchannel.port1.onmessage = (e) => {
       document.querySelectorAll('.ver').forEach(el => {
         el.textContent = e.data.version;
       })
     };
     reg.active.postMessage(
       {type: 'GET_VER'},
-      [channel.port2]
+      [verchannel.port2]
     );
+
+    // Get the current network state
+    const netchannel = new MessageChannel();
+    netchannel.port1.onmessage = (e) => {
+      if(e.data.online) document.body.classList.remove('offline');
+      else document.body.classList.add('offline');
+    };
+    reg.active.postMessage({type: 'GET_STATE'}, [netchannel.port2]);
 
     // Detect pending update
     if(reg.waiting) {
@@ -88,9 +96,13 @@ if('serviceWorker' in navigator) {
     });
     // Handle when the service worker itself has indicated an update is waiting
     navigator.serviceWorker.addEventListener('message', (e) => {
-      if(e.data && e.data.type == 'NEW_SW_WAITING') {
+      if(!e.data) return;
+      if(e.data.type == 'NEW_SW_WAITING') {
         console.log("Update detected because serviceWorker announced it");
         toasty("An update is available!", 0, false, "Install", 'applyUpdate()');
+      }else if(e.data.type == 'NEW_STATE') {
+        if(e.data.online) document.body.classList.remove('offline');
+        else document.body.classList.add('offline');
       }
     })
   });
@@ -112,6 +124,7 @@ $().ready(() => {
       complete_login(username, secret, theme);
   }
 
+  // Simple online, offline detection - a more advanced method can be found in the service worker section above
   if(!navigator.onLine) {
     document.body.classList.add('offline');
   }
