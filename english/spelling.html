@@ -188,6 +188,8 @@
     const diffname = ['Easy', 'Medium', 'Hard'];
 
     $().ready(() => {
+      warn_hs_signin();
+
       $('#modeswitch').on('change', on_modechange);
 
       $('#start').on('click', newgame);
@@ -219,7 +221,8 @@
       $('.action-leaderboard').on('click', showleaderboard);
 
       $('.action-finish').on('click', () => {
-        submit_highscore(`spelling_${diffname[difficulty]}`, score);
+        submit_highscore(`spelling_${diffname[difficulty]}`, score, true);
+        showleaderboard();
       });
     });
 

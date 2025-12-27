@@ -49,7 +49,7 @@ bc.onmessage = (e) => {
     secret = frag[2];
     theme = frag[3];
     complete_login(username, secret, theme, null, false, false);
-    toasty("Logged in successfully", 10)
+    toasty("Logged in successfully", 10);
   }
 };
 
@@ -296,15 +296,31 @@ function log_out() {
   reset_colour();
 }
 
-function submit_highscore(scope, score, silent=false) {
+function warn_hs_signin() {
   if(username === null || secret === null) {
-    if(confirm("Would you like to create an account to submit highscores?"))
+    toasty("You are not signed in, highscores will not be submitted", 15, true, "Sign in", () => {
       window.open("/profile.html", '_blank');
+    });
+  }
+}
+
+function submit_highscore(scope, score, navigate=false) {
+  if(username === null || secret === null) {
+    toasty("Highscore couldn't submitted because you're not signed in", 10, true, "Sign in", () => {
+      window.open("/profile.html", '_blank');
+    });
     return false;
   }
 
   $.get(`https://highscore.yiays.com/?secret=${secret}&scope=${scope}&username=${username}&score=${score}`)
-  .done((data) => { if(!silent) toasty(data, 10); showleaderboard(); })
+  .done((data) => {
+    if(navigate) {
+      toasty(data, 10);
+      showleaderboard();
+    }else{
+      toasty(data, 10, false, 'Show leaderboard', showleaderboard);
+    }
+  })
   .fail((error) => {
     if(error.status == 403) log_out();
     toasty(error.responseText? error.responseText : "Something went wrong! Failed to save your highscore.", 20, true);

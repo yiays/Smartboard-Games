@@ -163,6 +163,8 @@
     let intTimer;
 
     $().ready(() => {
+      warn_hs_signin();
+      
       $('.action-cancel').on('click', menu);
 
       $('.action-end').on('click', showscore);

@@ -332,6 +332,7 @@
     function on_modechange(bubble=true) {
       $('#quiztoggle').attr('checked', quizmode);
       if(quizmode) {
+        warn_hs_signin();
         score = 0;
         document.body.classList.add('quiz');
         document.title = "Flashcards Quiz";
