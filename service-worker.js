@@ -73,6 +73,10 @@ function normalizeCacheKey(requestOrUrl) {
 }
 
 self.addEventListener('fetch', (e) => {
+  const url = new URL(e.request.url);
+  // Only handle same-origin requests to avoid interfering with extensions and external services like Cloudflare
+  if (url.origin !== self.location.origin && !url.origin.endsWith('yiays.com')) return;
+
   const cacheKey = normalizeCacheKey(e.request);
 
   if(self.location.host.startsWith("127.0.0.1")) {
