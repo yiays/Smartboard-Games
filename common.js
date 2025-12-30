@@ -113,7 +113,7 @@ if('serviceWorker' in navigator) {
 // Apply update and reload logic
 function applyUpdate() {
   (newService?newService:myService).postMessage({type: 'SKIP_WAITING'});
-  setTimeout(() => location.reload(), 100);
+  setTimeout(() => location.reload(), 1000);
 }
 
 $().ready(() => {
@@ -318,7 +318,7 @@ function submit_highscore(scope, score, navigate=false) {
       toasty(data, 10);
       showleaderboard();
     }else{
-      toasty(data, 10, false, 'Show leaderboard', showleaderboard);
+      toasty(data, 10, false, 'Show leaderboard', "showleaderboard()");
     }
   })
   .fail((error) => {
