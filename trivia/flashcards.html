@@ -141,7 +141,7 @@
   <div id="results" class="panel" style="display:none">
       <h1>Results</h1>
       <p>
-        You correctly matched <span id="score">0</span>/<span class="total">0</span> flashcards
+        You correctly matched <span class="score">0</span>/<span class="total">0</span> flashcards
         with the correct answers.
       </p>
       <div class="options">
@@ -246,7 +246,7 @@
       $('#question').text(`Card ${norepeat.length} / ${flashcards[set].length}`);
       let question;
       [question, answer] = Object.entries(flashcards[set][number])[0]
-      $('#game>.flashcard>.side-a').text(question);
+      $('#game>.flashcard>.side-a').text(question).css('fontSize', variableFontSize(question, 4, -6));
       $('#game>.flashcard>.side-b').text(answer);
 
       if(quizmode) {
@@ -263,7 +263,7 @@
         shuffle(answers);
         $('#answers > button').each(function(i) {
           this.innerText = answers[i];
-          this.style.fontSize = `${1 - Math.min((Math.max(answers[i].length - 12, 0) / 30), 0.3)}em`;
+          this.style.fontSize = variableFontSize(answers[i].length);
         });
       }
 

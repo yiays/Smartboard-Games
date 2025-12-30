@@ -558,3 +558,13 @@ function levenshteinDistance(a, b, log=false) {
 
   return arr[b.length][a.length];
 };
+
+// Font size based on text length
+function variableFontSize(text, basis=1, threshold=12) {
+  // Reduces font size from basis to a minimum of 0.7em based on the text length
+  // If the text length is greater than threshold, consider this overlength
+  let overLength = Math.max(text.length - threshold, 0);
+  // Take away 30ths of the font size based on overlength (takes away faster if the basis is higher)
+  let fontSize = Math.max(basis - overLength / (30 / basis), 0.7);
+  return `${fontSize}em`;
+}
