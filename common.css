@@ -29,7 +29,7 @@ html {
 }
 @media screen and (min-width: 80rem) {
   html {
-    font-size: 1.5rem;
+    font-size: 0.5rem;
   }
 }
 input,select,button {
@@ -38,6 +38,17 @@ input,select,button {
 input[type=submit], button {
   border: none;
   font: inherit;
+}
+::backdrop {
+  background: rgba(0,0,0,0.5);
+}
+dialog {
+  background: #34495e;
+  background: var(--primary);
+  color: #fff;
+  color: var(--text);
+  border: none;
+  border-radius: 0.5em;
 }
 body {
   display: flex;
@@ -55,6 +66,15 @@ body.keyboard {
 }
 h1 {
   font-size: 2em;
+}
+footer {
+  display: flex;
+  padding: 0.75em;
+  align-items: center;
+  justify-content: center;
+}
+footer > * {
+  margin: 0 2rem;
 }
 
 /* Utilities */
@@ -127,6 +147,46 @@ body.offline .online {
 }
 
 /* Elements */
+.profile {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-decoration: none;
+  gap: 0.2em;
+  top: 0;
+  right: 0;
+  font-size: 3rem;
+  padding: 1rem;
+  background: radial-gradient(at top right, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 70%);
+}
+.profile::before {
+  content: attr(data-username);
+  font-size: 0.33em;
+}
+.profile::after {
+  content: attr(data-note);
+  font-size: 0.2em;
+  position: absolute;
+  font-style: italic;
+  font-weight: 400;
+  top: 0.6em;
+  right: 1em;
+  width: max-content;
+
+}
+.profile .pfp {
+  background: #555;
+  display: block;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.profile .icon {
+  position: relative;
+  top: 0.1em;
+}
 .countdown {
   font-size: 1.5em;
   margin-bottom: 1rem;
@@ -196,6 +256,9 @@ body.offline .online {
 }
 .btn p {
   margin-bottom: 0;
+}
+.btn .icon {
+  pointer-events: none;
 }
 .options {
   display: flex;
