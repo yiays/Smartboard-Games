@@ -187,22 +187,13 @@
       promises.push($.getJSON('flashcards.json', (data) => {populate_setlist(data)}));
       Promise.all(promises).then((_) => load_complete());
 
-      $('#start').on('click', (e) => {
-        $('#menu').hide();
-        $('#game').show();
-        set = $('#setselect').val();
-        norepeat = [];
-        
-        newquestion();
-
-        return false;
-      });
-
       $('#setselect').on('change', e => {set = e.target.value;on_setchange()});
 
       $('#quiztoggle').on('change', e => {quizmode = e.target.checked;on_modechange();});
 
       $('.action-cancel').on('click', menu);
+
+      $('#start').on('click', newgame);
 
       $('.action-advance').on('click', newquestion);
 
@@ -216,13 +207,22 @@
         let keyname = set.toLowerCase().replace(/ - .*/, '').replace(' ','_') + '_' + data[set].length;
         flashcards[keyname] = data[set];
         setnames[keyname] = set;
-        $('#setselect').append(`<option value="${keyname}">${set}</option>`);
+        $('#setselect').append(`<option value="${keyname}">${set} (${data[set].length} words)</option>`);
       });
 
       if('set' in urlParams) {
         set = urlParams.set;
         on_setchange();
       }
+    }
+
+    function newgame() {
+      $('#menu').hide();
+      $('#game').show();
+      set = $('#setselect').val();
+      norepeat = [];
+      if(quizmode) score = 0;
+      newquestion();
     }
 
     function newquestion() {
