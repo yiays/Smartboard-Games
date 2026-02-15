@@ -115,7 +115,7 @@
         <hr><b>Your score: <span id="score">0 in 0 seconds</span></b>
         <br><br>
         <div class="options">
-          <button class="btn confirm-action action-cancel">Menu</button>
+          <button class="btn action-cancel">Menu</button>
           <button class="btn action-results">Results</button>
         </div>
         <br>
@@ -389,7 +389,7 @@
       } else if (mode != 0) {
         difficulty = 0;
       }
-      if(difficulty != olddiff || mod != oldmode)
+      if(difficulty != olddiff || mode != oldmode)
         on_modechange();
     }
     window.onpopstate();
