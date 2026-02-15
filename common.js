@@ -298,17 +298,13 @@ function log_out() {
 
 function warn_hs_signin() {
   if(username === null || secret === null) {
-    toasty("You are not signed in, highscores will not be submitted", 15, true, "Sign in", () => {
-      window.open("/profile.html", '_blank');
-    });
+    toasty("You are not signed in, highscores will not be submitted", 15, true, "Sign in", "window.open('/profile.html', '_blank')");
   }
 }
 
 function submit_highscore(scope, score, navigate=false) {
   if(username === null || secret === null) {
-    toasty("Highscore couldn't submitted because you're not signed in", 10, true, "Sign in", () => {
-      window.open("/profile.html", '_blank');
-    });
+    toasty("Highscore couldn't submitted because you're not signed in", 10, true, "Sign in", "window.open('/profile.html', '_blank')");
     return false;
   }
 
