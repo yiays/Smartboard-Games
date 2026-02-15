@@ -116,7 +116,7 @@
         <br><br>
         <div class="options">
           <button class="btn action-cancel">Menu</button>
-          <button class="btn action-results">Results</button>
+          <button class="btn action-results">Review results</button>
         </div>
         <br>
       </div>
@@ -161,6 +161,7 @@
     let correctAnswer;
     let timerCurrent, totalTime, totalRight, slowDown, score;
     let intTimer;
+    let trySubmit = false;
 
     $().ready(() => {
       warn_hs_signin();
@@ -194,6 +195,7 @@
       totalTime = 0;
       totalRight = 0;
       slowDown = 0;
+      trySubmit = true;
       $('#answers').html('');
       
       newquestion();
@@ -293,12 +295,15 @@
       $('#game .end').show();
       
       $('#correctans').text(totalRight);
+      let totalWrong = tested.length - totalRight;
       $('#totalans').text(tested.length);
       let seconds = (totalTime / 1000) % 60;
-      score = totalRight / seconds;
-      $('#score').text(`${Math.round(score * 100) / 100} correct answers per second`);
+      score = (totalRight - totalWrong) / seconds;
+      $('#score').text(`${Math.round(score * 100)} points`);
       
-      submit_highscore(`quickmaths_${mode}_${difficulty}`, score);
+      if(trySubmit)
+        submit_highscore(`quickmaths_${mode}_${difficulty}`, score);
+      trySubmit = false;
     }
 
     function menu() {
@@ -319,7 +324,7 @@
       $('#leaderboard-diff').text(`(${difficulty.charAt(0).toUpperCase()+difficulty.slice(1)} difficulty)`);
 
       get_leaderboard(`quickmaths_${mode}_${difficulty}`,
-                      result_converter=(v) => `${Math.round(v*100)/100}p/s`,
+                      result_converter=(v) => `${Math.round(v*100)} points`,
                       sorter=(a,b) => b[2] - a[2]);
     }
 
