@@ -71,8 +71,7 @@
         <attr id="finalscore"></attr>
       </p>
       <div class="options">
-        <button class="btn action-cancel confirm-action">Menu</button>
-        <button class="btn action-finish">Submit highscore</button>
+        <button class="btn action-cancel">Menu</button>
       </div>
     </div>
     <div id="leaderboard" class="passthrough" style="display:none;">
@@ -219,11 +218,6 @@
       $('.action-next').on('click', newquestion);
 
       $('.action-leaderboard').on('click', showleaderboard);
-
-      $('.action-finish').on('click', () => {
-        submit_highscore(`spelling_${diffname[difficulty]}`, score, true);
-        showleaderboard();
-      });
     });
 
     function on_modechange() {
@@ -342,6 +336,8 @@
       score = Math.round((scores.reduce((a,b)=>a+b) / scores.length)*10000)/100;
       $('#finalscore').text(`${score}% accuracy`);
       $('#finalscore').prop('title', answers.join('\n'));
+      
+      submit_highscore(`spelling_${diffname[difficulty]}`, score, true);
     }
 
     function showleaderboard() {
