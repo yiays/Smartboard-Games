@@ -90,6 +90,7 @@
       min-width: 5em;
     }
     .category.active {
+      filter: brightness(1.5);
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
     }
@@ -404,7 +405,7 @@
           $(`.game[data-filter*=${id}]`).removeClass('hidden');
         }
         $('.category.active').removeClass('active');
-        $(`.category.c-${id}`).addClass('active');
+        $(`.category[data-filter=${id}]`).addClass('active');
       }
 
       filter(location.hash?location.hash.substr(1):'none');
