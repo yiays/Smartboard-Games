@@ -51,6 +51,8 @@
       flex-direction: row;
       flex-wrap: wrap;
       gap: 0.5em;
+      justify-content: center;
+      margin: 0 -0.5em;
     }
     .gridlist > .btn {
       width: 2em;
@@ -65,6 +67,7 @@
       flex-wrap: wrap;
       justify-content: center;
       gap: 0.5em;
+      margin: 0 -1em;
     }
     .flask{
       position: relative;
@@ -123,6 +126,8 @@
       width: 100%;
     }
     #game .btn {
+      flex-direction: column;
+      gap: 0.5em;
       width: 4em;
       background: #75757a;
       color: #000;
@@ -130,15 +135,30 @@
       font-weight: 400;
     }
     #game .btn>.icon {
-      font-size: 1.3em;
+      font-size: 1.8em;
+    }
+    #game .btn>:last-child {
+      font-size: 0.8em;
     }
   </style>
 </head>
 <body>
   <div id="menu" class="panel">
+    <div class="panel-controls">
+      <label for="scheme">Colour scheme: </label>
+      <select id="scheme">
+        <option value="vivid" selected>Vivid</option>
+        <option value="neutral">Neutral</option>
+        <option value="pastel">Pastel</option>
+        <option value="girlatsea">Girl at sea</option>
+        <option value="bayside">Bayside</option>
+        <option value="purpleplanet">Purple planet</option>
+        <option value="blisteringsun">Blistering sun</option>
+      </select>
+    </div>
     <h1>Marbles</h1>
     <p>Untangle a jumble of marbles into colour groups</p>
-    <button class="big-red btn action-level-select">Go</button>
+    <button class="big-red btn action-level-select" autofocus>Go</button>
     <div class="options" style="margin-top: 1em">
       <a class="btn" href="/">More games</a>
     </div>
@@ -176,6 +196,16 @@
       <button class="btn action-start" data-flasks="8" data-colours="6" data-diff="9">28</button>
       <button class="btn action-start" data-flasks="8" data-colours="6" data-diff="9">29</button>
       <button class="btn action-start" data-flasks="8" data-colours="7" data-diff="2">30</button>
+      <button class="btn action-start" data-flasks="8" data-colours="7" data-diff="3" data-shuffle="1">31</button>
+      <button class="btn action-start" data-flasks="8" data-colours="7" data-diff="3">32</button>
+      <button class="btn action-start" data-flasks="9" data-colours="7" data-diff="3">33</button>
+      <button class="btn action-start" data-flasks="9" data-colours="7" data-diff="3">34</button>
+      <button class="btn action-start" data-flasks="9" data-colours="7" data-diff="3">35</button>
+      <button class="btn action-start" data-flasks="9" data-colours="7" data-diff="4">36</button>
+      <button class="btn action-start" data-flasks="9" data-colours="7" data-diff="4">37</button>
+      <button class="btn action-start" data-flasks="9" data-colours="7" data-diff="4">38</button>
+      <button class="btn action-start" data-flasks="9" data-colours="7" data-diff="4">39</button>
+      <button class="btn action-start" data-flasks="9" data-colours="7" data-diff="4">40</button>
     </div>
     <div class="options" style="margin-top: 1em">
       <button class="btn action-cancel" title="Menu">Menu</button>
@@ -191,11 +221,11 @@
     <div id="flasks">
     </div>
     <div class="options" style="margin-top: 1em">
-      <button class="btn action-undo" title="Undo"><svg width="48" height="32"><use href="#Undo"></use></svg></button>
-      <button class="btn action-retry" title="Retry"><svg width="48" height="32"><use href="#Restart"></use></svg></button>
-      <button class="btn action-symbol-toggle" title="Hide symbols"><svg width="48" height="32"><use href="#Hide"></use></svg></button>
-      <button class="btn action-share" title="Share" style="display:none;"><svg width="48" height="32"><use href="#Share"></use></svg></button>
-      <button class="btn action-level-select" title="Level select"><span class="icon icon-select-none"></span></button>
+      <button class="btn action-undo" title="Undo"><svg width="48" height="32"><use href="#Undo"></use></svg><span>Undo</span></button>
+      <button class="btn action-retry" title="Retry"><svg width="48" height="32"><use href="#Restart"></use></svg><span>Retry</span></button>
+      <button class="btn action-symbol-toggle" title="Hide symbols"><svg width="48" height="32"><use href="#Hide"></use></svg><span>Symbols</span></button>
+      <button class="btn action-share" title="Share" style="display:none;"><svg width="48" height="32"><use href="#Share"></use></svg><span>Share</span></button>
+      <button class="btn action-level-select" title="Level select"><span class="icon icon-select-none"></span><span>Levels</span></button>
     </div>
   </div>
 
@@ -304,23 +334,44 @@
       'blisteringsun': ['fff26e','efe136','edbe35','d7a928','faa32c','d88328','ec6236','bf4727','a21d21','681219']
     };
 
+    function applyScheme(schemeName) {
+      const schemeArray = schemes[schemeName];
+      var counter = 1;
+      schemeArray.forEach(c => {
+        document.documentElement.style.setProperty(`--ball${counter++}`, '#'+c);
+      });
+    }
+
     let userPrefs = {
       symbols: true,
+      scheme: 'vivid',
       completedLevels: []
     };
 
-    let prng, level, template, state, undoLog, selectedTube, undoMove, errorToast;
+    let errorToast, lvlDoneToast;
+    let prng, level, nextLevel, template, state, undoLog, selectedTube, undoMove;
 
     $().ready(() => {
       if(localStorage.getItem('marbles_data')) {
         let decoded = JSON.parse(localStorage.getItem('marbles_data'));
         userPrefs = {...userPrefs, ...decoded};
       }
+
       if(!userPrefs.symbols) {
         $('#game').addClass('nosymbols');
         $('.action-symbol-toggle').attr('title', 'Show symbols');
         $('.action-symbol-toggle>svg>use').attr('href', '#Show');
       }
+
+      applyScheme(userPrefs.scheme || 'vivid');
+      $('#scheme')
+        .val(userPrefs.scheme || 'vivid')
+        .on('change', (e) => {
+          userPrefs.scheme = e.target.value;
+          applyScheme(userPrefs.scheme);
+          saveUserPrefs();
+        });
+
       $('.action-cancel').on('click', menu);
       $('.action-start').on('click', newgame);
       $('.action-level-select').on('click', levelSelect);
@@ -330,6 +381,10 @@
     });
 
     function levelSelect() {
+      if(lvlDoneToast !== undefined) {
+        clearToasty(lvlDoneToast);
+        lvlDoneToast = undefined;
+      }
       $('#menu,#game').hide();
       $('#levels>.gridlist>.btn').each((i,e) => {
         if(userPrefs.completedLevels.includes(i+1)) e.classList.add('complete');
@@ -337,14 +392,25 @@
       $('#levels').show();
     }
 
+    function saveUserPrefs() {
+      localStorage.setItem('marbles_data', JSON.stringify(userPrefs));
+    }
+
     function newgame(e) {
-      level = Number(e.target.innerText);
+      if(lvlDoneToast !== undefined) {
+        clearToasty(lvlDoneToast);
+        lvlDoneToast = undefined;
+      }
+      levelBtn = e.target;
+      level = Number(levelBtn.innerText);
+      nextLevel = {target: levelBtn.nextElementSibling};
+
       // Create a new predictable random number generator for shuffling the level
-      const rngShuffle = 'shuffle' in e.target.dataset? Number(e.target.dataset.shuffle): 0;
+      const rngShuffle = 'shuffle' in levelBtn.dataset? Number(levelBtn.dataset.shuffle): 0;
       prng = mulberry32((level + 1337 + rngShuffle) >>> 0);
-      const ballsinplay = shuffle(balls).slice(-Number(e.target.dataset.colours));
-      const flasks = Number(e.target.dataset.flasks);
-      let moves = Number(e.target.dataset.diff) * 10;
+      const ballsinplay = shuffle(balls).slice(-Number(levelBtn.dataset.colours));
+      const flasks = Number(levelBtn.dataset.flasks);
+      let moves = Number(levelBtn.dataset.diff) * 10;
 
       template = ballsinplay.map(a => Array(4).fill(a));
       template = template.concat(Array.from({length: flasks - template.length}, () => []));
@@ -396,6 +462,10 @@
     }
 
     function undo() {
+      if(lvlDoneToast !== undefined) {
+        clearToasty(lvlDoneToast);
+        lvlDoneToast = undefined;
+      }
       let newstate = undoLog.pop();
       render(newstate);
       undoMove = undefined;
@@ -410,6 +480,10 @@
     }
 
     function retry() {
+      if(lvlDoneToast !== undefined) {
+        clearToasty(lvlDoneToast);
+        lvlDoneToast = undefined;
+      }
       render(template);
       undoMove = undefined;
       moveCount = remainingMoves();
@@ -431,7 +505,7 @@
         $('.action-symbol-toggle>svg>use').attr('href', '#Hide');
         userPrefs.symbols = true;
       }
-      localStorage.setItem('marbles_data', JSON.stringify(userPrefs));
+      saveUserPrefs();
     }
 
     function render(rstate) {
@@ -557,10 +631,13 @@
       $('#moveCounter').text(moveCount);
       if(moveCount <= 0) {
         if(state.every(f => f.length == 0 || fullcheck(f))) {
-          toasty("Level complete!", 10);
+          if(nextLevel.target !== null)
+            lvlDoneToast = toasty("Level complete!", 0, false, "Next level", 'newgame(nextLevel)');
+          else
+            toasty("Level complete! Check back later for more levels.", 10, false);
           if(!userPrefs.completedLevels.includes(level)) {
             userPrefs.completedLevels.push(level);
-            localStorage.setItem('marbles_data', JSON.stringify(userPrefs));
+            saveUserPrefs();
           }
         } else
           errorToast = toasty("No remaining moves - Undo or Retry", 0, true);
